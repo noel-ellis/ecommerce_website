@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-from config import settings
+import environ
+
+# reading .env file
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = settings.secret_key
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -76,12 +80,12 @@ WSGI_APPLICATION = "ecommerce_website.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': settings.database_engine,
-        'NAME': settings.database_name,
-        'USER': settings.database_username,
-        'PASSWORD': settings.database_password,
-        'HOST': settings.database_hostname,
-        'PORT': settings.database_port,
+        'ENGINE': env("DATABASE_ENGINE"),
+        'NAME': env("DATABASE_NAME"),
+        'USER': env("DATABASE_USERNAME"),
+        'PASSWORD': env("DATABASE_PASSWORD"),
+        'HOST': env("DATABASE_HOSTNAME"),
+        'PORT': env("DATABASE_PORT"),
     }
 }
 
