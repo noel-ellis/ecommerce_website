@@ -1,6 +1,12 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import Users, Stock
+from django.views import generic
 
+class UsersListView(generic.ListView):
+    model = Users
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the store index.")
+class StockListView(generic.ListView):
+    model = Stock
+
+def home(request):
+    return render(request, 'store/main.html')

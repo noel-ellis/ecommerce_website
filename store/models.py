@@ -1,4 +1,5 @@
 from django.db import models
+from django import utils
 
 # Create your models here.
 class Users(models.Model):
@@ -21,7 +22,9 @@ class Users(models.Model):
         max_length=200,
         blank=True
     )
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(
+        default=utils.timezone.now
+    )
 
 class Stock(models.Model):
     CATEGORY_A = 'CA'
@@ -42,7 +45,7 @@ class Stock(models.Model):
         choices=CATEGORY_CHOICES,
         default=CATEGORY_A,
         )
-    images = models.ImageField()
+    images = models.ImageField(blank=True)
 
 class Cart(models.Model):
     STATUS_IN_CART = 'IC'
