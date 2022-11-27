@@ -23,16 +23,28 @@
         <header class="site-header">
             <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
                 <div class="container">
-                    <a class="navbar-brand mr-4" href="{% url 'store:home' %}">Store</a>
+                    <a class="navbar-brand mr-4" href="{% url 'store:stock' %}">WhackShop</a>
                     <div class="collapse navbar-collapse mr-auto" id="navbarToggle">
                         <div class="navbar-nav container mr-auto">
-                            <a class="nav-item nav-link" href="{% url 'store:users' %}">Users</a>
-                            <a class="nav-item nav-link" href="{% url 'store:stock' %}">Stock</a>
+                            <a class="nav-item nav-link" href="{% url 'store:stock' %}">Store</a>
                         </div>
                         <!-- Navbar Right Side -->
                         <div class="navbar-nav">
-                            <a class="nav-item nav-link" href="#">Login</a>
-                            <a class="nav-item nav-link" href="#">Register</a>
+                            {% if user.is_authenticated %}
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ user.username }}
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Cart</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'users:settings' %}">Settings</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a></li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <a class="nav-item nav-link" href="{% url 'users:login' %}">Login</a>
+                                <a class="nav-item nav-link" href="{% url 'users:signup' %}">SignUp</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -42,17 +54,24 @@
         <main role="main" class="container">
             <div class="row">
                 <div class="col-md-8">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                     {% block content %}{% endblock %}
                 </div>
                 <div class="col-md-4">
                     <div class="content-section">
-                    <h3>Our Sidebar</h3>
+                    <h3>Cart</h3>
                     <p class='text-muted'>You can put any information here you'd like.
                         <ul class="list-group">
-                            <li class="list-group-item list-group-item-light">Latest Posts</li>
-                            <li class="list-group-item list-group-item-light">Announcements</li>
-                            <li class="list-group-item list-group-item-light">Calendars</li>
-                            <li class="list-group-item list-group-item-light">etc</li>
+                            <li class="list-group-item list-group-item-light">Item1</li>
+                            <li class="list-group-item list-group-item-light">2</li>
+                            <li class="list-group-item list-group-item-light">3</li>
+                            <li class="list-group-item list-group-item-light">4</li>
                         </ul>
                     </p>
                     </div>

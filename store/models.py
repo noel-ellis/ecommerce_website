@@ -1,31 +1,8 @@
 from django.db import models
 from django import utils
+from django.contrib.auth.models import User
 
 # Create your models here.
-class Users(models.Model):
-    USER = 'U'
-    ADMIN = 'A'
-    ACCESS_CHOICES = [
-        (USER, 'user'),
-        (ADMIN, 'admin')
-    ]
-
-    email = models.EmailField(unique=True)
-    username = models.CharField(max_length=20, unique=True)
-    password = models.CharField(max_length=200)
-    access = models.CharField(
-        max_length=1,
-        editable=False,
-        default=USER,
-    )
-    address = models.CharField(
-        max_length=200,
-        blank=True
-    )
-    created_at = models.DateTimeField(
-        default=utils.timezone.now
-    )
-
 class Stock(models.Model):
     CATEGORY_A = 'CA'
     CATEGORY_B = 'CB'
@@ -63,7 +40,7 @@ class Cart(models.Model):
         (STATUS_DELIVERED, 'successfully delivered'),
     ]
 
-    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Stock, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     status = models.CharField(

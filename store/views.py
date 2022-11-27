@@ -1,9 +1,6 @@
 from django.shortcuts import render
-from .models import Users, Stock
+from .models import Stock
 from django.views import generic
-
-class UsersListView(generic.ListView):
-    model = Users
 
 class StockListView(generic.ListView):
     model = Stock
