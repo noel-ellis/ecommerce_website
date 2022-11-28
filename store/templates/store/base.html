@@ -23,21 +23,18 @@
         <header class="site-header">
             <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
                 <div class="container">
-                    <a class="navbar-brand mr-4" href="{% url 'store:stock' %}">WhackShop</a>
+                    <a class="navbar-brand mb-0 h1" href="{% url 'store:stock' %}"><b>WhackShop</b></a>
                     <div class="collapse navbar-collapse mr-auto" id="navbarToggle">
-                        <div class="navbar-nav container mr-auto">
-                            <a class="nav-item nav-link" href="{% url 'store:stock' %}">Store</a>
-                        </div>
+                        <div class="navbar-nav container mr-auto"></div>
                         <!-- Navbar Right Side -->
-                        <div class="navbar-nav">
+                        <div class="navbar-nav mh-25">
                             {% if user.is_authenticated %}
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        {{ user.username }}
+                                        <img class="rounded-circle profile-img" src="{{ user.profile.image.url }}">
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Cart</a></li>
-                                        <li><a class="dropdown-item" href="{% url 'users:settings' %}">Settings</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'users:settings' %}"><b>{{ user.username }}</b></a></li>
                                         <li><a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a></li>
                                     </ul>
                                 </li>
