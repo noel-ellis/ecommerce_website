@@ -1,6 +1,6 @@
 from django.db import models
-from django import utils
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 # Create your models here.
 class Stock(models.Model):
@@ -22,7 +22,11 @@ class Stock(models.Model):
         choices=CATEGORY_CHOICES,
         default=CATEGORY_A,
         )
-    images = models.ImageField(blank=True)
+    image = models.ImageField(blank=True, default='default_item.png' , upload_to='stock_pics')
+
+    def get_absolute_url(self):
+        return reverse('store:stock-detail', kwargs={'pk': self.pk})
+
 
 class Cart(models.Model):
     STATUS_IN_CART = 'IC'

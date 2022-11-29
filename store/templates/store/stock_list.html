@@ -1,23 +1,25 @@
 {% extends "store/base.html" %}
 {% block content %}
-<h1>STOCK</h1>
 <p>
     {% if stock_list %}
     <ul>
         {% for item in stock_list %}
         <article class="media content-section">
-            <div class="media-body">
-                <div class="article-metadata">
-                    <a class="mr-2" href="#">{{ item.name }}</a>
-                    <small class="text-muted">{{ item.category }}</small>
+            
+            <div class="media">
+                <a href="{% url 'store:stock-detail' item.id %}">
+                    <img class="rounded-circle profile-img-big float-start" src="{{ item.image.url }}">
+                </a>
+                <div class="media-body">
+                    <h1 class="profile-heading">{{ item.name }}</h1>
+                    <p class="text-secondary">{{ item.description }}</p>
                 </div>
-                <h2><a class="article-title" href="#">{{ item.description }}</a></h2>
             </div>
         </article>
         {% endfor %}
     </ul>
     {% else %}
-        <p>there is nothing in the db</p>
+        <p>nothing in stock</p>
     {% endif %}
 </p>
 {% endblock content %}

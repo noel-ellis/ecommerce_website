@@ -25,7 +25,11 @@
                 <div class="container">
                     <a class="navbar-brand mb-0 h1" href="{% url 'store:stock' %}"><b>WhackShop</b></a>
                     <div class="collapse navbar-collapse mr-auto" id="navbarToggle">
-                        <div class="navbar-nav container mr-auto"></div>
+                        <div class="navbar-nav container mr-auto">
+                            {% if perms.store.create_stock %}
+                            <a class="nav-item nav-link" href="{% url 'store:stock-create' %}"><b>Add</b></a>
+                            {% endif %}
+                        </div>
                         <!-- Navbar Right Side -->
                         <div class="navbar-nav mh-25">
                             {% if user.is_authenticated %}
