@@ -4,13 +4,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 class StockListView(generic.ListView):
     model = Stock
+    ordering = ['-date_modified']
+    paginate_by = 2
 
 class StockDetailView(generic.DetailView):
     model = Stock
 
 class StockCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
     model = Stock
-
     fields = ['name', 'description', 'price', 'category', 'quantity', 'image']
 
     def test_func(self):

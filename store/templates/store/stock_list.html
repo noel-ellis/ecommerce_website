@@ -4,19 +4,56 @@
     {% if stock_list %}
     <ul>
         {% for item in stock_list %}
-        <article class="media content-section">
-            
-            <div class="media">
-                <a href="{% url 'store:stock-detail' item.id %}">
-                    <img class="rounded-circle profile-img-big float-start" src="{{ item.image.url }}">
-                </a>
-                <div class="media-body">
-                    <h1 class="profile-heading">{{ item.name }}</h1>
-                    <p class="text-secondary">{{ item.description }}</p>
+            <article class="media content-section">
+                
+                <div class="media">
+                    <a href="{% url 'store:stock-detail' item.id %}">
+                        <img class="rounded-circle profile-img-big float-start" src="{{ item.image.url }}">
+                    </a>
+                    <div class="media-body">
+                        <h1 class="profile-heading">{{ item.name }}</h1>
+                        <p class="text-secondary">{{ item.description }}</p>
+                    </div>
                 </div>
-            </div>
-        </article>
+            </article>
         {% endfor %}
+        {% if is_paginated %}
+            <nav aria-label="...">
+                <ul class="pagination">
+                {% if page_obj.number > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">First</a>
+                    </li>
+                {% endif %}
+                {% if page_obj.has_previous and page_obj.previous_page_number != 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                    </li>
+                {% endif %}
+                    <li class="page-item active" aria-current="page">
+                        {% if page_obj.number == 1 %}
+                            <a class="page-link" disabled>{{ page_obj.number }}</a>
+                        {% endif %}
+                        {% if page_obj.number != page_obj.paginator.num_pages and page_obj.number != 1 %}
+                            <a class="page-link" disabled>{{ page_obj.number }}</a>
+                        {% endif %}
+                        {% if page_obj.number == page_obj.paginator.num_pages %}
+                            <a class="page-link" disabled>{{ page_obj.number }}</a>
+                        {% endif %}
+                    </li>
+                {% if page_obj.has_next and page_obj.next_page_number != page_obj.paginator.num_pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                    </li>
+                {% endif %}
+                {% if page_obj.number != page_obj.paginator.num_pages %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{page_obj.paginator.num_pages}}">Last</a>
+                    </li>
+                {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
     </ul>
     {% else %}
         <p>nothing in stock</p>

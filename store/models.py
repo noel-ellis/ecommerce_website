@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils import timezone
 
 # Create your models here.
 class Stock(models.Model):
@@ -23,6 +24,8 @@ class Stock(models.Model):
         default=CATEGORY_A,
         )
     image = models.ImageField(blank=True, default='default_item.png' , upload_to='stock_pics')
+    date_added = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
         return reverse('store:stock-detail', kwargs={'pk': self.pk})
