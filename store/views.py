@@ -1,34 +1,34 @@
-from .models import Stock
+from .models import Product
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-class StockListView(generic.ListView):
-    model = Stock
+class ProductListView(generic.ListView):
+    model = Product
     ordering = ['-date_modified']
     paginate_by = 2
 
-class StockDetailView(generic.DetailView):
-    model = Stock
+class ProductDetailView(generic.DetailView):
+    model = Product
 
-class StockCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
-    model = Stock
+class ProductCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
+    model = Product
     fields = ['name', 'description', 'price', 'category', 'quantity', 'image']
 
     def test_func(self):
-        return self.request.user.has_perm('store.add_stock')
+        return self.request.user.has_perm('store.add_product')
 
-class StockUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
-    model = Stock
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = Product
     fields = ['name', 'description', 'price', 'category', 'quantity', 'image']
 
     def test_func(self):
-        return self.request.user.has_perm('store.change_stock')
+        return self.request.user.has_perm('store.change_product')
 
-class StockDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
-    model = Stock
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = Product
     success_url = '/'
 
     def test_func(self):
-        return self.request.user.has_perm('store.delete_stock')
+        return self.request.user.has_perm('store.delete_product')
 
     

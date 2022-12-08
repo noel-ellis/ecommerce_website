@@ -1,34 +1,36 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-from django.utils import timezone
 
-# Create your models here.
-class Stock(models.Model):
-    CATEGORY_A = 'CA'
-    CATEGORY_B = 'CB'
-    CATEGORY_C = 'CC'
-    CATEGORY_CHOICES = [
-        (CATEGORY_A, 'Category A'),
-        (CATEGORY_B, 'Category B'),
-        (CATEGORY_C, 'Category C'),
-    ]
 
+class Category(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255, unique=True)
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return self.name
+
+
+class Product(models.Model):
     quantity = models.PositiveIntegerField()
     price = models.PositiveIntegerField()
-    name = models.CharField(max_length=200, unique=True)
+    name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
-    category = models.CharField(
-        max_length=2,
-        choices=CATEGORY_CHOICES,
-        default=CATEGORY_A,
-        )
-    image = models.ImageField(blank=True, default='default_item.png' , upload_to='stock_pics')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    image = models.ImageField(blank=True, default='default_item.png' , upload_to='product_pics')
+    slug = models.SlugField(max_length=255, unique=True)
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name_plural = 'Products'
+        ordering = ('-date_modified',)
+
     def get_absolute_url(self):
-        return reverse('store:stock-detail', kwargs={'pk': self.pk})
+        return reverse('store:product-detail', kwargs={'pk': self.pk})
 
 
 class Cart(models.Model):
@@ -48,7 +50,7 @@ class Cart(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     status = models.CharField(
         max_length=2,
