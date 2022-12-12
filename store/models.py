@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -22,6 +23,9 @@ class Product(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
+
+    def get_absolute_url(self):
+        return reverse("store:product-detail", kwargs={"slug": self.slug})
 
     class Meta:
         verbose_name_plural = 'Products'

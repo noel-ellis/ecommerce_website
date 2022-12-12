@@ -1,0 +1,67 @@
+{% extends "store/base.html" %}
+{% block content %}
+    <div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                {% for product in products %}
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <img src="{{ product.image.url }}" class="card-img-top">
+                            <div class="card-body">                                
+                                <h5 class="card-title">{{ product.name|title }}</h5>
+                                <p class="card-text">{{ product.description }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="card-text"><strong>USD {{ product.price }}</strong></p>
+                                    <div class="btn-group">
+                                        <a class="btn btn-sm btn-outline-secondary" href="{% url "store:product-detail" product.slug %}">View</a>
+                                        {% if perms.store.create_product %}
+                                            <a class="btn btn-sm btn-outline-secondary" href="{% url 'store:product-update' product.slug %}">Edit</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% if is_paginated %}
+        <nav aria-label="...">
+            <ul class="pagination">
+            {% if page_obj.number > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">First</a>
+                </li>
+            {% endif %}
+            {% if page_obj.has_previous and page_obj.previous_page_number != 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+                </li>
+            {% endif %}
+                <li class="page-item active" aria-current="page">
+                    {% if page_obj.number == 1 %}
+                        <a class="page-link" disabled>{{ page_obj.number }}</a>
+                    {% endif %}
+                    {% if page_obj.number != page_obj.paginator.num_pages and page_obj.number != 1 %}
+                        <a class="page-link" disabled>{{ page_obj.number }}</a>
+                    {% endif %}
+                    {% if page_obj.number == page_obj.paginator.num_pages %}
+                        <a class="page-link" disabled>{{ page_obj.number }}</a>
+                    {% endif %}
+                </li>
+            {% if page_obj.has_next and page_obj.next_page_number != page_obj.paginator.num_pages %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+                </li>
+            {% endif %}
+            {% if page_obj.number != page_obj.paginator.num_pages %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{page_obj.paginator.num_pages}}">Last</a>
+                </li>
+            {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+{% endblock content %}

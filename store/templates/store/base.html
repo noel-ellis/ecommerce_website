@@ -26,6 +26,20 @@
                     <a class="navbar-brand mb-0 h1" href="{% url 'store:product' %}"><b>WhackShop</b></a>
                     <div class="collapse navbar-collapse mr-auto" id="navbarToggle">
                         <div class="navbar-nav container mr-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <b>Categories</b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    {% if perms.store.create_product %}
+                                        <li><a class="dropdown-item" href="{% url "store:category-create" %}"><small>+ new category</small></a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                    {% endif %}
+                                    {% for category in categories %}
+                                        <li><a class="dropdown-item" href="{% url "store:category" category.slug %}"><small>{{ category.name|title }}</small></a></li>
+                                    {% endfor %}
+                                </ul>
+                              </li>
                             {% if perms.store.create_product %}
                             <a class="nav-item nav-link" href="{% url 'store:product-create' %}"><b>Add</b></a>
                             {% endif %}
@@ -51,30 +65,15 @@
                 </div>
             </nav>
         </header>
-
         <main role="main" class="container">
-            <div class="row">
-                <div class="col-md-8">
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }}">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                    {% block content %}{% endblock %}
-                </div>
-                <div class="col-md-4">
-                    <div class="content-section">
-                    <h3>Cart</h3>
-                        <ul class="list-group">
-                            {% for product in cart %}
-                                <li class="list-group-item list-group-item-light">{{ product.product_id }}</li>
-                            {% endfor %}
-                        </ul>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
                     </div>
-                </div>
-            </div>
+                {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}
         </main>
         
         <!-- Popper, Bootstrap JS-->
