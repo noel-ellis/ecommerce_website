@@ -67,14 +67,11 @@
                 <div class="col-md-4">
                     <div class="content-section">
                     <h3>Cart</h3>
-                    <p class='text-muted'>You can put any information here you'd like.
                         <ul class="list-group">
-                            <li class="list-group-item list-group-item-light">Item1</li>
-                            <li class="list-group-item list-group-item-light">2</li>
-                            <li class="list-group-item list-group-item-light">3</li>
-                            <li class="list-group-item list-group-item-light">4</li>
+                            {% for product in cart %}
+                                <li class="list-group-item list-group-item-light">{{ product.product_id }}</li>
+                            {% endfor %}
                         </ul>
-                    </p>
                     </div>
                 </div>
             </div>

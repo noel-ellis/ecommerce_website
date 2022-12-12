@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.urls import reverse
-
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -28,10 +26,9 @@ class Product(models.Model):
     class Meta:
         verbose_name_plural = 'Products'
         ordering = ('-date_modified',)
-
-    def get_absolute_url(self):
-        return reverse('store:product-detail', kwargs={'pk': self.pk})
-
+        
+    def __str__(self):
+        return self.name
 
 class Cart(models.Model):
     STATUS_IN_CART = 'IC'

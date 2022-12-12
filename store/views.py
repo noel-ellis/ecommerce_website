@@ -1,6 +1,10 @@
 from .models import Product
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .models import Cart
+
+def cart(request):
+    return {'cart': Cart.objects.filter(user_id=request.user.id)}
 
 class ProductListView(generic.ListView):
     model = Product
