@@ -28,7 +28,11 @@
                         <div class="navbar-nav container mr-auto">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <b>Categories</b>
+                                    {% if category %}
+                                        <b>{{ category.name|title }}</b>
+                                    {% else %}
+                                        <b>Categories</b>
+                                    {% endif %}
                                 </a>
                                 <ul class="dropdown-menu">
                                     {% if perms.store.create_product %}

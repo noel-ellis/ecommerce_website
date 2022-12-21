@@ -9,10 +9,10 @@ def cart(request):
 def categories(request):
     return {'categories': Category.objects.all()}
 
-def category_list(request, category_slug):
-    category = get_object_or_404(Category, slug=category_slug)
+def category_list(request, slug):
+    category = get_object_or_404(Category, slug=slug)
     products = Product.objects.filter(category=category)
-    return render(request, 'store/category_list.html', {'products': products})
+    return render(request, 'store/category_list.html', {'category': category, 'products': products})
 
 class ProductListView(generic.ListView):
     model = Product
@@ -28,6 +28,7 @@ class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.Create
 
     def test_func(self):
         return self.request.user.has_perm('store.add_category')
+
 
 class ProductCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
     model = Product

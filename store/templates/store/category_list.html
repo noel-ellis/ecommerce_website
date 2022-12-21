@@ -3,29 +3,34 @@
 
     <div class="album py-5 bg-light">
         <div class="container">
+            <p class='display-1'>{{ category.name|title }}</p>
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                {% for product in products %}
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="{{ product.image.url }}" class="card-img-top img-fluid">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ product.name|title }}</h5>
-                                <p class="card-text">{{ product.description }}</p>
-                            </div>
-                            <div class="card-footer">
-                                <div class="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
-                                    <div class="btn-group">
-                                        {% if perms.store.create_product %}
-                                            <a class="btn btn-sm btn-outline-secondary" href="{% url 'store:product-update' product.slug %}">Edit</a>
-                                        {% endif %}
-                                        <a class="btn btn-sm btn-outline-secondary" href="{% url "store:product-detail" product.slug %}">View</a>
+                {% if products %}
+                    {% for product in products %}
+                        <div class="col">
+                            <div class="card h-100">
+                                <img src="{{ product.image.url }}" class="card-img-top img-fluid">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name|title }}</h5>
+                                    <p class="card-text">{{ product.description }}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
+                                        <div class="btn-group">
+                                            {% if perms.store.create_product %}
+                                                <a class="btn btn-sm btn-outline-secondary" href="{% url 'store:product-update' product.slug %}">Edit</a>
+                                            {% endif %}
+                                            <a class="btn btn-sm btn-outline-secondary" href="{% url "store:product-detail" product.slug %}">View</a>
+                                        </div>
+                                        <p class="card-text"><strong>USD {{ product.price }}</strong></p>
                                     </div>
-                                    <p class="card-text"><strong>USD {{ product.price }}</strong></p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                        <small>No products yet</small>
+                {% endif %}
             </div>
         </div>
     </div>
