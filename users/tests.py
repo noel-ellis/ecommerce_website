@@ -1,8 +1,8 @@
-from PIL import Image
 from unittest import skip
 
-from django.test import TestCase, Client
 from django.contrib.auth.models import User
+from django.test import Client, TestCase
+from PIL import Image
 
 from .models import Profile
 
