@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
@@ -22,7 +23,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    image = models.ImageField(blank=True, default='default_item.png' , upload_to='product_pics')
+    image = models.ImageField(blank=True, default='default_item.png', upload_to='product_pics')
     slug = models.SlugField(max_length=255, unique=True)
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
@@ -33,9 +34,10 @@ class Product(models.Model):
     class Meta:
         verbose_name_plural = 'Products'
         ordering = ('-date_modified',)
-        
+
     def __str__(self):
         return self.name
+
 
 class Cart(models.Model):
     STATUS_IN_CART = 'IC'

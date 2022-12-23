@@ -3,6 +3,7 @@ from django.contrib import messages
 from .forms import UserSignUpForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 
+
 # Create your views here.
 def signup(request):
     if request.method == "POST":
@@ -17,26 +18,27 @@ def signup(request):
     form = UserSignUpForm()
     return render(request, 'users/signup.html', {'form': form})
 
+
 @login_required
 def settings(request):
     if request.method == "POST":
         user_form = UserUpdateForm(
-            request.POST, 
+            request.POST,
             instance=request.user
         )
         profile_form = ProfileUpdateForm(
-            request.POST, 
-            request.FILES, 
+            request.POST,
+            request.FILES,
             instance=request.user.profile
         )
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.success(request, f'Updated')
+            messages.success(request, 'Updated')
             return redirect('users:settings')
-        
-        messages.error(request, f'Data is invalid')
+
+        messages.error(request, 'Data is invalid')
         return redirect('users:settings')
 
     user_form = UserUpdateForm(instance=request.user)
