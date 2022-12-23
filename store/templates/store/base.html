@@ -12,6 +12,7 @@
 
         <!-- Main CSS -->
         <link rel="stylesheet" type="text/css" href="{% static 'store/main.css' %}">
+        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 
         {% if title %}
             <title> Store -- {{ title }} </title>
@@ -50,6 +51,7 @@
                         </div>
                         <!-- Navbar Right Side -->
                         <div class="navbar-nav mh-25">
+                            <a class="nav-item nav-link" href="{% url 'cart:cart-summary' %}">cart</a>
                             {% if user.is_authenticated %}
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">

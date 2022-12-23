@@ -30,7 +30,7 @@ class TestCategoryModel(TestCase):
         name = 'testing'
 
         self.c.login(username=self.username, password=self.password)
-        response = self.c.post('/categories/create', {'name': name, 'slug': name})
+        response = self.c.post(reverse("store:category-create"), {'name': name, 'slug': name})
         new_category = Category.objects.get(name=name)
 
         self.assertEqual(response.status_code, 302)
@@ -75,7 +75,7 @@ class TestProductModel(TestCase):
         name = 'testing_product_view'
 
         self.c.login(username=self.username, password=self.password)
-        response = self.c.post('/products/create',
+        response = self.c.post(reverse("store:product-create"),
                                {
                                    'name': name,
                                    'description': 'test_description',
@@ -94,7 +94,7 @@ class TestProductModel(TestCase):
         description = 'test_description_test'
 
         self.c.login(username=self.username, password=self.password)
-        response = self.c.post(f'/products/{self.product.slug}/update',
+        response = self.c.post(reverse("store:product-update", kwargs={"slug": self.product.slug}),
                                {
                                    'name': self.product.name,
                                    'description': description,
@@ -111,18 +111,18 @@ class TestProductModel(TestCase):
 
     def test_product_delete_view(self):
         # Not logged in
-        response = self.c.get(f'/products/{self.product.slug}/delete')
+        response = self.c.get(reverse("store:product-delete", kwargs={"slug": self.product.slug}))
         self.assertEqual(response.status_code, 302)
 
         # Not admin
         self.user = User.objects.create_user(username='testuser', password='testuser')
         self.c.login(username='testuser', password='testuser')
-        response = self.c.get(f'/products/{self.product.slug}/delete')
+        response = self.c.get(f'/{self.product.slug}/delete')
         self.assertEqual(response.status_code, 403)
 
         # Admin
         self.c.login(username=self.username, password=self.password)
-        response = self.c.get(f'/products/{self.product.slug}/delete')
+        response = self.c.get(f'/{self.product.slug}/delete')
         self.assertEqual(response.status_code, 200)
 
 
