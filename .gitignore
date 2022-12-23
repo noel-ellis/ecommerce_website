@@ -5,3 +5,4 @@ media/
 htmlcov
 .coverage
 setup.cfg
+.DS_Store
