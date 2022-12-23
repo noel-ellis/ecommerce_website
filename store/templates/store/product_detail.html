@@ -7,15 +7,17 @@
         </div>
         <div class="col-md-8">
             <div class="card-body">
+                {% if perms.store.change_product and perms.store.delete_product %}
                 <div class="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
-                    {% if perms.store.change_product and perms.store.delete_product %}
                     <div class="btn-group" >
                         <a class="btn btn-sm btn-outline-secondary" href="{% url 'store:product-update' product.slug %}">Edit</a>
-                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'store:product-delete' object.id %}">Delete</a>
-                    </div>
-                    {% endif %}
-                    <h5 class="card-title"><strong>{{ product.name }}</strong></h5>
+                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'store:product-delete' product.slug %}">Delete</a>
+                    </div>              
+                    <h5 class="card-title"><strong>{{ product.name|title }}</strong></h5>         
                 </div>
+                {% else %}
+                <h5 class="card-title"><strong>{{ product.name|title }}</strong></h5>
+                {% endif %}
                 <p class="card-text">{{ product.description }}</p>
                 
             </div>
