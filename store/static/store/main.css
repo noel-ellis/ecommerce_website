@@ -12,6 +12,10 @@ body {
         margin: 0;
     }
     
+    .no-space-break{
+        white-space:nowrap;
+      }
+
     .bg-steel {
         background-color: #57ab99;
     }
