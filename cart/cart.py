@@ -14,7 +14,6 @@ class Cart:
         self.cart = self.session.get('skey')
 
     def add(self, product: Product):
-        print('!!!WORKS!!!')
         product_id = product.id
         if product_id not in self.cart:
             self.cart[product_id] = {
