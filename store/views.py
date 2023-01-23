@@ -13,7 +13,7 @@ def collection_list(request, slug):
 
 class CollectionCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
     model = Collection
-    fields = ['name', 'slug']
+    fields = ['image', 'name', 'slug', 'description', 'season']
 
     def test_func(self):
         return self.request.user.has_perm('store.add_collection')
