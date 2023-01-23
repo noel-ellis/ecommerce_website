@@ -28,6 +28,29 @@ class Collection(models.Model):
 
 
 class Product(models.Model):
+    SEXES = (
+        ('W', 'Women'),
+        ('M', 'Men'),
+    )
+    SIZES = (
+        ('35', '35'),
+        ('36', '36'),
+        ('37', '37'),
+        ('38', '38'),
+        ('39', '39'),
+        ('40', '40'),
+        ('41', '41'),
+        ('42', '42'),
+        ('43', '43'),
+        ('44', '44'),
+        ('45', '45'),
+        ('45.5', '45.5'),
+        ('46', '46'),
+        ('47', '47'),
+        ('48', '48'),
+        ('49', '49'),
+        ('50', '50'),
+    )
     image = models.ImageField(blank=True, default='default_item.png', upload_to='product_pics')
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
@@ -36,6 +59,10 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField()
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
+    sex = models.CharField(max_length=2, choices=SEXES)
+    size = models.CharField(max_length=4, choices=SIZES)
+    sale = models.BooleanField(default=False)
+    new = models.BooleanField(default=False)
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
 
     def get_absolute_url(self):

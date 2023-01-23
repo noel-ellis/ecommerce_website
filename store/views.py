@@ -32,6 +32,20 @@ class ProductDetailView(generic.DetailView):
 class ProductCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
     model = Product
     fields = ['name', 'description', 'price', 'collection', 'quantity', 'image', 'slug']
+    fields = [
+        'collection',
+        'name',
+        'slug',
+        'description',
+        'price',
+        'quantity',
+        'sex',
+        'size',
+        'sale',
+        'new',
+        'image',
+    ]
+
 
     def test_func(self):
         return self.request.user.has_perm('store.add_product')
