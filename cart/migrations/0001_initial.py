@@ -10,12 +10,13 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ("store", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="Profile",
+            name="Cart",
             fields=[
                 (
                     "id",
@@ -26,14 +27,31 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
+                ("quantity", models.PositiveIntegerField()),
                 (
-                    "image",
-                    models.ImageField(default="default.png", upload_to="profile_pics"),
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("IC", "waiting for confirmation"),
+                            ("AC", "accepted"),
+                            ("PR", "processing"),
+                            ("SE", "sent"),
+                            ("RE", "waiting for delivery"),
+                            ("DE", "successfully delivered"),
+                        ],
+                        default="IC",
+                        max_length=2,
+                    ),
                 ),
-                ("address", models.CharField(blank=True, max_length=200)),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="store.product"
+                    ),
+                ),
                 (
                     "user",
-                    models.OneToOneField(
+                    models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                     ),
