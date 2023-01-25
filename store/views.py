@@ -5,6 +5,10 @@ from django.views import generic
 from .models import Collection, Product
 
 
+def main(request):
+    return render(request, 'store/main.html')
+
+
 def collection_list(request, slug):
     collection = get_object_or_404(Collection, slug=slug)
     products = Product.objects.filter(collection=collection)
