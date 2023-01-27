@@ -33,9 +33,9 @@
         <div class="col-4">
             <div class="row justify-content-end my-auto">
                 <div class="col-4 my-auto">
-                    <select class="custom-select d-block w-100" id="country" required="">
-                        <option value="">1</option>
-                        <option>5</option>
+                    <select class="custom-select d-block w-100" id="select">
+                        <option value="1">1</option>
+                        <option value="5">5</option>
                     </select>
                 </div>
                 <div class="col-5">
@@ -54,11 +54,12 @@
             url: '{% url "cart:add" %}',
             data: {
                 productid: $('#cart-add-btn').data('productid'),
+                productqty: $('#select option:selected').text(),
                 csrfmiddlewaretoken: "{{csrf_token}}",
                 action: 'post'
             },
             success: function (json) {
-
+                document.getElementById("cart-qty").innerHTML = json.productqty
             },
             error: function (xhr, errmsg, err) {}
         });
