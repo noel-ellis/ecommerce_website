@@ -51,15 +51,16 @@
         e.preventDefault();
         $.ajax({
             type: 'POST',
-            url: '{% url "cart:add" %}',
+            url: '{% url "cart:modify" %}',
             data: {
                 productid: $('#cart-add-btn').data('productid'),
                 productqty: $('#select option:selected').text(),
                 csrfmiddlewaretoken: "{{csrf_token}}",
-                action: 'post'
+                action: 'add'
             },
             success: function (json) {
-                document.getElementById("cart-qty").innerHTML = json.productqty
+                document.getElementById("cart-qty").innerHTML = json.totalqty
+                document.getElementById('qty'+json.productslug).innerHTML = '✕'+json.qty
             },
             error: function (xhr, errmsg, err) {}
         });

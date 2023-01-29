@@ -55,7 +55,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField()
-    price = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=5, decimal_places=2)
     quantity = models.PositiveIntegerField()
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)

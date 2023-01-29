@@ -95,10 +95,21 @@
     
                         <!--Cart-->
                         <li class="nav-item mx-2">
-                            <a class="text-dark text-decoration-none align-middle" data-bs-toggle="offcanvas" href="#offcanvasCart" role="button" aria-controls="offcanvasCart">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
-                                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
-                                </svg>
+                            <a class="text-dark text-decoration-none align-middle position-relative" data-bs-toggle="offcanvas" href="#offcanvasCart" role="button" aria-controls="offcanvasCart">
+                                {% if cart %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
+                                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/>
+                                        <span id="cart-qty" class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
+                                            {{ cart|length }}
+                                            <span class="visually-hidden">amount of items in cart</span>
+                                        </span>
+                                    </svg>
+                                {% else%}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+                                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                                    </svg>
+                                {% endif %}
+                                
                             </a>
                         </li>
                         
@@ -114,30 +125,67 @@
         
         <main role="main" class="container py-1">
             <div class="row">
+                <!--Cart-->
                 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
                     <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasCartLabel">
-                            Cart <div id="cart-qty" class='d-inline-flex'>
-                                {% with total_qty=cart|length %}
-                                    {% if total_qty > 0 %}
-                                        {{ total_qty }}
-                                    {% else %}
-                                        0
-                                    {% endif %}
-                                {% endwith %}
-                            </div>
-                            
-                                    
-                                
-                        </h5>
+                        <h5 class="offcanvas-title text-dark text-decoration-none fw-bold fs-1" id="offcanvasCartLabel">CART</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
-                        <div>
-                            Cart contents
+                        <div class="row">
+                            {% if not cart %}
+                                <div class="col-12">Cart is empty</div>
+                            {% else %}
+                                {% for item in cart %}
+                                <div id="{{ item.product_slug }}" class='row'>
+                                    <div class="col-7">
+                                        <a id="cart-delete-btn" data-productid="{{ item.product_id }}" href="#" class="text-danger text-decoration-none align-text-bottom text-middle me-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                                            </svg>
+                                        </a>
+                                        <a href="{% url "store:product-detail" item.product_slug %}" class="text-dark text-decoration-none"><strong>{{ item.product_name|title }}</strong></a>
+                                    </div>
+                                    <div id="qty{{ item.product_slug }}"class="col-2 text-center">
+                                        ✕{{ item.product_qty }}
+                                    </div>
+                                    <div class="col-3">
+                                        <p class="text-end">${{ item.product_price }}</p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                
+                            {% endif %}
+                                <hr class="mt-5"></hr>
+                                <div class="col-7">TOTAL:</div>
+                                <div class="col-5">
+                                    <p class="text-end">${{ cart.total }}</p>
+                                </div>
+
+                            {% block cart %}{% endblock %}
                         </div>
                     </div>
                 </div>
+
+                <script>
+                    $(document).on('click', '#cart-delete-btn', function (e) {
+                        e.preventDefault();
+                        $.ajax({
+                            type: 'POST',
+                            url: '{% url "cart:modify" %}',
+                            data: {
+                                productid: $('#cart-delete-btn').data('productid'),
+                                csrfmiddlewaretoken: "{{csrf_token}}",
+                                action: 'delete'
+                            },
+                            success: function (json) {
+                                document.getElementById(json.productslug).remove()
+                            },
+                            error: function (xhr, errmsg, err) {}
+                        });
+                    })
+                </script>
+                <!--Cart-->
                   
                 {% block content %}{% endblock %}
             </div>

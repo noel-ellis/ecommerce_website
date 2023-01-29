@@ -9,16 +9,23 @@ def summary(request):
     return render(request, 'store/cart/summary.html')
 
 
-def add(request):
+def modify(request):
     cart = Cart(request)
-    if request.POST.get('action') == 'post':
-        product_id = int(request.POST.get('productid'))
-        product_qty = int(request.POST.get('productqty'))
-        product = get_object_or_404(Product, id=product_id)
-        cart.add(product=product, product_qty=product_qty)
+    product_id = int(request.POST.get('productid'))
+    product = get_object_or_404(Product, id=product_id)
 
+    if request.POST.get('action') == 'add':
+        product_qty = int(request.POST.get('productqty'))
+        cart.add(product=product, product_qty=product_qty)
         cart_qty = cart.__len__()
-        response = JsonResponse({'productqty': cart_qty})
+        response = JsonResponse({'qty': cart.cart[str(product_id)]['product_qty'], 'totalqty': cart_qty, 'productslug': product.slug})
+
+        return response
+    
+    if request.POST.get('action') == 'delete':
+        cart.delete(product=product)
+        response = JsonResponse({'productslug': product.slug})
+        
         return response
 
     
