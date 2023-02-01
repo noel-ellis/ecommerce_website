@@ -28,27 +28,22 @@ class Cart:
                 'product_name': product.name,
                 'product_slug': product.slug
             }
-            # Updates DB w/ cart data
-            self.session.modified = True
+            self.save()
             return
         
         self.cart[product_id]['product_qty'] += product_qty
+        self.save()
 
-        # Updates DB w/ cart data
-        self.session.modified = True
 
     def delete(self, product: Product):
         product_id = str(product.id)
         
         if product_id in self.cart:
             del self.cart[product_id]
-            # Updates DB w/ cart data
-            self.session.modified = True
+            self.save()
             return
+        self.save()
 
-        # Updates DB w/ cart data
-        self.session.modified = True
-        
 
     def count_total(self):
         total = 0
@@ -57,6 +52,10 @@ class Cart:
 
         return total
     
+
+    def save(self):
+        self.session.modified = True
+
 
     def __iter__(self):
         product_ids = self.cart.keys()
