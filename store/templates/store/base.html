@@ -163,7 +163,7 @@
                                 <hr class="mt-5"></hr>
                                 <div class="col-7">TOTAL:</div>
                                 <div class="col-5">
-                                    <p id="total-price" class="text-end">{{ cart.total }}</p>
+                                    <p id="total-price" class="text-end">${{ cart.total }}</p>
                                 </div>
 
                             {% block cart %}{% endblock %}
@@ -185,7 +185,7 @@
                             success: function (json) {
                                 document.getElementById("cart-qty").innerHTML = json.totalqty
                                 document.getElementById(json.productslug).remove()
-                                document.getElementById('total-price').innerHTML = json.totalprice
+                                document.getElementById('total-price').innerHTML = '$'+json.totalprice
                             },
                             error: function (xhr, errmsg, err) {}
                         });
