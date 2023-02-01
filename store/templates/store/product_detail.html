@@ -60,6 +60,7 @@
             success: function (json) {
                 document.getElementById("cart-qty").innerHTML = json.totalqty
                 document.getElementById('qty'+json.productslug).innerHTML = '✕'+json.qty
+                document.getElementById('total-price').innerHTML = json.totalprice
             },
             error: function (xhr, errmsg, err) {}
         });

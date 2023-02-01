@@ -17,15 +17,16 @@ def modify(request):
     if request.POST.get('action') == 'add':
         product_qty = int(request.POST.get('productqty'))
         cart.add(product=product, product_qty=product_qty)
+        total_price = cart.count_total()
         cart_qty = cart.__len__()
-        response = JsonResponse({'qty': cart.cart[str(product_id)]['product_qty'], 'totalqty': cart_qty, 'productslug': product.slug})
-
-        return response
+        response = JsonResponse({'qty': cart.cart[str(product_id)]['product_qty'], 'totalqty': cart_qty, 'productslug': product.slug, 'totalprice': total_price})
     
     if request.POST.get('action') == 'delete':
         cart.delete(product=product)
-        response = JsonResponse({'productslug': product.slug})
+        total_price = cart.count_total()
+        cart_qty = cart.__len__()
+        response = JsonResponse({'productslug': product.slug, 'totalprice': total_price, 'totalqty': cart_qty})
         
-        return response
+    return response
 
     
