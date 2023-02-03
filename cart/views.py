@@ -4,9 +4,13 @@ from django.http import JsonResponse
 from .cart import Cart
 from store.models import Product
 
-# Create your views here.
+
 def summary(request):
-    return render(request, 'store/cart/summary.html')
+    return render(request, 'cart/summary.html')
+
+
+def checkout(request):
+    return render(request, 'cart/checkout.html')
 
 
 def modify(request):
@@ -26,6 +30,14 @@ def modify(request):
         total_price = cart.count_total()
         cart_qty = cart.__len__()
         response = JsonResponse({'productslug': product.slug, 'totalprice': total_price, 'totalqty': cart_qty})
+
+    if request.POST.get('action') == 'update':
+        product_qty = int(request.POST.get('productqty'))
+        cart.update_qty(product=product, product_qty=product_qty)
+        
+        subtotalprice = product.price*product_qty
+        total_price = cart.count_total()
+        response = JsonResponse({'totalprice': total_price, 'subtotalprice': subtotalprice})
         
     return response
 

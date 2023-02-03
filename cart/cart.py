@@ -35,6 +35,14 @@ class Cart:
         self.save()
 
 
+    def update_qty(self, product: Product, product_qty: int):
+        product_id = str(product.id)
+
+        if product_id in self.cart:
+            self.cart[product_id]['product_qty'] = product_qty
+            self.save()
+
+
     def delete(self, product: Product):
         product_id = str(product.id)
         
@@ -65,7 +73,10 @@ class Cart:
         for product in products:
             cart['product_qty'] = self.cart[str(product.id)]['product_qty']
             cart['product_price'] = str(product.price)
+            cart['product_subtotal'] = product.price*self.cart[str(product.id)]['product_qty']
             cart['product_name'] = product.name
+            cart['product_description'] = product.description
+            cart['product_image'] = product.image
             cart['product_slug'] = product.slug
             cart['product_id'] = product.id
             yield cart
