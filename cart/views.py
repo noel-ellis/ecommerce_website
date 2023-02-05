@@ -37,7 +37,8 @@ def modify(request):
         
         subtotalprice = product.price*product_qty
         total_price = cart.count_total()
-        response = JsonResponse({'totalprice': total_price, 'subtotalprice': subtotalprice})
+        cart_qty = cart.__len__()
+        response = JsonResponse({'qty': product_qty, 'productslug': product.slug, 'totalprice': total_price, 'subtotalprice': subtotalprice, 'totalqty': cart_qty})
         
     return response
 

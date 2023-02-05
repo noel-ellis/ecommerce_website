@@ -2,7 +2,7 @@
 {% block content %}
     <div class="d-flex flex-column mb-5 pb-5">
         {% for item in cart %}
-        <div id="{{ item.product_slug }}" class="d-flex flex-row justify-content-center align-items-center">
+        <div id="cart-product-{{ item.product_id }}" class="d-flex flex-row justify-content-center align-items-center">
             <div class="card my-3 w-75">
                 <div class="d-flex justify-content-start">
                     <div class="col-md-3">
@@ -22,16 +22,16 @@
                                     <option value="43">43</option>
                                     <option value="44">44</option>
                                 </select>
-                                <select id="{{ item.product_id }}-qty" class="form-select mx-2">
+                                <select id="cart-select-qty-{{ item.product_id }}" class="form-select mx-2">
                                     <option selected>{{ item.product_qty }}</option>
                                     <option value="1">1</option>
-                                    <option value="2">5</option>
-                                    <option value="3">10</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
                                   </select>
                             </div>      
                         </div>
                         <div class="d-flex justify-content-end">
-                            <strong><p id="subtotal-price" class="card-text align-self-center m-2 fs-2">${{ item.product_subtotal }}</p></strong>
+                            <strong><p id="cart-subtotal-{{ item.product_id }}" class="card-text align-self-center m-2 fs-2">${{ item.product_subtotal }}</p></strong>
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
     </div>
     <div class="d-flex flex-row justify-content-center align-items-center fixed-bottom bg-white shadow-lg px-5">
         <div class="d-flex align-items-cente mx-5">
-            <a id='total-price' class="text-decoration-none text-dark fs-3" href="#">${{ cart.total }}</a>
+            <a id='cart-total-price' class="text-decoration-none text-dark fs-3" href="#">${{ cart.total }}</a>
         </div>
         <div class="flex-grow-1">
             <a class="w-100 btn btn-lg btn-dark my-2" type="button" href="{% url 'cart:checkout' %}">Checkout</a>
@@ -63,14 +63,16 @@
                 url: '{% url "cart:modify" %}',
                 data: {
                     productid: prodid,
-                    productqty: $('#' + prodid + '-qty option:selected').text(),
+                    productqty: $('#cart-select-qty-' + prodid + ' option:selected').text(),
                     csrfmiddlewaretoken: "{{csrf_token}}",
                     action: 'update'
                 },
                 success: function (json) {
-                    document.getElementById('subtotal-price').innerHTML = '$'+json.subtotalprice
-                    document.getElementById('total-price').innerHTML = '$'+json.totalprice
+                    document.getElementById('cart-totalqty-badge').innerHTML = json.totalqty
                     document.getElementById('cart-total-price').innerHTML = '$'+json.totalprice
+                    document.getElementById('offcanvas-cart-total-price').innerHTML = '$'+json.totalprice                 
+                    document.getElementById('cart-subtotal-'+prodid).innerHTML = '$'+json.subtotalprice
+                    document.getElementById('offcanvas-cart-qty-'+prodid).innerHTML = '✕'+json.qty
                 },
                 error: function (xhr, errmsg, err) {}
             });
@@ -81,6 +83,7 @@
     <script>
         $(document).on('click', '.cart-delete-btn', function (e) {
             e.preventDefault();
+            var prodid = $(this).data('productid');
             $.ajax({
                 type: 'POST',
                 url: '{% url "cart:modify" %}',
@@ -90,9 +93,7 @@
                     action: 'delete'
                 },
                 success: function (json) {
-                    document.getElementById('cart-qty').innerHTML = json.totalqty
-                    document.getElementById(json.productslug).remove()
-                    document.getElementById('total-price').innerHTML = '$'+json.totalprice
+                    document.getElementById('cart-product-'+prodid).remove()
                     document.getElementById('cart-total-price').innerHTML = '$'+json.totalprice
                 },
                 error: function (xhr, errmsg, err) {}

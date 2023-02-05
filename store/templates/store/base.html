@@ -99,7 +99,7 @@
                                 {% if cart %}
                                     <svg id="cart-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
                                         <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/>
-                                        <span id="cart-qty" class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
+                                        <span id="cart-totalqty-badge" class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
                                             {{ cart|length }}
                                             <span class="visually-hidden">amount of items in cart</span>
                                         </span>
@@ -107,7 +107,7 @@
                                 {% else%}
                                     <svg id="cart-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
                                         <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
-                                        <span id="cart-qty" class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
+                                        <span id="cart-totalqty-badge" class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
                                             {{ cart|length }}
                                             <span class="visually-hidden">amount of items in cart</span>
                                         </span>
@@ -140,7 +140,7 @@
                                 <div class="col-12">Cart is empty</div>
                             {% else %}
                                 {% for item in cart %}
-                                <div id="offcanvas-{{ item.product_slug }}" class='row align-items-center my-1'>
+                                <div id="offcanvas-cart-product-{{ item.product_id }}" class='row align-items-center my-1'>
                                     <div class="col-7">
                                         <a data-productid="{{ item.product_id }}" href="#" class="text-danger text-decoration-none align-text-bottom me-1 cart-delete-btn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
@@ -150,7 +150,7 @@
                                         <a href="{% url "store:product-detail" item.product_slug %}" class="text-dark text-decoration-none"><strong>{{ item.product_name|title }}</strong></a>
                                     </div>
                                     <div class="col-2">
-                                        <div id="qty{{ item.product_slug }}" class="text-center">✕{{ item.product_qty }}</div>
+                                        <div id="offcanvas-cart-qty-{{ item.product_id }}" class="text-center">✕{{ item.product_qty }}</div>
                                     </div>
                                     <div class="col-3">
                                         <p class="text-end m-0">${{ item.product_price }}</p>
@@ -167,9 +167,9 @@
                             <div class="col-7">TOTAL:</div>
                             <div class="col-5">
                                 {% if not cart %}
-                                    <p id="cart-total-price" class="text-end">$0</p>
+                                    <p id="offcanvas-cart-total-price" class="text-end">$0</p>
                                 {% else %}
-                                    <p id="cart-total-price" class="text-end">${{ cart.total }}</p>
+                                    <p id="offcanvas-cart-total-price" class="text-end">${{ cart.total }}</p>
                                 {% endif %}
                             </div>
                         </div>
@@ -183,6 +183,7 @@
                 <script>
                     $(document).on('click', '.cart-delete-btn', function (e) {
                         e.preventDefault();
+                        var prodid = $(this).data('productid');
                         $.ajax({
                             type: 'POST',
                             url: '{% url "cart:modify" %}',
@@ -192,9 +193,9 @@
                                 action: 'delete'
                             },
                             success: function (json) {
-                                document.getElementById("cart-qty").innerHTML = json.totalqty
-                                document.getElementById("offcanvas-"+json.productslug).remove()
-                                document.getElementById('cart-total-price').innerHTML = '$'+json.totalprice
+                                document.getElementById("cart-totalqty-badge").innerHTML = json.totalqty
+                                document.getElementById("offcanvas-cart-product-"+prodid).remove()
+                                document.getElementById("offcanvas-cart-total-price").innerHTML = '$'+json.totalprice
                             },
                             error: function (xhr, errmsg, err) {}
                         });

@@ -15,6 +15,7 @@ class Cart:
             return
         self.cart = self.session.get('userdata')
 
+        self.total = 0
         if self.cart:
             self.total = self.count_total()
 

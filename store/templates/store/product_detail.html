@@ -58,9 +58,9 @@
                 action: 'add'
             },
             success: function (json) {
-                document.getElementById("cart-qty").innerHTML = json.totalqty
-                document.getElementById('qty'+json.productslug).innerHTML = '✕'+json.qty
-                document.getElementById('total-price').innerHTML = json.totalprice
+                document.getElementById('cart-totalqty-badge').innerHTML = json.totalqty
+                document.getElementById('offcanvas-cart-total-price').innerHTML = '$'+json.totalprice
+                document.getElementById('offcanvas-cart-qty-'+prodid).innerHTML = '✕'+json.qty
             },
             error: function (xhr, errmsg, err) {}
         });
