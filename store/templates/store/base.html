@@ -128,80 +128,81 @@
         </div>
         
         <main role="main" class="container py-1">
-                <!--Cart-->
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
-                    <div class="offcanvas-header">
+            <!-- Cart -->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
+                <div class="offcanvas-header">
                         <h5 class="offcanvas-title text-dark text-decoration-none fw-bold fs-1" id="offcanvasCartLabel">CART</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                    </div>
-                    <div class="offcanvas-body">
-                        <div class="row">
-                            {% if not cart %}
-                                <div class="col-12">Cart is empty</div>
-                            {% else %}
-                                {% for item in cart %}
-                                <div id="offcanvas-cart-product-{{ item.product_id }}" class='row align-items-center my-1'>
-                                    <div class="col-7">
-                                        <a data-productid="{{ item.product_id }}" href="#" class="text-danger text-decoration-none align-text-bottom me-1 cart-delete-btn">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
-                                            </svg>
-                                        </a>
-                                        <a href="{% url "store:product-detail" item.product_slug %}" class="text-dark text-decoration-none"><strong>{{ item.product_name|title }}</strong></a>
-                                    </div>
-                                    <div class="col-2">
-                                        <div id="offcanvas-cart-qty-{{ item.product_id }}" class="text-center">✕{{ item.product_qty }}</div>
-                                    </div>
-                                    <div class="col-3">
-                                        <p class="text-end m-0">${{ item.product_price }}</p>
-                                    </div>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="row">
+                        {% if not cart %}
+                            <div class="col-12">Cart is empty</div>
+                        {% else %}
+                            {% for item in cart %}
+                            <div id="offcanvas-cart-product-{{ item.product_id }}" class='row align-items-center my-1'>
+                                <div class="col-7">
+                                    <a data-productid="{{ item.product_id }}" href="#" class="text-danger text-decoration-none align-text-bottom me-1 cart-delete-btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                                        </svg>
+                                    </a>
+                                    <a href="{% url "store:product-detail" item.product_slug %}" class="text-dark text-decoration-none"><strong>{{ item.product_name|title }}</strong></a>
                                 </div>
-                                {% endfor %}
-                                
+                                <div class="col-2">
+                                    <div id="offcanvas-cart-qty-{{ item.product_id }}" class="text-center">✕{{ item.product_qty }}</div>
+                                </div>
+                                <div class="col-3">
+                                    <p class="text-end m-0">${{ item.product_price }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="">
+                    <hr class="mt-5"></hr>
+                    <div class="row mx-2">
+                        <div class="col-7">TOTAL:</div>
+                        <div class="col-5">
+                            {% if not cart %}
+                                <p id="offcanvas-cart-total-price" class="text-end">$0</p>
+                            {% else %}
+                                <p id="offcanvas-cart-total-price" class="text-end">${{ cart.total }}</p>
                             {% endif %}
                         </div>
                     </div>
-                    <div class="">
-                        <hr class="mt-5"></hr>
-                        <div class="row mx-2">
-                            <div class="col-7">TOTAL:</div>
-                            <div class="col-5">
-                                {% if not cart %}
-                                    <p id="offcanvas-cart-total-price" class="text-end">$0</p>
-                                {% else %}
-                                    <p id="offcanvas-cart-total-price" class="text-end">${{ cart.total }}</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="d-grid gap-2">
-                            <a class="btn btn-dark mt-4 mb-3 mx-3" href="{% url 'cart:summary' %}" role="button">Proceed</a>
-                        </div>
-                    </div> 
-                </div>
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-dark mt-4 mb-3 mx-3" href="{% url 'cart:summary' %}" role="button">Proceed</a>
+                    </div>
+                </div> 
+            </div>
 
-                <!-- DELETE BUTTON -->
-                <script>
-                    $(document).on('click', '.cart-delete-btn', function (e) {
-                        e.preventDefault();
-                        var prodid = $(this).data('productid');
-                        $.ajax({
-                            type: 'POST',
-                            url: '{% url "cart:modify" %}',
-                            data: {
-                                productid: $(this).data('productid'),
-                                csrfmiddlewaretoken: "{{csrf_token}}",
-                                action: 'delete'
-                            },
-                            success: function (json) {
-                                document.getElementById("cart-totalqty-badge").innerHTML = json.totalqty
-                                document.getElementById("offcanvas-cart-product-"+prodid).remove()
-                                document.getElementById("offcanvas-cart-total-price").innerHTML = '$'+json.totalprice
-                            },
-                            error: function (xhr, errmsg, err) {}
-                        });
-                    })
-                </script>
-                <!--Cart-->
+            <!-- DELETE BUTTON -->
+            <script>
+                $(document).on('click', '.cart-delete-btn', function (e) {
+                    e.preventDefault();
+                    var product_id = $(this).data('productid');
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "cart:modify" %}',
+                        data: {
+                            product_id: product_id,
+                            csrfmiddlewaretoken: "{{csrf_token}}",
+                            action: 'delete'
+                        },
+                        success: function (json) {
+                            document.getElementById("cart-totalqty-badge").innerHTML = json.totalqty
+                            document.getElementById("offcanvas-cart-product-"+product_id).remove()
+                            document.getElementById("offcanvas-cart-total-price").innerHTML = '$'+json.totalprice
+                        },
+                        error: function (xhr, errmsg, err) {}
+                    });
+                })
+            </script>
+            <!-- Cart -->
+
             <div class="row">
                 {% block content %}{% endblock %}
             </div>

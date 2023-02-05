@@ -57,13 +57,13 @@
     <script>
         $(document).on('click', '.cart-update-btn', function (e) {
             e.preventDefault();
-            var prodid = $(this).data('productid');
+            var product_id = $(this).data('productid');
             $.ajax({
                 type: 'POST',
                 url: '{% url "cart:modify" %}',
                 data: {
-                    productid: prodid,
-                    productqty: $('#cart-select-qty-' + prodid + ' option:selected').text(),
+                    product_id: product_id,
+                    product_qty: $('#cart-select-qty-' + product_id + ' option:selected').text(),
                     csrfmiddlewaretoken: "{{csrf_token}}",
                     action: 'update'
                 },
@@ -71,8 +71,8 @@
                     document.getElementById('cart-totalqty-badge').innerHTML = json.totalqty
                     document.getElementById('cart-total-price').innerHTML = '$'+json.totalprice
                     document.getElementById('offcanvas-cart-total-price').innerHTML = '$'+json.totalprice                 
-                    document.getElementById('cart-subtotal-'+prodid).innerHTML = '$'+json.subtotalprice
-                    document.getElementById('offcanvas-cart-qty-'+prodid).innerHTML = '✕'+json.qty
+                    document.getElementById('cart-subtotal-'+product_id).innerHTML = '$'+json.subtotalprice
+                    document.getElementById('offcanvas-cart-qty-'+product_id).innerHTML = '✕'+json.qty
                 },
                 error: function (xhr, errmsg, err) {}
             });
@@ -83,17 +83,17 @@
     <script>
         $(document).on('click', '.cart-delete-btn', function (e) {
             e.preventDefault();
-            var prodid = $(this).data('productid');
+            var product_id = $(this).data('productid');
             $.ajax({
                 type: 'POST',
                 url: '{% url "cart:modify" %}',
                 data: {
-                    productid: $(this).data('productid'),
+                    product_id: product_id,
                     csrfmiddlewaretoken: "{{csrf_token}}",
                     action: 'delete'
                 },
                 success: function (json) {
-                    document.getElementById('cart-product-'+prodid).remove()
+                    document.getElementById('cart-product-'+product_id).remove()
                     document.getElementById('cart-total-price').innerHTML = '$'+json.totalprice
                 },
                 error: function (xhr, errmsg, err) {}

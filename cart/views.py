@@ -15,31 +15,36 @@ def checkout(request):
 
 def modify(request):
     cart = Cart(request)
-    product_id = int(request.POST.get('productid'))
+    product_id = int(request.POST.get('product_id'))
     product = get_object_or_404(Product, id=product_id)
 
     if request.POST.get('action') == 'add':
-        product_qty = int(request.POST.get('productqty'))
+        product_qty = int(request.POST.get('product_qty'))
         cart.add(product=product, product_qty=product_qty)
+
         total_price = cart.count_total()
         cart_qty = cart.__len__()
-        response = JsonResponse({'qty': cart.cart[str(product_id)]['product_qty'], 'totalqty': cart_qty, 'productslug': product.slug, 'totalprice': total_price})
+        response = JsonResponse({'qty': cart.cart[str(product_id)]['product_qty'], 'totalqty': cart_qty, 'totalprice': total_price})
+        return response
     
     if request.POST.get('action') == 'delete':
         cart.delete(product=product)
+
         total_price = cart.count_total()
         cart_qty = cart.__len__()
-        response = JsonResponse({'productslug': product.slug, 'totalprice': total_price, 'totalqty': cart_qty})
+        response = JsonResponse({'totalprice': total_price, 'totalqty': cart_qty})
+        return response
 
     if request.POST.get('action') == 'update':
-        product_qty = int(request.POST.get('productqty'))
+        product_qty = int(request.POST.get('product_qty'))
         cart.update_qty(product=product, product_qty=product_qty)
         
-        subtotalprice = product.price*product_qty
+        subtotal_price = product.price*product_qty
         total_price = cart.count_total()
         cart_qty = cart.__len__()
-        response = JsonResponse({'qty': product_qty, 'productslug': product.slug, 'totalprice': total_price, 'subtotalprice': subtotalprice, 'totalqty': cart_qty})
+        response = JsonResponse({'totalqty': cart_qty, 'totalprice': total_price, 'subtotalprice': subtotal_price, 'qty': product_qty})
+        return response
         
-    return response
+    
 
     

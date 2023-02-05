@@ -48,19 +48,20 @@
 <script>
     $(document).on('click', '#cart-add-btn', function (e) {
         e.preventDefault();
+        var product_id = $(this).data('productid');
         $.ajax({
             type: 'POST',
             url: '{% url "cart:modify" %}',
             data: {
-                productid: $('#cart-add-btn').data('productid'),
-                productqty: $('#select option:selected').text(),
+                product_id: product_id,
+                product_qty: $('#select option:selected').text(),
                 csrfmiddlewaretoken: "{{csrf_token}}",
                 action: 'add'
             },
             success: function (json) {
                 document.getElementById('cart-totalqty-badge').innerHTML = json.totalqty
                 document.getElementById('offcanvas-cart-total-price').innerHTML = '$'+json.totalprice
-                document.getElementById('offcanvas-cart-qty-'+prodid).innerHTML = '✕'+json.qty
+                document.getElementById('offcanvas-cart-qty-'+product_id).innerHTML = '✕'+json.qty
             },
             error: function (xhr, errmsg, err) {}
         });
