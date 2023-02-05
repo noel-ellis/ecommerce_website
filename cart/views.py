@@ -32,7 +32,7 @@ def modify(request):
 
         total_price = cart.count_total()
         cart_qty = cart.__len__()
-        response = JsonResponse({'totalprice': total_price, 'totalqty': cart_qty})
+        response = JsonResponse({'totalqty': cart_qty, 'totalprice': total_price})
         return response
 
     if request.POST.get('action') == 'update':
@@ -42,7 +42,7 @@ def modify(request):
         subtotal_price = product.price*product_qty
         total_price = cart.count_total()
         cart_qty = cart.__len__()
-        response = JsonResponse({'totalqty': cart_qty, 'totalprice': total_price, 'subtotalprice': subtotal_price, 'qty': product_qty})
+        response = JsonResponse({'qty': product_qty, 'totalqty': cart_qty, 'totalprice': total_price, 'subtotalprice': subtotal_price})
         return response
         
     

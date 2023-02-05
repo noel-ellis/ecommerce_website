@@ -4,10 +4,6 @@ from decimal import Decimal
 
 
 class Cart:
-    """
-    Base Cart Class
-    """
-
     def __init__(self, request):
         self.session = request.session
         if 'userdata' not in self.session:
