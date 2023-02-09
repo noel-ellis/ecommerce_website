@@ -7,13 +7,14 @@ class Cart:
     def __init__(self, request):
         self.session = request.session
         if 'userdata' not in self.session:
-            self.total = 0
+            self.total_qty = 0
+            self.total_price = 0
             self.cart = self.session['userdata'] = {}
             return
         self.cart = self.session.get('userdata')
 
         if self.cart:
-            self.total = self.count_total()
+            self.total_price = self.count_total_price()
 
     def add(self, product: Product, product_qty: int):
         product_id = str(product.id)
@@ -26,16 +27,18 @@ class Cart:
                 'product_slug': product.slug
             }
             self.save()
-            self.total += product_qty
+            self.total_qty += product_qty
             return
         
         self.cart[product_id]['product_qty'] += product_qty
         self.save()
-        self.total += product_qty
+        self.total_qty += product_qty
 
 
     def update_qty(self, product: Product, product_qty: int):
         product_id = str(product.id)
+        self.total_qty -= self.cart[product_id]['product_qty']
+        self.total_qty += product_qty
 
         if product_id in self.cart:
             self.cart[product_id]['product_qty'] = product_qty
@@ -44,6 +47,7 @@ class Cart:
 
     def delete(self, product: Product):
         product_id = str(product.id)
+        self.total_qty -= self.cart[product_id]['product_qty']
         
         if product_id in self.cart:
             del self.cart[product_id]
@@ -52,12 +56,12 @@ class Cart:
         self.save()
 
 
-    def count_total(self):
-        total = 0
+    def count_total_price(self):
+        total_price = 0
         for item in self.cart.values():
-            total += int(item['product_qty'])*Decimal(item['product_price'])
+            total_price += int(item['product_qty'])*Decimal(item['product_price'])
 
-        return total
+        return total_price
     
 
     def save(self):

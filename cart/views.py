@@ -22,7 +22,7 @@ def modify(request):
         product_qty = int(request.POST.get('product_qty'))
         cart.add(product=product, product_qty=product_qty)
 
-        total_price = cart.count_total()
+        total_price = cart.count_total_price()
         cart_qty = cart.__len__()
         response = JsonResponse({'qty': cart.cart[str(product_id)]['product_qty'], 'totalqty': cart_qty, 'totalprice': total_price})
         return response
@@ -30,7 +30,7 @@ def modify(request):
     if request.POST.get('action') == 'delete':
         cart.delete(product=product)
 
-        total_price = cart.count_total()
+        total_price = cart.count_total_price()
         cart_qty = cart.__len__()
         response = JsonResponse({'totalqty': cart_qty, 'totalprice': total_price})
         return response
@@ -40,7 +40,7 @@ def modify(request):
         cart.update_qty(product=product, product_qty=product_qty)
         
         subtotal_price = product.price*product_qty
-        total_price = cart.count_total()
+        total_price = cart.count_total_price()
         cart_qty = cart.__len__()
         response = JsonResponse({'qty': product_qty, 'totalqty': cart_qty, 'totalprice': total_price, 'subtotalprice': subtotal_price})
         return response
