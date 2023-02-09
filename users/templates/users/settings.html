@@ -8,8 +8,10 @@
                 <legend class="border-bottom mb-4 display-2">
                     <strong>{{ user.username }}</strong>
                 </legend>
-                {{ user_form|crispy }}
-                {{ profile_form|crispy }}
+                <div class="">
+                    {{ user_form|crispy }}
+                </div>
+                
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-dark mt-3" type="submit>">Update</button>
