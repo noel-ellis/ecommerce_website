@@ -7,11 +7,11 @@ class Cart:
     def __init__(self, request):
         self.session = request.session
         if 'userdata' not in self.session:
+            self.total = 0
             self.cart = self.session['userdata'] = {}
             return
         self.cart = self.session.get('userdata')
 
-        self.total = 0
         if self.cart:
             self.total = self.count_total()
 
@@ -26,10 +26,12 @@ class Cart:
                 'product_slug': product.slug
             }
             self.save()
+            self.total += product_qty
             return
         
         self.cart[product_id]['product_qty'] += product_qty
         self.save()
+        self.total += product_qty
 
 
     def update_qty(self, product: Product, product_qty: int):
