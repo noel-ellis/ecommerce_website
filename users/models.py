@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.core.mail import send_mail
 from django.db import models
-    
+
 
 class CustomAccountManager(BaseUserManager):
     def create_superuser(self, email, password, **other_fields):
@@ -46,6 +47,7 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
 
     objects = CustomAccountManager()
 
@@ -55,6 +57,14 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
         verbose_name = "Accounts"
         verbose_name_plural = "Accounts"
 
+    def email_user(self, subject, message):
+        send_mail(
+            subject,
+            message,
+            'l@1.com',
+            [self.email],
+            fail_silently=False,
+        )
+
     def __str__(self):
         return self.username
-

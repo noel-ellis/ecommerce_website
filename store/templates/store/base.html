@@ -126,9 +126,19 @@
                 <input class="form-control mb-2 mx-1" placeholder="Search" maxlength="64" type="search">
             </div>
         </div>
-        
+        <div class="container-fluid mt-2">
+            {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <div class='text-center'>{{ message }}</div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
         <main role="main" class="container py-1">
-            <!-- Cart -->
+            <!-- Offcanvas-Cart -->
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
                 <div class="offcanvas-header">
                         <h5 class="offcanvas-title text-dark text-decoration-none fw-bold fs-1" id="offcanvasCartLabel">CART</h5>
@@ -201,7 +211,7 @@
                     });
                 })
             </script>
-            <!-- Cart -->
+            <!-- Offcanvas-Cart -->
 
             <div class="row">
                 {% block content %}{% endblock %}
