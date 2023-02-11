@@ -1,5 +1,4 @@
 {% extends "store/base.html" %}
-{% load crispy_forms_tags %}
 {% block content %}
     <div class="content-section">
         <form method="POST" enctype="multipart/form-data">
@@ -8,9 +7,10 @@
                 <legend class="border-bottom mb-4 display-2">
                     <strong>{{ user.username }}</strong>
                 </legend>
-                <div class="">
-                    {{ user_form|crispy }}
-                </div>
+                {% for input in form %}
+                    <p class='fs-4 mb-1'>{{ input.label }}</p>
+                    {{ input }}
+                {% endfor %}
                 
             </fieldset>
             <div class="form-group">

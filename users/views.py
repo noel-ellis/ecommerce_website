@@ -7,6 +7,10 @@ from .forms import UserSignUpForm, UserUpdateForm
 
 # Create your views here.
 def signup(request):
+
+    if request.user.is_authenticated:
+        return redirect('users:settings')
+
     if request.method == "POST":
         form = UserSignUpForm(request.POST)
         if form.is_valid():
@@ -23,23 +27,23 @@ def signup(request):
 @login_required
 def settings(request):
     if request.method == "POST":
-        user_form = UserUpdateForm(
+        form = UserUpdateForm(
             request.POST,
             instance=request.user
         )
 
-        if user_form.is_valid():
-            user_form.save()
+        if form.is_valid():
+            form.save()
             messages.success(request, 'Updated')
             return redirect('users:settings')
 
         messages.error(request, 'Data is invalid')
         return redirect('users:settings')
 
-    user_form = UserUpdateForm(instance=request.user)
+    form = UserUpdateForm(instance=request.user)
 
     context = {
-        'user_form': user_form,
+        'form': form,
     }
 
     return render(request, "users/settings.html", context)
