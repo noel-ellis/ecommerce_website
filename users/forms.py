@@ -1,12 +1,12 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
 from .models import UserBase
 
 
 class UserSignUpForm(UserCreationForm):
     email = forms.EmailField(help_text='Required')
     password1 = forms.CharField(label="Password", help_text='Required', widget=forms.PasswordInput)
-    password2 = forms.CharField(label="Repeat password", help_text='Required', widget=forms.PasswordInput)
+    password2 = forms.CharField(label="Confirm password", help_text='Required', widget=forms.PasswordInput)
 
     class Meta:
         model = UserBase
@@ -70,3 +70,18 @@ class UserUpdateForm(forms.ModelForm):
         self.fields['address_2'].widget.attrs.update(
             {'class': 'form-control mb-2'}
         )
+
+
+class PwdResetForm(PasswordResetForm):
+    email = forms.EmailField(label="Email", widget=forms.EmailInput(
+        attrs={
+            'class': 'form-control', 
+            'type': 'email',
+            'placeholder': 'Email'
+        }
+    ))
+
+    class Meta:
+        fields = ['email']
+
+    
