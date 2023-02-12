@@ -12,32 +12,6 @@ from .models import UserBase
 from .token import account_activation_token
 
 
-def activate(request, uidb64, token):
-    try:
-        uid = force_str(urlsafe_base64_decode(uidb64))
-        user = UserBase.objects.get(pk=uid)
-    except:
-        return render(request, 'users/signup/AccountActivationFailed.html')
-
-    if user is not None and (account_activation_token.check_token(user, token)):
-        user.is_active = True
-        user.save()
-        login(request, user)
-        messages.success(request, f'Email confirmed')
-        return redirect('users:settings')
-    return render(request, 'users/signup/AccountActivationFailed.html')
-
-
-@login_required
-def deactivate(request):
-    user = request.user
-    logout(request)
-    user.is_active = False
-    user.save()
-    messages.success(request, 'Your account has been deactivated')
-    return redirect('store:main')
-
-
 def signup(request):
     if request.user.is_authenticated:
         return redirect('users:settings')
@@ -67,6 +41,39 @@ def signup(request):
 
     form = UserSignUpForm()
     return render(request, 'users/signup.html', {'form': form})
+
+
+def activate(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = UserBase.objects.get(pk=uid)
+    except:
+        return render(request, 'users/signup/AccountActivationFailed.html')
+
+    if user is not None and (account_activation_token.check_token(user, token)):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        messages.success(request, f'Email confirmed')
+        return redirect('users:settings')
+    return render(request, 'users/signup/AccountActivationFailed.html')
+
+
+@login_required
+def deactivate(request):
+    user = request.user
+    logout(request)
+    user.is_active = False
+    user.save()
+    messages.success(request, 'Your account has been deactivated')
+    return redirect('store:main')
+
+
+@login_required
+def signout(request):
+    logout(request)
+    messages.success(request, 'Signed out')
+    return redirect('users:login')
 
 
 @login_required

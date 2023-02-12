@@ -11,7 +11,7 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('activate/<slug:uidb64>/<slug:token>', views.activate, name='activate'),
     path("login/", auth_views.LoginView.as_view(template_name='users/login.html', form_class=UserLoginForm), name='login'),
-    path("logout/", auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
+    path("logout/", views.signout, name='logout'),
     path('deactivate/', views.deactivate, name='deactivate'),
     path(
         "password-reset/",
