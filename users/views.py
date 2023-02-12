@@ -5,11 +5,12 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 
 from .forms import UserSignUpForm, UserUpdateForm
 from .models import UserBase
 from .token import account_activation_token
+
 
 def activate(request, uidb64, token):
     try:
@@ -27,8 +28,17 @@ def activate(request, uidb64, token):
     return render(request, 'users/signup/AccountActivationFailed.html')
 
 
-def signup(request):
+@login_required
+def deactivate(request):
+    user = request.user
+    logout(request)
+    user.is_active = False
+    user.save()
+    messages.success(request, 'Your account has been deactivated')
+    return redirect('store:main')
 
+
+def signup(request):
     if request.user.is_authenticated:
         return redirect('users:settings')
 

@@ -31,7 +31,6 @@ class UserLoginForm(AuthenticationForm):
 
 
 class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField(label="Email")
     name = forms.CharField(label="Name")
     surname = forms.CharField(label="Surname")
     phone_number = forms.CharField(label="Phone number")
@@ -43,13 +42,10 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = UserBase
-        fields = ['email', 'name', 'surname', 'phone_number', 'country', 'city', 'postcode', 'address_1', 'address_2']
+        fields = ['name', 'surname', 'phone_number', 'country', 'city', 'postcode', 'address_1', 'address_2']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['email'].widget.attrs.update(
-            {'class': 'form-control mb-2', 'type': 'email'}
-        )
         self.fields['name'].widget.attrs.update(
             {'class': 'form-control mb-2'}
         )

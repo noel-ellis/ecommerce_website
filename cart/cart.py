@@ -8,6 +8,7 @@ class Cart:
         self.session = request.session
         if 'userdata' not in self.session:
             self.total_qty = 0
+            
             self.total_price = 0
             self.cart = self.session['userdata'] = {}
             return
@@ -15,6 +16,8 @@ class Cart:
 
         if self.cart:
             self.total_price = self.count_total_price()
+            return
+        self.total_price = 0
 
     def add(self, product: Product, product_qty: int):
         product_id = str(product.id)

@@ -62,7 +62,7 @@
                             </a>
     
                             <ul class="dropdown-menu dropdown-menu-end mt-2 my-auto">
-                                <li><h6 class="dropdown-header">{{ user.username }}</h6></li>
+                                <li><h6 class="dropdown-header">{{ user.email }}</h6></li>
                                 {% if perms.store.create_product %}
                                     <li><a class="dropdown-item" href="{% url 'store:collection-create' %}">Add collection</a></li>
                                     <li><a class="dropdown-item" href="{% url 'store:product-create' %}">Add product</a></li>
@@ -179,7 +179,7 @@
                             {% if not cart %}
                                 <p id="offcanvas-cart-total-price" class="text-end">$0</p>
                             {% else %}
-                                <p id="offcanvas-cart-total-price" class="text-end">${{ cart.total }}</p>
+                                <p id="offcanvas-cart-total-price" class="text-end">${{ cart.total_price }}</p>
                             {% endif %}
                         </div>
                     </div>

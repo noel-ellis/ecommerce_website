@@ -5,7 +5,7 @@
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4 display-2">
-                    <strong>{{ user.username }}</strong>
+                    <strong>{{ user.email }}</strong>
                 </legend>
                 {% for input in form %}
                     <p class='fs-4 mb-1'>{{ input.label }}</p>
@@ -13,8 +13,28 @@
                 {% endfor %}
                 
             </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-dark mt-3" type="submit>">Update</button>
+            <div class="d-flex flex-row my-2">
+                <button class="btn btn-outline-dark me-2" type="submit>">Update</button>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Deactivate account
+                </button>
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">Your data will be deleted in 30 days</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Changed my mind</button>
+                            <a type="button" class="btn btn-danger" href="{% url 'users:deactivate'%}">Deactivate</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
