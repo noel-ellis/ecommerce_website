@@ -28,22 +28,8 @@ class CustomAccountManager(BaseUserManager):
         return user
 
 
-
 class UserBase(AbstractBaseUser, PermissionsMixin):
-
     email = models.EmailField('email address', unique=True)
-
-    # Delivery Info
-    name = models.CharField(max_length=150, blank=True)
-    surname = models.CharField(max_length=150, blank=True)
-    phone_number = models.CharField(max_length=150, blank=True)
-    country = models.CharField(max_length=150, blank=True)
-    city = models.CharField(max_length=150, blank=True)
-    postcode = models.CharField(max_length=150, blank=True)
-    address_1 = models.CharField(max_length=150, blank=True)
-    address_2 = models.CharField(max_length=150, blank=True)
-
-    # General Info
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     is_staff = models.BooleanField(default=False)
@@ -68,3 +54,14 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+    
+
+class DeliveryInfo(models.Model):
+    user = models.ForeignKey(UserBase, on_delete=models.CASCADE)
+    name = models.CharField(max_length=150, blank=True)
+    surname = models.CharField(max_length=150, blank=True)
+    phone_number = models.CharField(max_length=150, blank=True)
+    country = models.CharField(max_length=150, blank=True)
+    city = models.CharField(max_length=150, blank=True)
+    postcode = models.CharField(max_length=150, blank=True)
+    address = models.CharField(max_length=150, blank=True)

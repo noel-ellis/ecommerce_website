@@ -9,7 +9,7 @@ from ecommerce_website.settings import STRIPE_API_SECRET_KEY
 def checkout(request):
     cart = Cart(request)
 
-    # Convert float to a stripe-specific int format (same float but w/o the dot 10.99 -> 1099)
+    # Convert float to a Stripe-specific int format (same float but w/o the dot 10.99 -> 1099)
     total_price = str(cart.count_total_price())
     total_price = total_price.replace('.', '')
     total_price = int(total_price)
