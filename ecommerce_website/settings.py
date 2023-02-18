@@ -19,7 +19,9 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "store.apps.StoreConfig",
     "cart.apps.CartConfig",
+    "payment.apps.PaymentConfig",
     "crispy_forms",
+    "stripe",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -112,3 +114,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env("APP_EMAIL")
 EMAIL_HOST_PASSWORD = env("APP_PASSWORD")
+
+STRIPE_API_SECRET_KEY = env("STRIPE_API_SECRET_KEY")

@@ -6,18 +6,16 @@ from decimal import Decimal
 class Cart:
     def __init__(self, request):
         self.session = request.session
+        self.total_qty = 0
+        self.total_price = 0
         if 'userdata' not in self.session:
-            self.total_qty = 0
-            
-            self.total_price = 0
             self.cart = self.session['userdata'] = {}
             return
         self.cart = self.session.get('userdata')
 
         if self.cart:
-            self.total_price = self.count_total_price()
+            self.count_total_price()
             return
-        self.total_price = 0
 
     def add(self, product: Product, product_qty: int):
         product_id = str(product.id)
@@ -60,11 +58,11 @@ class Cart:
 
 
     def count_total_price(self):
-        total_price = 0
+        self.total_price = 0
         for item in self.cart.values():
-            total_price += int(item['product_qty'])*Decimal(item['product_price'])
+            self.total_price += int(item['product_qty'])*Decimal(item['product_price'])
 
-        return total_price
+        return self.total_price
     
 
     def save(self):
