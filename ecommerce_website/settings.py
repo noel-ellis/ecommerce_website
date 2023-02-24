@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     "store.apps.StoreConfig",
     "cart.apps.CartConfig",
     "payment.apps.PaymentConfig",
+    "orders.apps.OrdersConfig",
     "crispy_forms",
     "stripe",
     "django.contrib.admin",

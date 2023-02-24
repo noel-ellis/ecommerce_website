@@ -33,7 +33,7 @@
                   <div class="col">
                     <div class="card-body">
                       <h5 class="card-title">
-                        <input type="radio" class="btn-check" name="address-options" id="address-{{ address.id }}" autocomplete="off" data-address="{{ address.address }}" data-country="{{ address.country }}" data-state="{{ address.state }}" data-zip="{{ address.zip }}">
+                        <input type="radio" class="btn-check" name="address-options" id="address-{{ address.id }}" autocomplete="off" data-address="{{ address.address }}" data-country="{{ address.country }}" data-state="{{ address.state }}" data-id="{{ address.id }}">
                         <label class="btn btn-outline-dark" for="address-{{ address.id }}">{{ address.address }}</label>
                       </h5>
                       <p class="card-text">{{ address.country }}, {{ address.state }}, {{ address.zip }}</p>

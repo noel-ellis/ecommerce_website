@@ -22,6 +22,6 @@ class Order(models.Model):
     user = models.ForeignKey(UserBase, on_delete=models.CASCADE)
     delivery_info = models.ForeignKey(DeliveryInfo, on_delete=models.CASCADE)
     ordered_items = models.ManyToManyField(OrderedItem)
-    status = models.CharField(max_length=2, choices=STATUSES)
+    status = models.CharField(max_length=3, choices=STATUSES)
     
 

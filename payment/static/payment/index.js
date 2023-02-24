@@ -20,6 +20,7 @@ card.on('change', function(event) {
 });
 
 $('#address-list input').on('change', function() {
+    delivery_info_id = $('input[name=address-options]:checked', '#address-list').attr('data-id');
     country = $('input[name=address-options]:checked', '#address-list').attr('data-country');
     state = $('input[name=address-options]:checked', '#address-list').attr('data-state');
     line1 = $('input[name=address-options]:checked', '#address-list').attr('data-address');
@@ -37,32 +38,43 @@ payment_form.addEventListener('submit', function(ev) {
     var email = document.getElementById('user-info-email').getAttribute("value");
     var phone = document.getElementById('user-info-phone').getAttribute("value");
 
-    stripe.confirmCardPayment(client_secret, {
-        payment_method: {
-            card: card, 
-            billing_details: {
-                address: {
-                    country: country,
-                    state: state,
-                    line1: line1
-                },
-                name: name,
-                email: email,
-                phone: phone
-            }
-        }
-    }).then(function(result) {
-        if (result.error) {
-            console.log('payment error');
-            console.log(result.error.message);
-        } else {
-            if (result.paymentIntent.status === 'succeeded') {
-                // There's a risk of the customer closing the window before callback
-                // execution. Set up a webhook or plugin to listen for the
-                // payment intent. succeeded event that handles any business critical
-                // post-payment actions.
-                window.location.replace("http://127.0.0.1:8000/payment/orderplaced/");
-            }
-        }
+    $.ajax({
+        type: 'POST',
+        url: 'http://127.0.0.1:8000/orders/new/',
+        data: {
+            csrfmiddlewaretoken: CSRF_TOKEN,
+            delivery_info_id: delivery_info_id
+        },
+        success: function (json) {
+            stripe.confirmCardPayment(client_secret, {
+                payment_method: {
+                    card: card, 
+                    billing_details: {
+                        address: {
+                            country: country,
+                            state: state,
+                            line1: line1
+                        },
+                        name: name,
+                        email: email,
+                        phone: phone
+                    }
+                }
+            }).then(function(result) {
+                if (result.error) {
+                    console.log('payment error');
+                    console.log(result.error.message);
+                } else {
+                    if (result.paymentIntent.status === 'succeeded') {
+                        // There's a risk of the customer closing the window before callback
+                        // execution. Set up a webhook or plugin to listen for the
+                        // payment intent. succeeded event that handles any business critical
+                        // post-payment actions.
+                        window.location.replace("http://127.0.0.1:8000/payment/orderplaced/");
+                    }
+                }
+            });
+        },
+        error: function (xhr, errmsg, err) {}
     });
 });
