@@ -24,14 +24,10 @@ var form = document.getElementById('payment-form');
 form.addEventListener('submit', function(ev) {
     ev.preventDefault();
 
-    let firstName = document.getElementById('firstName').value;
-    let lastName = document.getElementById('lastName').value;
-    let name = firstName + '' + lastName
-    let email = document.getElementById('email').value;
-    let address = document.getElementById('address').value;
-    let country = document.getElementById('country').value;
-    let state = document.getElementById('state').value;
-    let zip = document.getElementById('zip').value;
+    let firstName = document.getElementById('user-info-name').value;
+    let lastName = document.getElementById('user-info-surname').value;
+    let name = firstName + ' ' + lastName;
+    let email = document.getElementById('user-info-email').value;
 
     stripe.confirmCardPayment(client_secret, {
         payment_method: {

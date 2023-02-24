@@ -9,10 +9,6 @@ def summary(request):
     return render(request, 'cart/summary.html')
 
 
-def checkout(request):
-    return render(request, 'cart/checkout.html')
-
-
 def modify(request):
     cart = Cart(request)
     product_id = int(request.POST.get('product_id'))

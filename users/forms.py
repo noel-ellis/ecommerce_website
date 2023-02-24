@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
-from .models import UserBase
+from .models import UserBase, DeliveryInfo
 
 
 class UserSignUpForm(UserCreationForm):
@@ -30,19 +30,42 @@ class UserLoginForm(AuthenticationForm):
     ))
 
 
+class DeliveryInfoForm(forms.ModelForm):
+    COUNTRIES = [('US', 'United States')]
+    STATES = [('GA', 'Georgia')]
+    country = forms.ChoiceField(label="Country", choices=COUNTRIES)
+    state = forms.ChoiceField(label="State", choices=STATES)
+    zip = forms.CharField(label="Zip")
+    address = forms.CharField(label="Address")
+
+    class Meta:
+        model = DeliveryInfo
+        fields = ['country', 'state', 'zip', 'address']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['country'].widget.attrs.update(
+            {'class': 'form-control mb-2', 'id': 'address-form-country'}
+        )
+        self.fields['state'].widget.attrs.update(
+            {'class': 'form-control mb-2', 'id': 'address-form-state'}
+        )
+        self.fields['zip'].widget.attrs.update(
+            {'class': 'form-control mb-2', 'id': 'address-form-zip'}
+        )
+        self.fields['address'].widget.attrs.update(
+            {'class': 'form-control mb-2', 'id': 'address-form-address'}
+        )
+
+
 class UserUpdateForm(forms.ModelForm):
     name = forms.CharField(label="Name")
     surname = forms.CharField(label="Surname")
-    phone_number = forms.CharField(label="Phone number")
-    country = forms.CharField(label="Country")
-    city = forms.CharField(label="City")
-    postcode = forms.CharField(label="Postcode")
-    address_1 = forms.CharField(label="Address 1")
-    address_2 = forms.CharField(label="Address 2")
+    phone_number = forms.CharField(label='Phone number')
 
     class Meta:
         model = UserBase
-        fields = ['name', 'surname', 'phone_number', 'country', 'city', 'postcode', 'address_1', 'address_2']
+        fields = ['name', 'surname', 'phone_number']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -53,21 +76,6 @@ class UserUpdateForm(forms.ModelForm):
             {'class': 'form-control mb-2'}
         )
         self.fields['phone_number'].widget.attrs.update(
-            {'class': 'form-control mb-2'}
-        )
-        self.fields['country'].widget.attrs.update(
-            {'class': 'form-control mb-2'}
-        )
-        self.fields['city'].widget.attrs.update(
-            {'class': 'form-control mb-2'}
-        )
-        self.fields['postcode'].widget.attrs.update(
-            {'class': 'form-control mb-2'}
-        )
-        self.fields['address_1'].widget.attrs.update(
-            {'class': 'form-control mb-2'}
-        )
-        self.fields['address_2'].widget.attrs.update(
             {'class': 'form-control mb-2'}
         )
 

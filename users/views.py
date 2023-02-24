@@ -7,8 +7,8 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth import login, logout
 
-from .forms import UserSignUpForm, UserUpdateForm
-from .models import UserBase
+from .forms import UserSignUpForm, UserUpdateForm, DeliveryInfoForm
+from .models import UserBase, DeliveryInfo
 from .token import account_activation_token
 
 
@@ -79,23 +79,44 @@ def signout(request):
 @login_required
 def settings(request):
     if request.method == "POST":
-        form = UserUpdateForm(
-            request.POST,
-            instance=request.user
-        )
+        if "profile" in request.POST:
+            form = UserUpdateForm(
+                request.POST,
+                instance=request.user
+            )
 
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Updated')
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Updated')
+                return redirect('users:settings')
+
+            messages.error(request, 'Data is invalid')
             return redirect('users:settings')
 
-        messages.error(request, 'Data is invalid')
-        return redirect('users:settings')
+        if "delivery_info" in request.POST:
+            print(f'\n !!!!!!!!! \n >>> {request.POST}')
+            form = DeliveryInfoForm(
+                request.POST
+            )
 
-    form = UserUpdateForm(instance=request.user)
+            if form.is_valid():
+                form = form.save(commit=False)
+                form.user_id = request.user.id
+                form.save()
+                messages.success(request, 'New address has been added')
+                return redirect('users:settings')
+
+            messages.error(request, 'Data is invalid')
+            return redirect('users:settings')
+
+    user_form = UserUpdateForm(instance=request.user)
+    address_form = DeliveryInfoForm()
+    address_info = DeliveryInfo.objects.filter(user=request.user.id)
 
     context = {
-        'form': form,
+        'user_form': user_form,
+        'address_form': address_form,
+        'address_info': address_info
     }
 
     return render(request, "users/settings.html", context)
