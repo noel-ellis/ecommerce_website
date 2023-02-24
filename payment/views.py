@@ -14,21 +14,6 @@ import stripe
 @login_required
 def checkout(request):
     cart = Cart(request)
-
-    if request.method == "POST":
-        form = DeliveryInfoForm(
-            request.POST,
-            instance=request.user
-        )
-
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Updated')
-            return redirect('users:settings')
-
-        messages.error(request, 'Data is invalid')
-        return redirect('users:settings')
-
     address_info = DeliveryInfo.objects.filter(user=request.user.id)
 
     # Convert float to a Stripe-specific int format (same float but w/o the dot: 10.99 -> 1099)

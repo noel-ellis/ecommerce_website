@@ -19,22 +19,36 @@ card.on('change', function(event) {
     }
 });
 
-var form = document.getElementById('payment-form');
+$('#address-list input').on('change', function() {
+    country = $('input[name=address-options]:checked', '#address-list').attr('data-country');
+    state = $('input[name=address-options]:checked', '#address-list').attr('data-state');
+    line1 = $('input[name=address-options]:checked', '#address-list').attr('data-address');
+});
 
-form.addEventListener('submit', function(ev) {
+
+var payment_form = document.getElementById('payment-form');
+
+payment_form.addEventListener('submit', function(ev) {
     ev.preventDefault();
 
-    let firstName = document.getElementById('user-info-name').value;
-    let lastName = document.getElementById('user-info-surname').value;
-    let name = firstName + ' ' + lastName;
-    let email = document.getElementById('user-info-email').value;
+    var first_name = document.getElementById('user-info-name').getAttribute("value");
+    var second_name = document.getElementById('user-info-surname').getAttribute("value");
+    var name = first_name + ' ' + second_name;
+    var email = document.getElementById('user-info-email').getAttribute("value");
+    var phone = document.getElementById('user-info-phone').getAttribute("value");
 
     stripe.confirmCardPayment(client_secret, {
         payment_method: {
             card: card, 
             billing_details: {
+                address: {
+                    country: country,
+                    state: state,
+                    line1: line1
+                },
                 name: name,
-                email: email
+                email: email,
+                phone: phone
             }
         }
     }).then(function(result) {
@@ -50,5 +64,5 @@ form.addEventListener('submit', function(ev) {
                 window.location.replace("http://127.0.0.1:8000/payment/orderplaced/");
             }
         }
-    })
+    });
 });

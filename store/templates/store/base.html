@@ -186,7 +186,11 @@
                         </div>
                     </div>
                     <div class="d-grid gap-2">
-                        <a class="btn btn-dark mt-4 mb-3 mx-3" href="{% url 'cart:summary' %}" role="button">Proceed</a>
+                        {% if cart %}
+                            <a class="btn btn-dark mt-4 mb-3 mx-3" href="{% url 'cart:summary' %}" role="button">Proceed</a>
+                        {% else %}
+                            <button type="button" class="btn btn-dark mt-4 mb-3 mx-3" disabled>Cart is empty</button>
+                        {% endif %}
                     </div>
                 </div> 
             </div>
