@@ -70,4 +70,4 @@ class DeliveryInfo(models.Model):
     address = models.CharField(max_length=150, blank=True)
 
     def __str__(self):
-        return f'user_id: {self.user}; address: {self.address}'
+        return f'{self.country}, {self.state}, {self.zip}, {self.address}'

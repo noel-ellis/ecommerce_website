@@ -1,8 +1,11 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
 from cart.cart import Cart
 from .models import Order, OrderedItem
-from django.http import JsonResponse
 
+@login_required
 def new_order(request):
     if request.POST:
         user_id = request.user.id
