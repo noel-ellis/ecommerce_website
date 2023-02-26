@@ -158,8 +158,6 @@ def settings(request):
 
         order_history[order.id] = order_data
 
-
-
     context = {
         'user_form': user_form,
         'address_form': address_form,

@@ -1,3 +1,5 @@
+from django.conf import settings 
+
 from store.models import Product
 
 from decimal import Decimal
@@ -35,7 +37,6 @@ class Cart:
         self.save()
         self.total_qty += product_qty
 
-
     def update_qty(self, product: Product, product_qty: int):
         product_id = str(product.id)
         self.total_qty -= self.cart[product_id]['product_qty']
@@ -44,7 +45,6 @@ class Cart:
         if product_id in self.cart:
             self.cart[product_id]['product_qty'] = product_qty
             self.save()
-
 
     def delete(self, product: Product):
         product_id = str(product.id)
@@ -56,18 +56,15 @@ class Cart:
             return
         self.save()
 
-
     def count_total_price(self):
         self.total_price = 0
         for item in self.cart.values():
             self.total_price += int(item['product_qty'])*Decimal(item['product_price'])
 
         return self.total_price
-    
 
     def save(self):
         self.session.modified = True
-
 
     def __iter__(self):
         product_ids = self.cart.keys()
@@ -83,8 +80,11 @@ class Cart:
             cart['product_image'] = product.image
             cart['product_slug'] = product.slug
             cart['product_id'] = product.id
-            yield cart
-        
+            yield cart        
 
     def __len__(self):
         return sum(item['product_qty'] for item in self.cart.values())
+    
+    def clear(self):
+        del self.session['userdata']
+        self.save()

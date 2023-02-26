@@ -29,6 +29,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
+    order_key = models.CharField(max_length=200)
 
     class Meta:
         ordering = ('updated_at',)

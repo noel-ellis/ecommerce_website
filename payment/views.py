@@ -1,12 +1,15 @@
-from django.shortcuts import redirect, render
-from django.contrib import messages
+import json
+
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http.response import HttpResponse
 
 from ecommerce_website.settings import STRIPE_API_SECRET_KEY
 
 from cart.cart import Cart
-from users.forms import DeliveryInfoForm
 from users.models import DeliveryInfo
+from orders.views import payment_confirmation
 
 import stripe
 
@@ -28,7 +31,28 @@ def checkout(request):
         metadata={'userid': request.user.id}
     )
 
-    return render(request, 'payment/checkout.html', {'client_secret': intent.client_secret, 'address_info': address_info})
+    context = {'client_secret': intent.client_secret, 'address_info': address_info}
+    return render(request, 'payment/checkout.html', context)
 
-def orderplaced(request):
-    return render(request, 'payment/orderplaced.html')
+
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    event = None
+
+    try:
+        event = stripe.Event.construct_from(
+            json.loads(payload), stripe.api_key
+        )
+    except ValueError as e:
+        print(e)
+        return HttpResponse(status=400)
+
+    # Handle the event
+    if event.type == 'payment_intent.succeeded':
+        payment_confirmation(event.data.object.client_secret)
+
+    else:
+        print('Unhandled event type {}'.format(event.type))
+
+    return HttpResponse(status=200)

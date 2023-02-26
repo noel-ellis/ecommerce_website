@@ -6,5 +6,5 @@ app_name = 'payment'
 
 urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
-    path('orderplaced/', views.orderplaced, name='order-placed')
+    path('webhook/', views.stripe_webhook),
     ]

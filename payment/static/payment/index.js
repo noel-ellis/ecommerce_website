@@ -1,8 +1,5 @@
 var stripe = Stripe('pk_test_51MagmSLAWg8N5nAcsHx6AjKXbbbTatOrJxHvPuvefCllXEOr628BCXgh9iaUnK8Ukxhx7geT16Doi06Q0kNrenR700Zrnp6lnn');
 
-var submit_btn = document.getElementById('checkout-submit');
-var client_secret = submit_btn.getAttribute('data-secret');
-
 var stripe_elements = stripe.elements();
 
 var card = stripe_elements.create("card");
@@ -37,13 +34,15 @@ payment_form.addEventListener('submit', function(ev) {
     var name = first_name + ' ' + second_name;
     var email = document.getElementById('user-info-email').getAttribute("value");
     var phone = document.getElementById('user-info-phone').getAttribute("value");
+    var client_secret = document.getElementById('checkout-submit').getAttribute('data-secret');
 
     $.ajax({
         type: 'POST',
         url: 'http://127.0.0.1:8000/orders/new/',
         data: {
             csrfmiddlewaretoken: CSRF_TOKEN,
-            delivery_info_id: delivery_info_id
+            delivery_info_id: delivery_info_id,
+            order_key: client_secret
         },
         success: function (json) {
             stripe.confirmCardPayment(client_secret, {
@@ -70,7 +69,8 @@ payment_form.addEventListener('submit', function(ev) {
                         // execution. Set up a webhook or plugin to listen for the
                         // payment intent. succeeded event that handles any business critical
                         // post-payment actions.
-                        window.location.replace("http://127.0.0.1:8000/payment/orderplaced/");
+                        order_placed_url = "http://127.0.0.1:8000/orders/orderplaced/";
+                        window.location.replace(order_placed_url);
                     }
                 }
             });
