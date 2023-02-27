@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "store.apps.StoreConfig",
     "cart.apps.CartConfig",
+    "wishlist.apps.WishlistConfig",
     "payment.apps.PaymentConfig",
     "orders.apps.OrdersConfig",
     "crispy_forms",
@@ -54,7 +55,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "cart.context_processors.cart"
+                "cart.context_processors.cart",
+                "wishlist.context_processors.wishlist"
             ],
         },
     },

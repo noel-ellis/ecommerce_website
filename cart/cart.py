@@ -1,5 +1,3 @@
-from django.conf import settings 
-
 from store.models import Product
 
 from decimal import Decimal
@@ -7,20 +5,22 @@ from decimal import Decimal
 
 class Cart:
     def __init__(self, request):
+        self.session_cart_name = 'cart'
         self.session = request.session
-        self.total_qty = 0
-        self.total_price = 0
-        if 'userdata' not in self.session:
-            self.cart = self.session['userdata'] = {}
+        
+        if self.session_cart_name not in self.session:
+            self.cart = self.session[self.session_cart_name] = {}
             return
-        self.cart = self.session.get('userdata')
+        self.cart = self.session.get(self.session_cart_name)
 
+        self.total_price = 0
         if self.cart:
             self.count_total_price()
             return
 
     def add(self, product: Product, product_qty: int):
         product_id = str(product.id)
+        print(f'\n\n!!!!!!!!!!\n\n')
         
         if product_id not in self.cart:
             self.cart[product_id] = {
@@ -30,17 +30,13 @@ class Cart:
                 'product_slug': product.slug
             }
             self.save()
-            self.total_qty += product_qty
             return
         
         self.cart[product_id]['product_qty'] += product_qty
         self.save()
-        self.total_qty += product_qty
 
     def update_qty(self, product: Product, product_qty: int):
         product_id = str(product.id)
-        self.total_qty -= self.cart[product_id]['product_qty']
-        self.total_qty += product_qty
 
         if product_id in self.cart:
             self.cart[product_id]['product_qty'] = product_qty
@@ -48,7 +44,6 @@ class Cart:
 
     def delete(self, product: Product):
         product_id = str(product.id)
-        self.total_qty -= self.cart[product_id]['product_qty']
         
         if product_id in self.cart:
             del self.cart[product_id]
@@ -86,5 +81,5 @@ class Cart:
         return sum(item['product_qty'] for item in self.cart.values())
     
     def clear(self):
-        del self.session['userdata']
+        del self.session[self.session_cart_name]
         self.save()
