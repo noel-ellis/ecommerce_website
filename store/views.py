@@ -16,19 +16,6 @@ def collection_list(request, slug):
     return render(request, 'store/collection_list.html', {'collection': collection, 'products': products})
 
 
-class CollectionCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
-    model = Collection
-    fields = ['image', 'name', 'slug', 'description', 'season']
-
-    def test_func(self):
-        return self.request.user.has_perm('store.add_collection')
-
-
-class ProductListView(generic.ListView):
-    model = Product
-    ordering = ['-date_modified']
-    paginate_by = 9
-
 def product_list_view(request):
     wishlist = Wishlist(request)
     wishlist_product_ids = [wishlist_product['product_id'] for wishlist_product in list(wishlist)]
@@ -64,6 +51,14 @@ def product_list_view(request):
         'is_paginated': False,
     }
     return render(request, 'store/product_list.html', context=context)
+
+
+class CollectionCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
+    model = Collection
+    fields = ['image', 'name', 'slug', 'description', 'season']
+
+    def test_func(self):
+        return self.request.user.has_perm('store.add_collection')
 
 
 class ProductDetailView(generic.DetailView):
