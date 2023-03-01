@@ -20,7 +20,7 @@
                                             <a class="btn btn-sm btn-outline-dark" href="{% url 'store:product-update' product.slug %}">Edit</a>
                                         {% endif %}
                                         <a class="btn btn-sm btn-outline-dark" href="{% url "store:product-detail" product.slug %}">View</a>
-                                        {% if product.id in wishlist %}
+                                        {% if product.in_wishlist %}
                                         <a class="btn btn-sm btn-danger wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">♡</a>
                                         {% else %}
                                         <a class="btn btn-sm btn-outline-dark wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">♡</a>

@@ -32,7 +32,7 @@ class Wishlist:
         return len(self.wishlist)
     
     def __str__(self):
-        return f'{self.wishlist}'
+        return f'{list(self.wishlist.keys())}'
     
     def __iter__(self):
         product_ids = self.wishlist.keys()
