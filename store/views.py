@@ -21,13 +21,6 @@ def product_list_view(request):
     wishlist_product_ids = [wishlist_product['product_id'] for wishlist_product in list(wishlist)]
     all_products = Product.objects.all()
     product_list = []
-    
-    # TESTING
-    # =======================================
-    print(f'\n\nwishlist_product_ids:\n{wishlist_product_ids}\n')
-    print(f'\n1 in wishlist_product_ids:\n{1 in wishlist_product_ids}\n\n')
-    # =======================================
-    # TESTING
 
     for product in all_products:
         product_wishlist_mixed = {}
