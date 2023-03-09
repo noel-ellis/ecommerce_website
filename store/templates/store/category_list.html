@@ -1,0 +1,20 @@
+{% extends "store/base.html" %}
+{% block content %}
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+                {% if categories %}
+                    {% for category in categories %}
+                        <div class="border">
+                            <p>{{ category.name }}</p>
+                            <p>{{ category.description }}</p>
+                        </div>
+                        
+                    {% endfor %}
+                {% else %}
+                        <small>No categories yet</small>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

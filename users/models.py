@@ -5,7 +5,6 @@ from django.db import models
 
 class CustomAccountManager(BaseUserManager):
     def create_superuser(self, email, password, **other_fields):
-
         other_fields.setdefault('is_staff', True)
         other_fields.setdefault('is_superuser', True)
 
@@ -17,7 +16,6 @@ class CustomAccountManager(BaseUserManager):
         return self.create_user(email, password, **other_fields)
     
     def create_user(self, email, password, **other_fields):
-
         if not email:
             raise ValueError('You must provide an email address')
         
@@ -30,8 +28,8 @@ class CustomAccountManager(BaseUserManager):
 
 class UserBase(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('email address', unique=True)
-    name = models.CharField(max_length=150, blank=True)
-    surname = models.CharField(max_length=150, blank=True)
+    name = models.CharField(max_length=150)
+    surname = models.CharField(max_length=150)
     phone_number = models.CharField(max_length=150, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

@@ -1,115 +1,88 @@
 {% extends "store/base.html" %}
 {% block content %}
-    <div class="container">
-        <!--Carousel-->
-        <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-bs-ride="false">
-            <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://picsum.photos/id/893/1440/880?grayscale&blur=2" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                    <h5 class="text-white">First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="https://picsum.photos/id/378/1440/880?grayscale&blur=2" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                    <h5 class="text-white">Second slide label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="https://picsum.photos/id/604/1440/880?grayscale&blur=2" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                    <h5 class="text-white">Third slide label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-            
-        </div>
-
-        <!--New-->
-        <div class="row mt-5">
-            <h1 class="display-4"><strong>New:</strong></h1>
-            <div class="d-flex flex-row row-cols-1 row-cols-md-3">
-                <div class="col-4 px-2">
-                  <div class="card h-100">
-                    <img src="https://picsum.photos/id/361/300/200?grayscale" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Product One</h5>
-                      <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-4 px-2">
-                  <div class="card h-100">
-                    <img src="https://picsum.photos/id/455/300/200?grayscale" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Product Two</h5>
-                      <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Inventore ea laboriosam aliquid.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-4 px-2">
-                  <div class="card h-100">
-                    <img src="https://picsum.photos/id/103/300/200?grayscale" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Product Three</h5>
-                      <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, fuga?</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </div>
-
-        <!--Sale-->
-        <div class="row my-5">
-            <h1 class="display-4"><strong>Sale:</strong></h1>
-            <div class="d-flex flex-row row-cols-1 row-cols-md-3">
-                <div class="col-4 px-2">
-                  <div class="card h-100">
-                    <img src="https://picsum.photos/id/361/300/200?grayscale" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Product One</h5>
-                      <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-4 px-2">
-                  <div class="card h-100">
-                    <img src="https://picsum.photos/id/455/300/200?grayscale" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Product Two</h5>
-                      <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Inventore ea laboriosam aliquid.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-4 px-2">
-                  <div class="card h-100">
-                    <img src="https://picsum.photos/id/103/300/200?grayscale" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Product Three</h5>
-                      <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, fuga?</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </div> 
+<div class="container-fluid p-0">
+  <!-- HEADLINE 1 -->
+  <div class="p-0 m-0 container-fluid position-relative">
+    <img src="/../../../media/src/main/headline_1.png" class="img-fluid">
+    <div class="d-flex flex-column justify-content-center position-absolute top-50 start-50 translate-middle">
+      <h1 class="text-light display-3">NEW COLLECTION</h1>
+      <div class="d-flex container-fluid justify-content-center">
+        <button type="button" class="mt-5 btn btn-bd-dark text-center text-nowrap">SHOP NOW</button>
+      </div>
     </div>
-
   </div>
+
+  <!-- PROMO -->
+  <div class="p-0 m-0 mt-5 pt-4 container-fluid position-relative">
+    <p class="my-5 py-5 fs-4 text-center">NIFTY SHOES FOR EVERY DAY</p>
+    <!-- cards -->
+    {% if promo %}
+    <div class="row row-cols-xxl-4 d-flex justify-content-center mb-5 pb-5">
+      {% for product in promo %}
+      <div class="col d-flex justify-content-center" style="width: 15rem;">
+        <div class="card p-0 m-0 border-0">
+          <img src="{{ product.image.url }}" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ product.name }}</h5>
+            <p class="card-text text-center">{{ product.material }}</p>
+            <p class="card-text text-center">${{ product.price }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- HEADLINE 2 -->
+  <div class="p-0 m-0 container-fluid position-relative">
+    <img src="/../../../media/src/main/headline_2.png" class="img-fluid">
+    <div class="d-flex flex-column justify-content-center position-absolute top-50 start-50 translate-middle">
+      <h4 class="text-light text-center mb-4">SANDALS WITH A SOFT FOOTBED</h4>
+      <p class="text-light text-center">
+        It’s time to get comfortable – with our super comfy sandals with<br>
+        a soft footbed. All sandals with a soft footbed have an integrated<br>latex foam layer which makes them even more comfortable.<br>
+        Here, you can discover the new models in beautiful colours<br>
+        which we simply don’t want to take off.
+      </p>
+      <div class="d-flex container-fluid justify-content-center">
+        <button type="button" class="mt-4 btn btn-bd-dark text-center text-nowrap">SHOP NOW</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW -->
+  <div class="p-0 m-0 mt-5 pt-4 container-fluid position-relative">
+    <p class="my-5 py-5 fs-4 text-center">NEW ARRIVALS</p>
+    <!-- cards -->
+    {% if new %}
+    <div class="row row-cols-xxl-4 d-flex justify-content-center mb-5 pb-5">
+      {% for product in new %}
+      <div class="col d-flex justify-content-center" style="width: 15rem;">
+        <div class="card p-0 m-0 border-0">
+          <img src="{{ product.image.url }}" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title text-center">{{ product.name }}</h5>
+            <p class="card-text text-center">{{ product.material }}</p>
+            <p class="card-text text-center">${{ product.price }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- HEADLINE 3 -->
+  <div class="p-0 m-0 container-fluid position-relative">
+    <img src="/../../../media/src/main/headline_3.png" class="img-fluid">
+    <div class="d-flex flex-column justify-content-center position-absolute top-50 start-50 translate-middle">
+      <h1 class="text-light text-center display-5 text-nowrap">Are you comfortable in your shoes?</h1>
+      <p class="text-light text-center fs-4">Meet our classics and wear your way</p>
+      <div class="d-flex container-fluid justify-content-center">
+        <button type="button" class="mt-4 btn btn-bd-dark text-center text-nowrap">SHOP NOW</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}

@@ -17,28 +17,27 @@
         {% endif %}
     </head>
     <body>
-        <!-- header -->
-        <div class="d-flex flex-column sticky-top bg-black shadow-lg"> 
+        <div class="fixed-top bg-black px-5 shadow-lg"> 
             <!--navigation-->
             <header class="navbar navbar-expand-lg">
-                <div class="container-fluid justify-content-around">
+                <div class="container-fluid justify-content-between">
                     <!-- Left elements -->
                     <ul class="navbar-nav flex-row">
-                        <li class="nav-item mx-3">
-                            <a class="text-white text-decoration-none" role="button" data-bs-toggle="collapse" href="#collapseWomen">WOMEN</a>
+                        <li class="nav-item mx-2">
+                            <a href="{% url 'store:store' %}" class="text-white text-decoration-none">MEN</a>
                         </li>
-                        <li class="nav-item mx-3">
-                            <a class="text-white text-decoration-none" role="button" data-bs-toggle="collapse" href="#collapseWomen">MEN</a>
+                        <li class="nav-item mx-2">
+                            <a href="{% url 'store:store' %}" class="text-white text-decoration-none">WOMEN</a>
                         </li>
-                        <li class="nav-item mx-3">
-                            <a href="{% url 'store:store' %}" class="text-white text-decoration-none" role="button">SALE</a>
+                        <li class="nav-item mx-2">
+                            <a href="{% url 'store:store' %}" class="text-white text-decoration-none">SALE</a>
                         </li>
                     </ul>
                 
-                    <!-- Center logo -->
-                    <ul class="navbar-nav d-flex flex-row">
-                        <li class="nav-item d-flex align-items-center">
-                            <a class="text-white text-decoration-none fs-2" href="{% url 'store:main' %}">NIFTYSHOES</a>
+                    <!-- Center elements -->
+                    <ul class="navbar-nav flex-row d-none d-md-flex">
+                        <li class="nav-item me-3 me-lg-1 active">
+                            <a class="text-white text-decoration-none fs-1" href="{% url 'store:main' %}">NIFTYSHOES</a>
                         </li>
                     </ul>
                 
@@ -65,7 +64,7 @@
                             <ul class="dropdown-menu dropdown-menu-end mt-2 my-auto">
                                 <li><h6 class="dropdown-header">{{ user.email }}</h6></li>
                                 {% if perms.store.create_product %}
-                                    <li><a class="dropdown-item" href="{% url 'store:category-create' %}">Add category</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'store:collection-create' %}">Add collection</a></li>
                                     <li><a class="dropdown-item" href="{% url 'store:product-create' %}">Add product</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                 {% endif %}
@@ -117,92 +116,22 @@
                                 
                             </a>
                         </li>
-                    </ul>
+                        
+                    <!-- Right elements -->
                 </div>
             </header>
 
             <!--collapseSearchBar-->
             <div class="collapse" id="collapseSearchBar">
-                <div class="d-flex justify-content-center">
-                    <input class="form-control w-75 mb-2" placeholder="Search" maxlength="64" type="search">
-                </div>
-            </div>
-
-            <!--collapseWomen-->
-            <div class="collapse" id="collapseWomen">
-                <div class="d-flex justify-content-center my-5">
-                        <div class="flex-column px-5">
-                            <h5 class="text-white ">SANDALS</h5>
-                            <ul class="nav flex-column">
-                                <li>
-                                    <a class="text-white nav-link p-0" href="{% url 'store:store' %}">One-strap sandals</a>
-                                </li>
-                                <li>
-                                    <a class="text-white nav-link p-0" href="#">Two-strap sandals</a>
-                                </li>
-                                <li>
-                                    <a class="text-white nav-link p-0" href="#">Ankle-strap sandals</a>
-                                </li>
-                                <li>
-                                    <a class="text-white nav-link p-0" href="#">Clogs</a>
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <div class="flex-column px-5">
-                            <h5 class="text-white">SHOES</h5>
-                            <ul class="nav flex-column">
-                                <li>
-                                    <a class="text-white nav-link p-0" href="#">Sneakers</a>
-                                </li>
-                                <li>
-                                    <a class="text-white nav-link p-0" href="#">Boots</a>
-                                </li>
-                            </ul>
-                        </div>
-                </div>
-            </div>
-
-            <!--collapseMen-->
-            <div class="collapse" id="collapseMen">
-                <div class="d-flex justify-content-center my-5">
-                    <div class="flex-column px-5">
-                        <h5 class="text-white ">SANDALS</h5>
-                        <ul class="nav flex-column">
-                            <li>
-                                <a class="text-white nav-link p-0" href="#">One-strap sandals</a>
-                            </li>
-                            <li>
-                                <a class="text-white nav-link p-0" href="#">Two-strap sandals</a>
-                            </li>
-                            <li>
-                                <a class="text-white nav-link p-0" href="#">Ankle-strap sandals</a>
-                            </li>
-                            <li>
-                                <a class="text-white nav-link p-0" href="#">Clogs</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="flex-column px-5">
-                        <h5 class="text-white">SHOES</h5>
-                        <ul class="nav flex-column">
-                            <li>
-                                <a class="text-white nav-link p-0" href="#">Sneakers</a>
-                            </li>
-                            <li>
-                                <a class="text-white nav-link p-0" href="#">Boots</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                <input class="form-control mb-2 mx-1" placeholder="Search" maxlength="64" type="search">
             </div>
         </div>
 
         <!-- messages -->
-        <div class="container-fluid">
+        <div class="container-fluid mt-2">
             {% if messages %}
                 {% for message in messages %}
-                <div class="alert alert-success alert-dismissible my-2" role="alert">
+                <div class="alert alert-success alert-dismissible" role="alert">
                     <div class='text-center'>{{ message }}</div>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -210,9 +139,8 @@
             {% endif %}
         </div>
 
-        <!-- main -->
-        <main role="main" class="container-fluid p-0">
-            <!-- cart-offcanvas -->
+        <main role="main" class="container py-1">
+            <!-- Offcanvas-Cart -->
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
                 <div class="offcanvas-header">
                         <h5 class="offcanvas-title text-dark text-decoration-none fw-bold fs-1" id="offcanvasCartLabel">CART</h5>
@@ -267,104 +195,38 @@
                 </div> 
             </div>
 
-            <!-- content -->
-            {% block content %}{% endblock %}
+            <!-- DELETE BUTTON -->
+            <script>
+                $(document).on('click', '.cart-delete-btn', function (e) {
+                    e.preventDefault();
+                    var product_id = $(this).data('productid');
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "cart:modify" %}',
+                        data: {
+                            product_id: product_id,
+                            csrfmiddlewaretoken: "{{csrf_token}}",
+                            action: 'delete'
+                        },
+                        success: function (json) {
+                            document.getElementById("cart-totalqty-badge").innerHTML = json.totalqty
+                            document.getElementById("offcanvas-cart-product-"+product_id).remove()
+                            document.getElementById("offcanvas-cart-total-price").innerHTML = '$'+json.totalprice
+                        },
+                        error: function (xhr, errmsg, err) {}
+                    });
+                })
+            </script>
+            <!-- Offcanvas-Cart -->
+
+            <div class="row">
+                {% block content %}{% endblock %}
+            </div>
         </main>
         
-        <!-- footers -->
-        <footer class="d-flex justify-content-center bg-black">
-            <div class="d-flex flex-column">
-                <p class="text-white mt-5 fs-4">JOIN OUR NEWSLETTER</p>
-                <p class="text-white">Sing up now and get a 10% off for your next purchase</p>
-                <input type="email" class="form-control my-1" id="join-email-input" placeholder="Your email address">
-                <small class="mb-5 mt-1">Note: You can opt-out at any time. See our Privacy Policy and Terms.</small>
-            </div>
-        </footer>
-        <footer class="d-flex flex-column justify-content-center bg-black border-top border-3 border-light">
-            <div class="d-flex flex-row justify-content-center mt-5 pt-3">
-                <div class="flex-column px-5">
-                    <h5 class="text-white">Find a Store</h5>
-                    <h5 class="text-white">Shop Gift Cards</h5>
-                    <h5 class="text-white">Track Order</h5>
-                </div>
-                <div class="flex-column px-5">
-                    <h5 class="text-white ">GET HELP</h5>
-                    <ul class="nav flex-column">
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">Contact Us</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">FAQs</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">Size Guides</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">Shipping & Delivery</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">Returns</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">My Account</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">Payment</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">Feedback</a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="flex-column px-5">
-                    <h5 class="text-white">COMPANY</h5>
-                    <ul class="nav flex-column">
-                        <li>
-                            <a class="text-white nav-link fs-6 p-0" href="#">Our Stores</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link fs-6 p-0" href="#">Our Story</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link fs-6 p-0" href="#">Our Materials</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link fs-6 p-0" href="#">Sustainability</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="flex-column px-5">
-                    <h5 class="text-white">PAYMENT OPTIONS</h5>
-                </div>
-            </div>
-            <small class="text-center my-5">© 2023 Niftyshoes, Inc. All Rights Reserved. Terms, Privacy & Accessibility</small>
-        </footer>
-
         <!-- Popper, Bootstrap JS-->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
-        <script>
-            $(document).on('click', '.cart-delete-btn', function (e) {
-                e.preventDefault();
-                var product_id = $(this).data('productid');
-                $.ajax({
-                    type: 'POST',
-                    url: '{% url "cart:modify" %}',
-                    data: {
-                        product_id: product_id,
-                        csrfmiddlewaretoken: "{{csrf_token}}",
-                        action: 'delete'
-                    },
-                    success: function (json) {
-                        document.getElementById("cart-totalqty-badge").innerHTML = json.totalqty
-                        document.getElementById("offcanvas-cart-product-"+product_id).remove()
-                        document.getElementById("offcanvas-cart-total-price").innerHTML = '$'+json.totalprice
-                    },
-                    error: function (xhr, errmsg, err) {}
-                });
-            })
-        </script>
     </body>
 </html>
 

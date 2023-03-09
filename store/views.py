@@ -2,18 +2,23 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
 
-from .models import Collection, Product
+from .models import Category, Product
 from wishlist.wishlist import Wishlist
 
 
 def main(request):
-    return render(request, 'store/main.html')
+    promo = Product.objects.filter(promo=True)[:4]
+    new = Product.objects.filter(new=True)[:4]
+    context = {
+        'promo': promo,
+        'new': new,
+    }
+    return render(request, 'store/main.html', context=context)
 
 
-def collection_list(request, slug):
-    collection = get_object_or_404(Collection, slug=slug)
-    products = Product.objects.filter(collection=collection)
-    return render(request, 'store/collection_list.html', {'collection': collection, 'products': products})
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, 'store/category_list.html', {'categories': categories})
 
 
 def product_list_view(request):
@@ -33,7 +38,7 @@ def product_list_view(request):
         product_wishlist_mixed['price'] = str(product.price)
         product_wishlist_mixed['sale'] = product.sale
         product_wishlist_mixed['new'] = product.new
-        product_wishlist_mixed['collection'] = product.collection
+        product_wishlist_mixed['category'] = product.category
         product_wishlist_mixed['in_wishlist'] = False
         if product.id in wishlist_product_ids:
             product_wishlist_mixed['in_wishlist'] = True
@@ -46,12 +51,12 @@ def product_list_view(request):
     return render(request, 'store/product_list.html', context=context)
 
 
-class CollectionCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
-    model = Collection
-    fields = ['image', 'name', 'slug', 'description', 'season']
+class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
+    model = Category
+    fields = ['name', 'slug', 'description', 'image']
 
     def test_func(self):
-        return self.request.user.has_perm('store.add_collection')
+        return self.request.user.has_perm('store.category-create')
 
 
 class ProductDetailView(generic.DetailView):
@@ -60,9 +65,8 @@ class ProductDetailView(generic.DetailView):
 
 class ProductCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
     model = Product
-    fields = ['name', 'description', 'price', 'collection', 'quantity', 'image', 'slug']
     fields = [
-        'collection',
+        'image',
         'name',
         'slug',
         'description',
@@ -72,7 +76,9 @@ class ProductCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateV
         'size',
         'sale',
         'new',
-        'image',
+        'promo',
+        'material',
+        'category',
     ]
 
 
@@ -82,7 +88,21 @@ class ProductCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateV
 
 class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
     model = Product
-    fields = ['name', 'description', 'price', 'collection', 'quantity', 'image']
+    fields = [
+        'image',
+        'name',
+        'slug',
+        'description',
+        'price',
+        'quantity',
+        'sex',
+        'size',
+        'sale',
+        'new',
+        'promo',
+        'material',
+        'category',
+    ]
 
     def test_func(self):
         return self.request.user.has_perm('store.change_product')
