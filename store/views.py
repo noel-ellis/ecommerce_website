@@ -57,6 +57,19 @@ class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.Create
 
     def test_func(self):
         return self.request.user.has_perm('store.category-create')
+    
+
+class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = Category
+    fields = [
+        'image',
+        'name',
+        'slug',
+        'description',
+    ]
+
+    def test_func(self):
+        return self.request.user.has_perm('store.change_product')
 
 
 class ProductDetailView(generic.DetailView):
@@ -74,6 +87,7 @@ class ProductCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateV
         'quantity',
         'sex',
         'size',
+        'color',
         'sale',
         'new',
         'promo',
@@ -97,6 +111,7 @@ class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateV
         'quantity',
         'sex',
         'size',
+        'color',
         'sale',
         'new',
         'promo',

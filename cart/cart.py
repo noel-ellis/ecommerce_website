@@ -20,14 +20,13 @@ class Cart:
 
     def add(self, product: Product, product_qty: int):
         product_id = str(product.id)
-        print(f'\n\n!!!!!!!!!!\n\n')
         
         if product_id not in self.cart:
             self.cart[product_id] = {
                 'product_qty': product_qty,
                 'product_price': str(product.price),
                 'product_name': product.name,
-                'product_slug': product.slug
+                'product_slug': product.slug,
             }
             self.save()
             return
@@ -75,6 +74,8 @@ class Cart:
             cart['product_image'] = product.image
             cart['product_slug'] = product.slug
             cart['product_id'] = product.id
+            cart['product_color'] = product.color
+            cart['product_size'] = product.size
             yield cart        
 
     def __len__(self):

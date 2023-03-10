@@ -49,6 +49,7 @@ class Product(models.Model):
     date_modified = models.DateTimeField(auto_now=True)
     sex = models.CharField(max_length=2, choices=SEXES)
     size = models.CharField(max_length=4, choices=SIZES)
+    color = models.CharField(max_length=30)
     sale = models.BooleanField(default=False)
     new = models.BooleanField(default=False)
     promo = models.BooleanField(default=False)

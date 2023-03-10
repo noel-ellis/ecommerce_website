@@ -20,8 +20,6 @@ header {
     color: #fffefe;
 }
 
-
-
 h5 {
     font-weight: 300;
 }
@@ -35,11 +33,11 @@ h3 {
 }
 
 h2 {
-    font-weight: 400;
+    font-weight: 200;
 }
 
 h1 {
-    font-weight: 400;
+    font-weight: 200;
 }
 
 p {
@@ -47,7 +45,7 @@ p {
 }
 
 a {
-    font-weight: 100;
+    font-weight: 200;
 }
 
 button {
@@ -89,4 +87,12 @@ input {
 
 .text-grey {
     color: #9d9d9d;
+}
+
+.border-dark {
+    color: #000000;
+}
+
+.offcanvas-backdrop.show {
+    opacity: .0; 
 }
