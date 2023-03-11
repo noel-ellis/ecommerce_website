@@ -4,6 +4,7 @@ from django.views import generic
 
 from .models import Category, Product
 from wishlist.wishlist import Wishlist
+from ecommerce_website.choices import SIZES_LIST as sizes
 
 
 def main(request):
@@ -46,6 +47,7 @@ def product_list_view(request):
 
     context = {
         'product_list': product_list,
+        'sizes': sizes,
         'is_paginated': False,
     }
     return render(request, 'store/product_list.html', context=context)

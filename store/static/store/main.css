@@ -10,12 +10,7 @@ body {
     font-family: "Minipax";
 }
 
-footer {
-    background: #000000;
-    color: #fffefe;
-}
-
-header {
+footer, header {
     background: #000000;
     color: #fffefe;
 }
@@ -24,32 +19,21 @@ h5 {
     font-weight: 300;
 }
 
-h4 {
+h4, h3, h2, h1, a, p, button, ul ,li, input {
     font-weight: 200;
 }
 
-h3 {
-    font-weight: 200;
+.breadcrumb-item {
+    font-size: smaller !important;
 }
 
-h2 {
-    font-weight: 200;
+hr {
+    color: #606060 !important;
+    border-width: 0.1rem;
 }
 
-h1 {
-    font-weight: 200;
-}
-
-p {
-    font-weight: 100;
-}
-
-a {
-    font-weight: 200;
-}
-
-button {
-    font-weight: 100;
+.breadcrumb-item {
+    color: #000000 !important;
 }
 
 .btn-bd-dark {
@@ -64,25 +48,25 @@ button {
     --bs-btn-hover-bg: #FFFFFF;
 }
 
-.form-control {
-    --bs-form-control-bg: #000000 !important;
-}
-
-ul {
-    font-weight: 100;
-}
-
-li {
-    font-weight: 100;
+.btn-bd-checkbox {
+    --bs-btn-padding-x: 1.5rem;
+    --bs-btn-padding-y: .5rem;
+    --bs-btn-color: #000000;
+    --bs-btn-bg: #ffffff;
+    --bs-btn-border-color: #000000;
+    --bs-btn-border-width: .1em;
+    --bs-btn-border-radius: 0em;
+    --bs-btn-checked-bg: #000000;
+    --bs-btn-hover-color: #000000;
+    --bs-btn-hover-bg: #FFFFFF;
+    --bs-btn-active-border-color: #000000;
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-active-bg: #000000;
 }
 
 small {
     font-weight: 100;
     color: #9d9d9d;
-}
-
-input {
-    font-weight: 100;
 }
 
 .text-grey {
