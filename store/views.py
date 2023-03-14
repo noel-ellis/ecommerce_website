@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, render
 from django.views import generic
 
-from .models import Category, Product
+from .models import Category, Product, Color, Material
 from wishlist.wishlist import Wishlist
 from ecommerce_website.choices import SIZES_LIST as sizes
 
@@ -26,8 +26,11 @@ def product_list_view(request):
     wishlist = Wishlist(request)
     wishlist_product_ids = [wishlist_product['product_id'] for wishlist_product in list(wishlist)]
     all_products = Product.objects.all()
-    product_list = []
+    colors = Color.objects.all()
+    materials = Material.objects.all()
+    categories = Category.objects.all()
 
+    product_list = []
     for product in all_products:
         product_wishlist_mixed = {}
         product_wishlist_mixed['id'] = product.id
@@ -48,6 +51,9 @@ def product_list_view(request):
     context = {
         'product_list': product_list,
         'sizes': sizes,
+        'colors': colors,
+        'materials': materials,
+        'categories': categories,
         'is_paginated': False,
     }
     return render(request, 'store/product_list.html', context=context)

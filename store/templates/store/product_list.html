@@ -32,7 +32,7 @@
 
                             <!-- accordion -->
                             <div class="d-flex flex-row p-0 m-0">
-                                <div class="accordion accordion-flush container-fluid p-0" id="accordionFilter">
+                                <div class="accordion custom-accordion accordion-flush container-fluid p-0" id="accordionFilter">
                                     
                                     <!-- category -->
                                     <div class="accordion-item">
@@ -43,9 +43,18 @@
                                         </h2>
                                         <div id="accordionfilter-body-category" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-category">
                                             <div class="accordion-body">
-                                                {% for category in categories %}
-
-                                                {% endfor %}
+                                                <div class="form-check p-0">
+                                                    <div class="row row-cols-1 g-1">
+                                                        
+                                                        {% for category in categories %}
+                                                        <div class="col">
+                                                            <input type="checkbox" class="btn-check" id="btn-check-category-{{ category.id }}" autocomplete="off">
+                                                            <label class="d-flex btn btn-custom-checkbox-minimal-alt" for="btn-check-category-{{ category.id }}">{{ category.name|title }}</label>
+                                                        </div>
+                                                        {% endfor %}
+                                                            
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -65,7 +74,7 @@
                                                         {% for size in sizes %}
                                                         <div class="col">
                                                             <input type="checkbox" class="btn-check" id="btn-check-size-{{ size }}" autocomplete="off">
-                                                            <label class="btn btn-bd-checkbox" for="btn-check-size-{{ size }}">{{size}}</label>
+                                                            <label class="btn btn-custom-checkbox" for="btn-check-size-{{ size }}">{{size}}</label>
                                                         </div>
                                                         {% endfor %}
                                                             
@@ -83,7 +92,24 @@
                                             </button>
                                         </h2>
                                         <div id="accordionfilter-body-color" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-color">
-                                            <div class="accordion-body">AccordionContent</div>
+                                            <div class="accordion-body">
+                                                <div class="form-check p-2">
+                                                    <div class="row row-cols-6 g-1">
+                                                        
+                                                        {% for color in colors %}
+                                                        <div class="col">
+                                                            <input type="checkbox" class="btn-check" id="btn-check-color-{{ color.id }}" autocomplete="off">
+                                                            {% if color.name == "White" %}
+                                                            <label class="btn btn-colors-checkbox" for="btn-check-color-{{ color.id }}" style="--bs-btn-bg: #{{ color.code }}; --bs-btn-active-bg: #{{ color.code }}; --bs-btn-border-color: #d3d3d3;"></label>
+                                                            {% else %}
+                                                            <label class="btn btn-colors-checkbox" for="btn-check-color-{{ color.id }}" style="--bs-btn-bg: #{{ color.code }}; --bs-btn-active-bg: #{{ color.code }};"></label>
+                                                            {% endif %}
+                                                        </div>
+                                                        {% endfor %}
+                                                            
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -95,19 +121,37 @@
                                             </button>
                                         </h2>
                                         <div id="accordionfilter-body-material" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-material">
-                                            <div class="accordion-body">AccordionContent</div>
+                                            <div class="accordion-body">
+                                                <div class="form-check p-0">
+                                                    <div class="row row-cols-1 g-1">
+                                                        
+                                                        {% for material in materials %}
+                                                        <div class="col">
+                                                            <input type="checkbox" class="btn-check" id="btn-check-material-{{ material.id }}" autocomplete="off">
+                                                            <label class="d-flex btn btn-custom-checkbox-minimal-alt" for="btn-check-material-{{ material.id }}">{{ material.name|title }}</label>
+                                                        </div>
+                                                        {% endfor %}
+                                                            
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <!-- price -->
+                                    <!-- max price -->
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="accordionfilter-header-price">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-price" aria-expanded="false" aria-controls="accordionfilter-body-price">
-                                                PRICE
+                                                MAX PRICE
                                             </button>
                                         </h2>
                                         <div id="accordionfilter-body-price" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-price">
-                                            <div class="accordion-body">AccordionContent</div>
+                                            <div class="accordion-body d-flex flex-column align-items-center">
+                                                
+                                                <input id='price-cap' type="range" class="form-range" min="100" max="1000" step="100" value="1000">
+                                                <label id='range-value-label' for="price-range" class="form-label">$VALUE$</label>
+
+                                            </div>
                                         </div>
                                     </div>
 
@@ -119,10 +163,20 @@
                                             </button>
                                         </h2>
                                         <div id="accordionfilter-body-other" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-other">
-                                            <div class="accordion-body">AccordionContent</div>
+                                            <div class="accordion-body">
+                                                <div class="d-flex flex-row justify-content-evenly">
+                                                    
+                                                    <input type="checkbox" class="btn-check" id="btn-check-new" autocomplete="off">
+                                                    <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-new">NEW</label>
+                                                    <input type="checkbox" class="btn-check" id="btn-check-sale" autocomplete="off">
+                                                    <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-sale">SALE</label>
+                                                    <input type="checkbox" class="btn-check" id="btn-check-instock" autocomplete="off">
+                                                    <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-instock">IN STOCK</label>
+
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    
+                                    </div>  
                                 </div>
                             </div>
                         </div>
@@ -220,5 +274,17 @@
                 error: function (xhr, errmsg, err) {}
             });
         });
+    </script>
+
+    <!-- SHOW RANGE VALUE -->
+    <script>
+        var slider = document.getElementById("price-cap");
+        var output = document.getElementById("range-value-label");
+        output.innerHTML = slider.value + " $"; // Display the default slider value
+
+        // Update the current slider value (each time you drag the slider handle)
+        slider.oninput = function() {
+        output.innerHTML = this.value + " $";
+        }
     </script>
 {% endblock content %}
