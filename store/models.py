@@ -14,10 +14,24 @@ class Category(models.Model):
     
     def get_absolute_url(self):
         return reverse("store:categories")
+    
+
+class Color(models.Model):
+    name = models.CharField(max_length=25, unique=True)
+    image = models.ImageField(upload_to='color_pics')
+
+    def __str__(self):
+        return self.name
+
+
+class Material(models.Model):
+    name = models.CharField(max_length=25, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Product(models.Model):
-
     image = models.ImageField(blank=True, default='default_item.png', upload_to='product_pics')
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
@@ -28,11 +42,11 @@ class Product(models.Model):
     date_modified = models.DateTimeField(auto_now=True)
     sex = models.CharField(max_length=2, choices=SEXES)
     size = models.CharField(max_length=4, choices=SIZES)
-    color = models.CharField(max_length=30)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE)
     sale = models.BooleanField(default=False)
     new = models.BooleanField(default=False)
     promo = models.BooleanField(default=False)
-    material = models.CharField(max_length=255)
+    material = models.ForeignKey(Material, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
