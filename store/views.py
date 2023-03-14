@@ -51,14 +51,6 @@ def product_list_view(request):
         'is_paginated': False,
     }
     return render(request, 'store/product_list.html', context=context)
-
-
-class CategoryCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
-    model = Category
-    fields = ['name', 'slug', 'description', 'image']
-
-    def test_func(self):
-        return self.request.user.has_perm('store.category-create')
     
 
 class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
@@ -76,30 +68,6 @@ class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Update
 
 class ProductDetailView(generic.DetailView):
     model = Product
-
-
-class ProductCreateView(LoginRequiredMixin, UserPassesTestMixin, generic.CreateView):
-    model = Product
-    fields = [
-        'image',
-        'name',
-        'slug',
-        'description',
-        'price',
-        'quantity',
-        'sex',
-        'size',
-        'color',
-        'sale',
-        'new',
-        'promo',
-        'material',
-        'category',
-    ]
-
-
-    def test_func(self):
-        return self.request.user.has_perm('store.add_product')
 
 
 class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):

@@ -66,11 +66,6 @@
     
                             <ul class="dropdown-menu dropdown-menu-end mt-2 my-auto">
                                 <li><h6 class="dropdown-header">{{ user.email }}</h6></li>
-                                {% if perms.store.create_product %}
-                                    <li><a class="dropdown-item" href="{% url 'store:category-create' %}">Add category</a></li>
-                                    <li><a class="dropdown-item" href="{% url 'store:product-create' %}">Add product</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                {% endif %}
                                 <li><a class="dropdown-item" href="{% url 'users:settings' %}">Settings</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{% url 'users:logout' %}">Sign out</a></li>

@@ -15,6 +15,9 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse("store:categories")
     
+    class Meta:
+        verbose_name_plural = 'Categories'
+    
 
 class Color(models.Model):
     name = models.CharField(max_length=25, unique=True)
@@ -53,7 +56,6 @@ class Product(models.Model):
         return reverse("store:product-detail", kwargs={"slug": self.slug})
 
     class Meta:
-        verbose_name_plural = 'Products'
         ordering = ('-date_modified',)
 
     def __str__(self):
