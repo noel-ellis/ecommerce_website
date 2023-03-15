@@ -1,5 +1,101 @@
 {% extends "store/base.html" %}
 {% block content %}
+
+<div class="container-fluid p-0 pb-5">
+    <div class="d-flex justify-content-center container-fluid col-10 p-0">
+        <div class="d-flex flex-column container-fluid p-0">
+
+            <!-- product -->
+            <div class="d-flex flex-row p-0">
+
+                <!-- image -->
+                <div class="col-6 px-5 border border-danger">
+                    <img src="{{ product.image.url }}" class="img-fluid">
+                </div>
+
+                <!-- product info-->
+                <div class="col-6 p-0 border border-danger">
+
+                    <!-- breadcrumb -->
+                    <div class="container-fluid p-0 pt-2">
+                        <div class="p-0 px-4" aria-label="breadcrumb">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item active" aria-current="page">STORE</li>
+                            </ol>
+                        </div>
+                        <hr class="my-1">
+                    </div>
+
+                    <!-- name, material-->
+                    <div class="container-fluid p-0 pt-2">
+                        <div class="p-0 px-4" aria-label="name-material">
+                            <h2 class="py-1"><strong>{{ product.name|upper }}</strong></h2>
+                            <p class="fs-5">{{ product.material }}</p>
+                        </div>
+                        <hr class="my-1">
+                    </div>
+
+                    <!-- price -->
+                    <div class="container-fluid p-0 pt-2">
+                        <div class="p-0 px-4" aria-label="price">
+                            <h3 class="pb-2">${{ product.price }}</h3>
+                        </div>
+                        <hr class="my-1">
+                    </div>
+
+                    <!-- color -->
+                    <div class="d-flex flex-column align-items-start">
+                        <div class="d-flex flex-row align-items-start p-0 pt-2 px-4">
+                            <p class="m-0 p-0 fs-5">Color:</p>
+                        </div>
+                        <div class="p-2 px-4">
+                            {% for color in colors %}
+                            <input type="radio" class="btn-check" name="color-options" id="btn-radio-color-{{ color.id }}" autocomplete="off">
+                            {% if color.name == "White" %}
+                            <label class="btn btn-colors-checkbox" for="btn-radio-color-{{ color.id }}" style="--bs-btn-bg: #{{ color.code }}; --bs-btn-active-bg: #{{ color.code }}; --bs-btn-border-color: #d3d3d3;"></label>
+                            {% else %}
+                            <label class="btn btn-colors-checkbox" for="btn-radio-color-{{ color.id }}" style="--bs-btn-bg: #{{ color.code }}; --bs-btn-active-bg: #{{ color.code }};"></label>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <hr class="mb-1 mt-2">
+
+                    <!-- size -->
+                    <div class="d-flex flex-column justify-content-start">
+                        <div class="p-2 px-4">
+                            <p class="m-0 p-0 fs-5">Size:</p>
+                        </div>
+                        <div class="p-2 px-4">
+                            <div class="row row-cols-5 g-1">
+                                {% for size in sizes %}
+                                <div class="col">
+                                    <input type="radio" class="btn-check" name="size-options" id="btn-radio-size-{{ size }}" autocomplete="off">
+                                    <label class="btn btn-custom-checkbox" for="btn-radio-size-{{ size }}" style="--bs-btn-padding-x: 2.88rem; --bs-btn-padding-y: 0.7rem;">{{ size }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- product description -->
+            <div class="d-flex flex-row p-0">
+
+            </div>
+
+            <!-- promo -->
+            <div class="d-flex flex-row p-0">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% comment "old code" %}
 <div class="card mb-3">
     <div class="row g-0">
         <div class="col-md-4">
@@ -44,7 +140,9 @@
         </div>
     </div>
 </div>
+{% endcomment %}
 
+<!-- ADD TO CART -->
 <script>
     $(document).on('click', '#cart-add-btn', function (e) {
         e.preventDefault();
@@ -66,6 +164,11 @@
             error: function (xhr, errmsg, err) {}
         });
     });
+</script>
+
+<!-- CHOOSE COLOR -->
+<script>
+
 </script>
 
 {% endblock content %}

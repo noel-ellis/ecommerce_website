@@ -74,8 +74,16 @@ class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Update
         return self.request.user.has_perm('store.change_product')
 
 
-class ProductDetailView(generic.DetailView):
-    model = Product
+def product_detail_view(request, slug):
+    product = Product.objects.filter(slug=slug).first()
+    colors = Color.objects.all()
+
+    context = {
+        'product': product,
+        'sizes': sizes,
+        'colors': colors,
+    }
+    return render(request, 'store/product_detail.html', context=context)
 
 
 class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
