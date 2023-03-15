@@ -37,11 +37,13 @@ def product_list_view(request):
         product_wishlist_mixed['image'] = product.image
         product_wishlist_mixed['name'] = product.name
         product_wishlist_mixed['slug'] = product.slug
-        product_wishlist_mixed['description'] = product.description
         product_wishlist_mixed['sex'] = product.sex
         product_wishlist_mixed['price'] = str(product.price)
         product_wishlist_mixed['sale'] = product.sale
         product_wishlist_mixed['new'] = product.new
+        product_wishlist_mixed['promo'] = product.promo
+        product_wishlist_mixed['material'] = product.material.name
+        product_wishlist_mixed['color'] = product.color.name
         product_wishlist_mixed['category'] = product.category
         product_wishlist_mixed['in_wishlist'] = False
         if product.id in wishlist_product_ids:

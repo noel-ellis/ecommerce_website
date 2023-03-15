@@ -149,7 +149,7 @@
                                             <div class="accordion-body d-flex flex-column align-items-center">
                                                 
                                                 <input id='price-cap' type="range" class="form-range" min="100" max="1000" step="100" value="1000">
-                                                <label id='range-value-label' for="price-range" class="form-label">$VALUE$</label>
+                                                <label id='range-value-label' for="price-range" class="form-label">1000 $</label>
 
                                             </div>
                                         </div>
@@ -184,107 +184,136 @@
 
                     <!-- products -->
                     <div class="col-9 ps-1">
-                        
-                    </div>
+                        <div class="d-flex flex-column">
 
+                            <!-- header -->
+                            <div class="d-flex flex-row ps-2 pe-1 justify-content-between align-items-center p-0 pt-2">
+                                
+                                <!-- filter tags -->
+                                <div class="col-8">
+                                    <div class="d-flex flex-row p-0">
+                                        <p class="m-0 mb-1">RESULT:</p>
+
+                                        {% comment "tags will be here" %}{% endcomment %}
+
+                                    </div>
+                                </div>
+
+                                <!-- sort by -->
+                                <div class="col-4">
+                                    <div class="d-flex flex-row p-0 m-0 mb-1">
+                                        <div class="col-4">
+                                            <p class="m-0">SORT BY: </p>
+                                        </div>
+                                        <div class="d-flex col-8 align-items-center">
+                                            <select class="form-select form-select-sort-by p-0 ps-2" aria-label="select-sort-by">
+                                                <option value="name" selected>Name</option>
+                                                <option value="price">Price</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <hr class="my-1">
+
+                            <!-- product list -->
+                            <div class="container p-3">
+                                <div class="row row-cols-3 gx-4 gy-3">
+                                    {% for product in product_list %}
+                                        <div class="col">
+                                            <div class="card border-0 h-100">
+
+                                                <!-- wishlist button -->
+                                                <div class="d-flex justify-content-end container p-0">
+                                                    {% if product.in_wishlist %}
+                                                    <a class="btn wishlist-btn wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
+                                                    </a>
+                                                    {% else %}
+                                                    <a class="btn wishlist-btn wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
+                                                    </a>
+                                                    {% endif %}
+                                                </div>
+                                                
+                                                <!-- clickable card-->
+                                                <div class="container px-4 position-relative">
+                                                    <img src="{{ product.image.url }}" class="card-img-top img-fluid">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title text-center">{{ product.name|title }}</h5>
+                                                        <p class="card-text text-center m-0 mb-1 p-0">{{ product.material }}</p>
+                                                        <p class="card-text text-center m-0 p-0">{{ product.color }}</p>
+                                                        <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product.price }}</strong></p>
+                                                        <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.slug %}"></a>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-{% comment "Old code" %}
-    <div class="album bg-light">
-        <div class="container">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                {% for product in product_list %}
-                    <div class="col">
-                        <div class="card h-100">
-                            <img src="{{ product.image.url }}" class="card-img-top img-fluid">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ product.name|title }}</h5>
-                                <p class="card-text">{{ product.description }}</p>
-                                <p class="card-text">{{ wishlist }}</p>
-                            </div>
-                            <div class="card-footer">
-                                <div class="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
-                                    <div class="btn-group">
-                                        {% if perms.store.create_product %}
-                                            <a class="btn btn-sm btn-outline-dark" href="{% url 'store:product-update' product.slug %}">Edit</a>
-                                        {% endif %}
-                                        <a class="btn btn-sm btn-outline-dark" href="{% url "store:product-detail" product.slug %}">View</a>
-                                        {% if product.in_wishlist %}
-                                        <a class="btn btn-sm btn-danger wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">♡</a>
-                                        {% else %}
-                                        <a class="btn btn-sm btn-outline-dark wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">♡</a>
-                                        {% endif %}
-                                    </div>
-                                    <p class="card-text"><strong>USD {{ product.price }}</strong></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-{% endcomment %}
-
-    <!-- ADD TO WISHLIST -->
-    <script>
-        $(document).on('click', '.wishlist-btn-add', function (e) {
-            e.preventDefault();
-            var product_id = $(this).data('productid');
-            $.ajax({
-                type: 'POST',
-                url: '{% url "wishlist:modify" %}',
-                data: {
-                    product_id: product_id,
-                    csrfmiddlewaretoken: "{{csrf_token}}",
-                    action: 'add'
-                },
-                success: function (json) {
-                    var wishlist_button_id = '#wishlist-btn-' + product_id;
-                    $(wishlist_button_id).removeClass('btn-outline-dark');
-                    $(wishlist_button_id).addClass('btn-danger');
-                },
-                error: function (xhr, errmsg, err) {}
-            });
+<!-- ADD TO WISHLIST -->
+<script>
+    $(document).on('click', '.wishlist-btn-add', function (e) {
+        e.preventDefault();
+        var product_id = $(this).data('productid');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "wishlist:modify" %}',
+            data: {
+                product_id: product_id,
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'add'
+            },
+            success: function (json) {
+                var wishlist_button_id = '#wishlist-btn-' + product_id;
+                $(wishlist_button_id).removeClass('wishlist-btn-add');
+                $(wishlist_button_id).addClass('wishlist-btn-delete');
+            },
+            error: function (xhr, errmsg, err) {}
         });
-    </script>
+    });
+</script>
 
-    <!-- DELETE FROM WISHLIST -->
-    <script>
-        $(document).on('click', '.wishlist-btn-delete', function (e) {
-            e.preventDefault();
-            var product_id = $(this).data('productid');
-            $.ajax({
-                type: 'POST',
-                url: '{% url "wishlist:modify" %}',
-                data: {
-                    product_id: product_id,
-                    csrfmiddlewaretoken: "{{csrf_token}}",
-                    action: 'delete'
-                },
-                success: function (json) {
-                    var wishlist_button_id = '#wishlist-btn-' + product_id;
-                    $(wishlist_button_id).removeClass('btn-danger');
-                    $(wishlist_button_id).addClass('btn-outline-dark');
-                },
-                error: function (xhr, errmsg, err) {}
-            });
+<!-- DELETE FROM WISHLIST -->
+<script>
+    $(document).on('click', '.wishlist-btn-delete', function (e) {
+        e.preventDefault();
+        var product_id = $(this).data('productid');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "wishlist:modify" %}',
+            data: {
+                product_id: product_id,
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'delete'
+            },
+            success: function (json) {
+                var wishlist_button_id = '#wishlist-btn-' + product_id;
+                $(wishlist_button_id).removeClass('wishlist-btn-delete');
+                $(wishlist_button_id).addClass('wishlist-btn-add');
+            },
+            error: function (xhr, errmsg, err) {}
         });
-    </script>
+    });
+</script>
 
-    <!-- SHOW RANGE VALUE -->
-    <script>
-        var slider = document.getElementById("price-cap");
-        var output = document.getElementById("range-value-label");
-        output.innerHTML = slider.value + " $"; // Display the default slider value
+<!-- SHOW MAX PRICE RANGE VALUE -->
+<script>
+    var slider = document.getElementById("price-cap");
+    var output = document.getElementById("range-value-label");
+    output.innerHTML = slider.value + " $"; 
 
-        // Update the current slider value (each time you drag the slider handle)
-        slider.oninput = function() {
-        output.innerHTML = this.value + " $";
-        }
-    </script>
+    slider.oninput = function() {
+    output.innerHTML = this.value + " $";
+    }
+</script>
 {% endblock content %}
