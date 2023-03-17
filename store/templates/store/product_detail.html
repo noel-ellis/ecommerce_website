@@ -82,11 +82,9 @@
                         
                         <!-- wishlist button -->
                         {% if product.in_wishlist %}
-                        <a class="me-1 btn wishlist-btn-bordered wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
-                        </a>
+                        <a class="me-1 btn wishlist-btn-bordered wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}"></a>
                         {% else %}
-                        <a class="me-1 btn wishlist-btn-bordered wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
-                        </a>
+                        <a class="me-1 btn wishlist-btn-bordered wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}"></a>
                         {% endif %}
 
                         <button type="button" class="ms-1 btn btn-bd-dark container-fluid text-center text-nowrap">ADD TO CART</button>

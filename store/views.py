@@ -24,7 +24,7 @@ def category_list(request):
 
 def product_list_view(request):
     wishlist = Wishlist(request)
-    wishlist_product_ids = [wishlist_product['product_id'] for wishlist_product in list(wishlist)]
+    wishlist_product_ids = [wishlist_product['id'] for wishlist_product in list(wishlist)]
     all_products = Product.objects.all()
     colors = Color.objects.all()
     materials = Material.objects.all()

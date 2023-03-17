@@ -39,10 +39,11 @@ class Wishlist:
         products_from_wishlist = Product.objects.filter(id__in=product_ids)
         for product in products_from_wishlist:
             product_from_wishlist = {}
-            product_from_wishlist['product_id'] = product.id
-            product_from_wishlist['product_name'] = product.name
-            product_from_wishlist['product_price'] = product.price
-            product_from_wishlist['product_sex'] = product.sex
-            product_from_wishlist['product_size'] = product.size
-            product_from_wishlist['product_image'] = product.image
+            product_from_wishlist['id'] = product.id
+            product_from_wishlist['name'] = product.name
+            product_from_wishlist['slug'] = product.slug
+            product_from_wishlist['material'] = product.material
+            product_from_wishlist['color'] = product.color
+            product_from_wishlist['price'] = product.price
+            product_from_wishlist['image'] = product.image
             yield product_from_wishlist
