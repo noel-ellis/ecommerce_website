@@ -1,6 +1,6 @@
 SEXES = (
-    ('W', 'Women'),
-    ('M', 'Men'),
+    ('Women', 'Women'),
+    ('Men', 'Men'),
 )
 
 SIZES = (

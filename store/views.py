@@ -77,11 +77,13 @@ class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Update
 def product_detail_view(request, slug):
     product = Product.objects.filter(slug=slug).first()
     colors = Color.objects.all()
+    promo = Product.objects.filter(promo=True)[:3]
 
     context = {
         'product': product,
         'sizes': sizes,
         'colors': colors,
+        'promo': promo,
     }
     return render(request, 'store/product_detail.html', context=context)
 

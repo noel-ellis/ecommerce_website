@@ -9,18 +9,18 @@
             <div class="d-flex flex-row p-0">
 
                 <!-- image -->
-                <div class="col-6 px-5 border border-danger">
+                <div class="col-6 px-5">
                     <img src="{{ product.image.url }}" class="img-fluid">
                 </div>
 
                 <!-- product info-->
-                <div class="col-6 p-0 border border-danger">
+                <div class="col-6 p-0">
 
                     <!-- breadcrumb -->
                     <div class="container-fluid p-0 pt-2">
                         <div class="p-0 px-4" aria-label="breadcrumb">
                             <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item active" aria-current="page">STORE</li>
+                                <li class="breadcrumb-item active" aria-current="page">STORE/ {{ product.sex|upper }}/ {{ product.category|upper }}/ {{ product.name|upper }}</li>
                             </ol>
                         </div>
                         <hr class="my-1">
@@ -78,17 +78,84 @@
                         </div>
                     </div>
 
+                    <div class="d-flex flex-row mt-3">
+                        
+                        <!-- wishlist button -->
+                        {% if product.in_wishlist %}
+                        <a class="me-1 btn wishlist-btn-bordered wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
+                        </a>
+                        {% else %}
+                        <a class="me-1 btn wishlist-btn-bordered wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
+                        </a>
+                        {% endif %}
+
+                        <button type="button" class="ms-1 btn btn-bd-dark container-fluid text-center text-nowrap">ADD TO CART</button>
+                    </div>
+
                 </div>
 
             </div>
 
-            <!-- product description -->
-            <div class="d-flex flex-row p-0">
+            
+            <div class="d-flex flex-column p-0">
 
-            </div>
+                <!-- product description -->
+                <div class="col-11 mt-5 p-0">
+                    <div class="col-3 d-flex flex-column">
+                        <hr class="my-1">
+                        <p class="text-center">DETAILS</p>
+                    </div>
+                    <div class="p-0 border">
+                        <p class="p-5 text-center">
+                            The Stalon is NIFTYSHOES’s robust version of a Chelsea boot. Here, typical Chelsea boot elements like side elastic <br> 
+                            panels on the understated shaft and a loop at the back have been combined with a solid-looking yet surprisingly <br> 
+                            light sole made from synthetic materials and moisture-wicking microfiber lining. The cork frame of the outer sole <br> 
+                            makes for an authentic design. The upper is made from hydrophobic, oiled nubuck leather
+                        </p>
+                    </div>
+                </div>
 
-            <!-- promo -->
-            <div class="d-flex flex-row p-0">
+                <!-- promo -->
+                <div class="col-11 mt-5 p-0">
+                    <div class="col-3 d-flex flex-column">
+                        <hr class="my-1">
+                        <p class="text-center">YOU MAY ALSO LIKE</p>
+                    </div>
+                    <div class="p-0 py-5 d-flex flex-row justify-content-center border">
+                        <div class="row row-cols-3 gx-4">
+                            {% for product in promo %}
+                            <div class="col">
+                                <div class="card h-100">
+
+                                    <!-- wishlist button -->
+                                    <div class="d-flex justify-content-end container mt-3 p-0 pe-3">
+                                        {% if product.in_wishlist %}
+                                        <a class="btn wishlist-btn wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
+                                        </a>
+                                        {% else %}
+                                        <a class="btn wishlist-btn wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <!-- clickable card-->
+                                    <div class="container px-4 position-relative">
+                                        <img src="{{ product.image.url }}" class="card-img-top img-fluid">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-center">{{ product.name|title }}</h5>
+                                            <p class="card-text text-center m-0 mb-1 p-0">{{ product.material }}</p>
+                                            <p class="card-text text-center m-0 p-0">{{ product.color }}</p>
+                                            <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product.price }}</strong></p>
+                                            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.slug %}"></a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -169,6 +236,52 @@
 <!-- CHOOSE COLOR -->
 <script>
 
+</script>
+
+<!-- ADD TO WISHLIST -->
+<script>
+    $(document).on('click', '.wishlist-btn-add', function (e) {
+        e.preventDefault();
+        var product_id = $(this).data('productid');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "wishlist:modify" %}',
+            data: {
+                product_id: product_id,
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'add'
+            },
+            success: function (json) {
+                var wishlist_button_id = '#wishlist-btn-' + product_id;
+                $(wishlist_button_id).removeClass('wishlist-btn-add');
+                $(wishlist_button_id).addClass('wishlist-btn-delete');
+            },
+            error: function (xhr, errmsg, err) {}
+        });
+    });
+</script>
+
+<!-- DELETE FROM WISHLIST -->
+<script>
+    $(document).on('click', '.wishlist-btn-delete', function (e) {
+        e.preventDefault();
+        var product_id = $(this).data('productid');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "wishlist:modify" %}',
+            data: {
+                product_id: product_id,
+                csrfmiddlewaretoken: "{{csrf_token}}",
+                action: 'delete'
+            },
+            success: function (json) {
+                var wishlist_button_id = '#wishlist-btn-' + product_id;
+                $(wishlist_button_id).removeClass('wishlist-btn-delete');
+                $(wishlist_button_id).addClass('wishlist-btn-add');
+            },
+            error: function (xhr, errmsg, err) {}
+        });
+    });
 </script>
 
 {% endblock content %}

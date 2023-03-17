@@ -46,6 +46,16 @@ hr {
     border-radius: 0rem;
 }
 
+.wishlist-btn-bordered {
+    display: inline-block;
+    color: #212529;
+    background-color: transparent;
+    border: 1.5px solid;
+    padding: 1.5rem 3rem;
+    font-size: 0rem;
+    border-radius: 0rem;
+}
+
 .wishlist-btn-delete {
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/></svg>');
     background-repeat: no-repeat;
@@ -184,4 +194,15 @@ small {
 
 .offcanvas-backdrop.show {
     opacity: .0; 
+}
+
+.card {
+    border: 0px solid rgba(0, 0, 0, 0);
+    border-radius: 0rem;
+  }
+
+.card:hover {
+    border: 1px solid rgba(0, 0, 0, 1);
+    border-radius: 0rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }

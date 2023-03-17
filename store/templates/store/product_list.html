@@ -220,10 +220,10 @@
                                 <div class="row row-cols-3 gx-4 gy-3">
                                     {% for product in product_list %}
                                         <div class="col">
-                                            <div class="card border-0 h-100">
+                                            <div class="card h-100">
 
                                                 <!-- wishlist button -->
-                                                <div class="d-flex justify-content-end container p-0">
+                                                <div class="d-flex justify-content-end container mt-3 p-0 pe-3">
                                                     {% if product.in_wishlist %}
                                                     <a class="btn wishlist-btn wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
                                                     </a>

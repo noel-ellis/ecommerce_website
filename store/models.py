@@ -43,7 +43,7 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField()
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
-    sex = models.CharField(max_length=2, choices=SEXES)
+    sex = models.CharField(max_length=5, choices=SEXES)
     size = models.CharField(max_length=4, choices=SIZES)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
     sale = models.BooleanField(default=False)
