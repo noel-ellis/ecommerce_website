@@ -74,6 +74,10 @@ hr {
     background-position: center;
 }
 
+.btn {
+    font-weight: 200;
+}
+
 .btn-bd-dark {
     --bs-btn-padding-x: 2rem;
     --bs-btn-padding-y: .5rem;
@@ -83,6 +87,18 @@ hr {
     --bs-btn-border-width: .1em;
     --bs-btn-border-radius: 0em;
     --bs-btn-hover-color: #000000;
+    --bs-btn-hover-bg: #FFFFFF;
+}
+
+.btn-bd-danger {
+    --bs-btn-padding-x: 2rem;
+    --bs-btn-padding-y: .5rem;
+    --bs-btn-color: #FFFFFF;
+    --bs-btn-bg: #B72025;
+    --bs-btn-hover-border-color: #B72025;
+    --bs-btn-border-width: .1em;
+    --bs-btn-border-radius: 0em;
+    --bs-btn-hover-color: #B72025;
     --bs-btn-hover-bg: #FFFFFF;
 }
 
@@ -211,4 +227,77 @@ small {
     border: 1px solid rgba(0, 0, 0, 1);
     border-radius: 0rem;
     box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+}
+
+.nav-pills {
+    --bs-nav-pills-border-radius: 0px;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    background-color: #000000;
+}
+
+.nav-link {
+    padding: 0.8rem 1.8rem;
+    color: #000000;
+}
+
+.nav-link:hover, .nav-link:focus {
+    color: #3e3e3e;
+}
+
+.nav-fill > .nav-link,
+.nav-fill .nav-item {
+  text-align: left;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font-size: 1.2rem;
+    font-weight: 200;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 2px solid #cecece;
+    border-radius: 0rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control-footer {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 200;
+    color:rgb(255, 255, 255);
+    line-height: 1.5;
+    color: #212529;
+    background-color: transparent;
+    border: 0px solid #000000;
+    border-bottom: 2px solid #ffffff;
+}
+
+.form-control-footer:focus {
+    color: #ffffff;
+    border-bottom: 2px solid #ffffff;
+    background-color: transparent;
+    border-color: #ffffff;
+    outline: 0;
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0rem;
+    outline: 0;
 }

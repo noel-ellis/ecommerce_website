@@ -1,143 +1,362 @@
 {% extends "store/base.html" %}
 {% block content %}
-    <div class="content-section">
-        <ul class="nav nav-pills" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="profile-pill" data-bs-toggle="pill" data-bs-target="#profile-pill-pane" type="button" role="pill" aria-controls="profile-pill-pane" aria-selected="true">MY PROFILE</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="password-pill" data-bs-toggle="pill" data-bs-target="#password-pill-pane" type="button" role="pill" aria-controls="password-pill-pane" aria-selected="false">PASSWORD</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="delivery-pill" data-bs-toggle="pill" data-bs-target="#delivery-pill-pane" type="button" role="pill" aria-controls="delivery-pill-pane" aria-selected="false">ADDRESS BOOK</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="history-pill" data-bs-toggle="pill" data-bs-target="#history-pill-pane" type="button" role="pill" aria-controls="history-pill-pane" aria-selected="false">ORDER HISTORY</button>
-            </li>
-        </ul>
-        <div class="tab-content my-3" id="pill-content">
+<div class="container-fluid p-0 pb-5">
+  <div class="d-flex justify-content-center container-fluid col-10 p-0">
+    <div class="d-flex flex-column container-fluid p-0">
+
+      <!-- header+divider -->
+      <div class="col-4 mt-4">
+        <p class="text-center fs-3 p-0">MY ACCOUNT</p>
+      </div>
+      <hr class="mt-3 mb-0 border-dark" style="opacity: 1;">
+
+      <div class="container-fluid d-flex flex-row p-0">
+        <!-- pills -->
+        <div class="col-3">
+          <ul class="nav nav-pills nav-fill flex-column" role="tablist" aria-orientation="vertical">
+              <button class="nav-link fs-4 active" id="profile-pill" data-bs-toggle="pill" data-bs-target="#profile-pill-pane" type="button" role="pill" aria-controls="profile-pill-pane" aria-selected="true">MY PROFILE</button>
+              <button class="nav-link fs-4" id="password-pill" data-bs-toggle="pill" data-bs-target="#password-pill-pane" type="button" role="pill" aria-controls="password-pill-pane" aria-selected="false">SECURITY</button>
+              <button class="nav-link fs-4" id="delivery-pill" data-bs-toggle="pill" data-bs-target="#delivery-pill-pane" type="button" role="pill" aria-controls="delivery-pill-pane" aria-selected="false">ADDRESS BOOK</button>
+              <button class="nav-link fs-4" id="history-pill" data-bs-toggle="pill" data-bs-target="#history-pill-pane" type="button" role="pill" aria-controls="history-pill-pane" aria-selected="false">ORDER HISTORY</button>
+              <button class="nav-link fs-4" id="logout-pill" data-bs-toggle="pill" data-bs-target="#logout-pill-pane" type="button" role="pill" aria-controls="logout-pill-pane" aria-selected="false">LOG OUT</button>
+          </ul>
+        </div>
+
+        <!-- panels -->
+        <div class="col-9">
+          <div class="tab-content my-3" id="pill-content">
+            
+            <!-- my profile -->
             <div class="tab-pane fade show active" id="profile-pill-pane" role="tabpanel" aria-labelledby="profile-pill" tabindex="0">
-                <form method="POST" enctype="multipart/form-data" class=''>
+              <div class="container-fluid d-flex justify-content-center">
+                <div class="col-9">
+                  <form method="POST" enctype="multipart/form-data" class="">
                     {% csrf_token %}
                     <fieldset class="form-group">
-                        <legend class="border-bottom mb-4 display-2">
-                            <strong>{{ user.email }}</strong>
-                        </legend>
-                        {% for field in user_form %}
-                            <p class='fs-4 mb-1'>{{ field.label }}</p>
-                            {{ field }}
-                        {% endfor %}
+                      <legend class="m-0 p-0">
+                        <p class="fs-4">PERSONAL DETAILS</p>
+                        <hr class="my-2">
+                        <p class="" style="font-size: 1rem;">Please use this form to update your personal details</p>
+                      </legend>
+                      {% for field in user_form %}
+                        <div class="col-5">
+                          <hr class="mt-3 mb-0">
+                        </div>
+                        <p class='ms-3 my-2' style="font-size: 0.75rem;">{{ field.label|upper }}</p>
+                        {{ field }}
+                      {% endfor %}
                         
                     </fieldset>
-                    <button class="btn btn-outline-dark me-2" type="submit" name="profile">Update</button>
-                </form>
+                    <button class="btn btn-bd-dark mt-3" type="submit" name="profile">UPDATE</button>
+                    <hr class="my-2">
+                  </form>
+                </div>
+              </div>
             </div>
-            <div class="tab-pane fade" id="password-pill-pane" role="tabpanel" aria-labelledby="password-pill" tabindex="0">change password</div>
+
+            <!-- security -->
+            <div class="tab-pane fade" id="password-pill-pane" role="tabpanel" aria-labelledby="password-pill" tabindex="0">
+              <div class="container-fluid d-flex justify-content-center">
+                <div class="col-9">
+
+                  <!-- change email form -->
+                  <form method="POST" enctype="multipart/form-data" class="">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                      <legend class="m-0 p-0">
+                        <p class="fs-4">EMAIL ADDRESS</p>
+                        <hr class="my-2">
+                        <p class="" style="font-size: 1rem;">You can change your account email address here. Your newsletter email will automatically be updated.</p>
+                      </legend>
+                      {% for field in email_form %}
+                        <div class="col-5">
+                          <hr class="mt-3 mb-0">
+                        </div>
+                        <p class='ms-3 my-2' style="font-size: 0.75rem;">{{ field.label|upper }}</p>
+                        {{ field }}
+                      {% endfor %}
+                        
+                    </fieldset>
+                    <button class="btn btn-bd-dark mt-3" type="submit" name="profile">UPDATE</button>
+                    <hr class="my-2">
+                  </form>
+
+                  <!-- change password form -->
+                  <form method="POST" enctype="multipart/form-data" class="">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                      <legend class="m-0 p-0">
+                        <p class="fs-4">PASSWORD</p>
+                        <hr class="my-2">
+                        <p class="" style="font-size: 1rem;">To change your password, please enter your old one first and set a new one then. It must be at least 8 characters long.</p>
+                      </legend>
+                      {% for field in email_form %}
+                        <div class="col-5">
+                          <hr class="mt-3 mb-0">
+                        </div>
+                        <p class='ms-3 my-2' style="font-size: 0.75rem;">{{ field.label|upper }}</p>
+                        {{ field }}
+                      {% endfor %}
+                        
+                    </fieldset>
+                    <button class="btn btn-bd-dark mt-3" type="submit" name="profile">UPDATE</button>
+                    <hr class="my-2">
+                  </form>
+
+                  <!-- deactivate account -->
+                  <button type="button" class="btn btn-bd-danger mt-5" data-bs-toggle="modal" data-bs-target="#deactivateModal">DEACTIVATE ACCOUNT</button>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- address book -->
             <div class="tab-pane fade" id="delivery-pill-pane" role="tabpanel" aria-labelledby="delivery-pill" tabindex="0">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+              <div class="container-fluid d-flex justify-content-center">
+                <div class="col-9">
+                  <div class="row row-cols-1 row-cols-md-3 g-4">
                     {% for address in address_info %}
                     <div class="col">
-                        <div class="card mb-3 h-100" style="max-width: 540px;">
-                            <div class="row g-0">
-                                <div class="col">
-                                    <div class="card-body">
-                                        <h5 class="card-title">{{ address.address }}</h5>
-                                        <p class="card-text">{{ address.country }}, {{ address.state }}, {{ address.zip }}</p>
-                                    </div>
-                                </div>
+                      <div class="card mb-3 h-100" style="max-width: 540px;">
+                        <div class="row g-0">
+                          <div class="col">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ address.address }}</h5>
+                              <p class="card-text">{{ address.country }}, {{ address.state }}, {{ address.zip }}</p>
                             </div>
+                          </div>
                         </div>
+                      </div>
                     </div>
                     {% endfor %}
                     <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#deliveryModal">New Address</button>
+                  </div>
                 </div>
+              </div>
             </div>
+
+            <!-- order history -->
             <div class="tab-pane fade" id="history-pill-pane" role="tabpanel" aria-labelledby="history-pill" tabindex="0">
-                {% for order_id, order in order_history.items %}
+              <div class="container-fluid d-flex justify-content-center">
+                <div class="col-9">
+                  {% for order_id, order in order_history.items %}
+                  <div class="col">
+                    <div class="card mb-3 h-100" style="max-width: 540px;">
+                      <div class="row g-0">
+                        <div class="col">
+                          <div class="card-body">
+                            <h5 class="card-title">ORDER #{{ order_id }}</h5>
+                            <p class="card-text">{{ order.created_at }}</p>
+                            <hr>
+                            {% for ordered_item_data in order.ordered_items.values %}
+                            <div class="card mb-3 h-100" style="max-width: 540px;">
+                              <div class="row g-0">
+                                <div class="col">
+                                  <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                      <a href="{% url "store:product-detail" ordered_item_data.product_slug %}" class="text-dark text-decoration-none fs-3">{{ ordered_item_data.product_name }}</a>
+                                      <h5>{{ ordered_item_data.quantity }}x{{ ordered_item_data.price }}$</h5>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            {% endfor %}
+                            <hr>
+                            <p class="card-text">{{ order.delivery_info.country }}, {{ order.delivery_info.state }}, {{ order.delivery_info.zip }}, {{ order.delivery_info.address }}</p>
+                            <p class="card-text">{{ order.status }} | updated at: {{ order.updated_at }}</p>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                              <h3>{{ order.total_price }}$</h3>
+                              {% if order.paid %}
+                              <h5>paid</h5>
+                              {% else %}
+                              <h5>to be paid</h5>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+
+            <!-- logout -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Modal for DeactivateAccount -->
+<div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+  <div class="modal-dialog border border-danger">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure?</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">Your data will be deleted in 30 days</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Changed my mind</button>
+        <a type="button" class="btn btn-danger" href="{% url 'users:deactivate'%}">Deactivate</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+{% comment "old code" %}
+<div class="content-section">
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="profile-pill" data-bs-toggle="pill" data-bs-target="#profile-pill-pane" type="button" role="pill" aria-controls="profile-pill-pane" aria-selected="true">MY PROFILE</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="password-pill" data-bs-toggle="pill" data-bs-target="#password-pill-pane" type="button" role="pill" aria-controls="password-pill-pane" aria-selected="false">PASSWORD</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="delivery-pill" data-bs-toggle="pill" data-bs-target="#delivery-pill-pane" type="button" role="pill" aria-controls="delivery-pill-pane" aria-selected="false">ADDRESS BOOK</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="history-pill" data-bs-toggle="pill" data-bs-target="#history-pill-pane" type="button" role="pill" aria-controls="history-pill-pane" aria-selected="false">ORDER HISTORY</button>
+        </li>
+    </ul>
+    <div class="tab-content my-3" id="pill-content">
+        <div class="tab-pane fade show active" id="profile-pill-pane" role="tabpanel" aria-labelledby="profile-pill" tabindex="0">
+            <form method="POST" enctype="multipart/form-data" class=''>
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4 display-2">
+                        <strong>{{ user.email }}</strong>
+                    </legend>
+                    {% for field in user_form %}
+                        <p class='fs-4 mb-1'>{{ field.label }}</p>
+                        {{ field }}
+                    {% endfor %}
+                    
+                </fieldset>
+                <button class="btn btn-outline-dark me-2" type="submit" name="profile">Update</button>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="password-pill-pane" role="tabpanel" aria-labelledby="password-pill" tabindex="0">change password</div>
+        <div class="tab-pane fade" id="delivery-pill-pane" role="tabpanel" aria-labelledby="delivery-pill" tabindex="0">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for address in address_info %}
                 <div class="col">
                     <div class="card mb-3 h-100" style="max-width: 540px;">
                         <div class="row g-0">
                             <div class="col">
                                 <div class="card-body">
-                                    <h5 class="card-title">ORDER #{{ order_id }}</h5>
-                                    <p class="card-text">{{ order.created_at }}</p>
-                                    <hr>
-                                    {% for ordered_item_data in order.ordered_items.values %}
-                                    <div class="card mb-3 h-100" style="max-width: 540px;">
-                                        <div class="row g-0">
-                                            <div class="col">
-                                                <div class="card-body">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <a href="{% url "store:product-detail" ordered_item_data.product_slug %}" class="text-dark text-decoration-none fs-3">{{ ordered_item_data.product_name }}</a>
-                                                        <h5>{{ ordered_item_data.quantity }}x{{ ordered_item_data.price }}$</h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-                                    <hr>
-                                    <p class="card-text">{{ order.delivery_info.country }}, {{ order.delivery_info.state }}, {{ order.delivery_info.zip }}, {{ order.delivery_info.address }}</p>
-                                    <p class="card-text">{{ order.status }} | updated at: {{ order.updated_at }}</p>
-                                    <hr>
-                                    <div class="d-flex justify-content-between">
-                                        <h3>{{ order.total_price }}$</h3>
-                                        {% if order.paid %}
-                                        <h5>paid</h5>
-                                        {% else %}
-                                        <h5>to be paid</h5>
-                                        {% endif %}
-                                    </div>
+                                    <h5 class="card-title">{{ address.address }}</h5>
+                                    <p class="card-text">{{ address.country }}, {{ address.state }}, {{ address.zip }}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
+                <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#deliveryModal">New Address</button>
             </div>
         </div>
+        <div class="tab-pane fade" id="history-pill-pane" role="tabpanel" aria-labelledby="history-pill" tabindex="0">
+            {% for order_id, order in order_history.items %}
+            <div class="col">
+                <div class="card mb-3 h-100" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col">
+                            <div class="card-body">
+                                <h5 class="card-title">ORDER #{{ order_id }}</h5>
+                                <p class="card-text">{{ order.created_at }}</p>
+                                <hr>
+                                {% for ordered_item_data in order.ordered_items.values %}
+                                <div class="card mb-3 h-100" style="max-width: 540px;">
+                                    <div class="row g-0">
+                                        <div class="col">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <a href="{% url "store:product-detail" ordered_item_data.product_slug %}" class="text-dark text-decoration-none fs-3">{{ ordered_item_data.product_name }}</a>
+                                                    <h5>{{ ordered_item_data.quantity }}x{{ ordered_item_data.price }}$</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <hr>
+                                <p class="card-text">{{ order.delivery_info.country }}, {{ order.delivery_info.state }}, {{ order.delivery_info.zip }}, {{ order.delivery_info.address }}</p>
+                                <p class="card-text">{{ order.status }} | updated at: {{ order.updated_at }}</p>
+                                <hr>
+                                <div class="d-flex justify-content-between">
+                                    <h3>{{ order.total_price }}$</h3>
+                                    {% if order.paid %}
+                                    <h5>paid</h5>
+                                    {% else %}
+                                    <h5>to be paid</h5>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deactivateModal">
-            Deactivate account
-        </button>
-        <!-- Modal for DeactivateAccount -->
-        <div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure?</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">Your data will be deleted in 30 days</div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Changed my mind</button>
-                        <a type="button" class="btn btn-danger" href="{% url 'users:deactivate'%}">Deactivate</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal for DeliveryInfo-->
-        <div class="modal fade" id="deliveryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deactivateModal">
+        Deactivate account
+    </button>
+    <!-- Modal for DeactivateAccount -->
+    <div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">New address</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form method="POST" enctype="multipart/form-data" class=''>
-                        {% csrf_token %}
-                        <fieldset class="form-group">
-                            {% for field in address_form %}
-                                <p class='fs-4 mb-1'>{{ field.label }}</p>
-                                {{ field }}
-                            {% endfor %}
-                        </fieldset>
-                        <button class="btn btn-outline-dark me-2" type="submit" name="delivery_info">Add</button>
-                    </form>
+                <div class="modal-body">Your data will be deleted in 30 days</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Changed my mind</button>
+                    <a type="button" class="btn btn-danger" href="{% url 'users:deactivate'%}">Deactivate</a>
                 </div>
-              </div>
             </div>
         </div>
     </div>
+    <!-- Modal for DeliveryInfo-->
+    <div class="modal fade" id="deliveryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">New address</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data" class=''>
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        {% for field in address_form %}
+                            <p class='fs-4 mb-1'>{{ field.label }}</p>
+                            {{ field }}
+                        {% endfor %}
+                    </fieldset>
+                    <button class="btn btn-outline-dark me-2" type="submit" name="delivery_info">Add</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endcomment %}
 {% endblock content %}

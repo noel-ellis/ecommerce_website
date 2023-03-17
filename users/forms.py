@@ -59,9 +59,9 @@ class DeliveryInfoForm(forms.ModelForm):
 
 
 class UserUpdateForm(forms.ModelForm):
-    name = forms.CharField(label="Name")
-    surname = forms.CharField(label="Surname")
-    phone_number = forms.CharField(label='Phone number')
+    name = forms.CharField(label="First Name")
+    surname = forms.CharField(label="Last Name")
+    phone_number = forms.CharField(label='Phone Number')
 
     class Meta:
         model = UserBase
