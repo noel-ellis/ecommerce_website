@@ -1,21 +1,31 @@
 {% extends "store/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Create an account</legend>
-                {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-dark mt-2 mb-3" type="submit>">Sign Up</button>
-            </div>
-        </form>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Already have an account? <a class="ml-2" href="{% url 'users:login' %}">Log In</a>
-            </small>
+<div class="container-fluid p-0 pb-5">
+  <div class="d-flex justify-content-center container-fluid col-10 p-0">
+    <div class="d-flex flex-column container-fluid p-0">
+        
+      <!-- header+divider -->
+      <div class="col-4 mt-4">
+        <p class="text-center fs-3 p-0">NEW CUSTOMER</p>
+      </div>
+      <hr class="my-1 border-dark">
+
+      <!-- form -->
+      <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group my-2">
+          {{ form.email }}
+          {{ form.password1 }}
+          {{ form.password2 }}
+        </fieldset>
+        <div class="d-flex flex-column">
+          <small class="mx-3 my-2"><a class="text-muted" href="{% url 'users:login' %}">Already have an account?</a></small>
+          <button class="btn btn-bd-dark my-3" type="submit">SIGN UP</button>
         </div>
+      </form>
+
     </div>
+  </div>
+</div>
 {% endblock content %}

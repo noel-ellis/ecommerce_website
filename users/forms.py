@@ -4,9 +4,27 @@ from .models import UserBase, DeliveryInfo
 
 
 class UserSignUpForm(UserCreationForm):
-    email = forms.EmailField(help_text='Required')
-    password1 = forms.CharField(label="Password", help_text='Required', widget=forms.PasswordInput)
-    password2 = forms.CharField(label="Confirm password", help_text='Required', widget=forms.PasswordInput)
+    email = forms.EmailField(label="Email", widget=forms.EmailInput(
+        attrs={
+            'class': 'form-control mb-2', 
+            'type': 'email',
+            'placeholder': 'Email'
+        }
+    ))
+    password1 = forms.CharField(label="Password", widget=forms.PasswordInput(
+        attrs={
+            'class': 'form-control mb-2', 
+            'type': 'password',
+            'placeholder': 'Password'
+        }
+    ))
+    password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput(
+        attrs={
+            'class': 'form-control mb-2', 
+            'type': 'password',
+            'placeholder': 'Confirm Password'
+        }
+    ))
 
     class Meta:
         model = UserBase
