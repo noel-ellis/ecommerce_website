@@ -1,0 +1,28 @@
+{% extends "store/base.html" %}
+{% block content %}
+<div class="container-fluid p-0 pb-5">
+  <div class="d-flex justify-content-center container-fluid col-10 p-0">
+    <div class="d-flex flex-column container-fluid p-0">
+      <form method="POST" enctype="multipart/form-data" class="">
+        {% csrf_token %}
+        <fieldset class="form-group">
+          <legend class="m-0 p-0">
+            <p class="fs-4">EDIT ADDRESS</p>
+            <hr class="my-2">
+          </legend>
+          {% for field in address_form %}
+            <div class="col-5">
+              <hr class="mt-3 mb-0">
+            </div>
+            <p class='ms-3 my-2' style="font-size: 0.75rem;">{{ field.label|upper }}</p>
+            {{ field }}
+          {% endfor %}
+            
+        </fieldset>
+        <button class="btn btn-bd-dark mt-3" type="submit" name="address_data">UPDATE</button>
+        <hr class="my-2">
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

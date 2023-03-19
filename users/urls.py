@@ -8,6 +8,8 @@ app_name = 'users'
 
 urlpatterns = [
     path('settings/', views.settings, name='settings'),
+    path('address/<slug:address_id>/edit', views.edit_address, name='edit_address'),
+    path('address/<slug:address_id>/delete', views.delete_address, name='delete_address'),
     path('signup/', views.signup, name='signup'),
     path('activate/<slug:uidb64>/<slug:token>', views.activate, name='activate'),
     path("login/", auth_views.LoginView.as_view(template_name='users/login.html', form_class=UserLoginForm), name='login'),

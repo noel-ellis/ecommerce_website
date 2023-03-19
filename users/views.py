@@ -79,9 +79,62 @@ def signout(request):
 
 
 @login_required
+def edit_address(request, address_id):
+    user = request.user
+    address = DeliveryInfo.objects.filter(id=address_id).first()
+    if not address:
+        messages.error(request, "Address doesn't exist")
+        return redirect('users:settings')
+    
+    if address.user != user:
+        messages.error(request, 'No permission')
+        return redirect('users:settings')
+    
+    if request.method == "POST":   
+        if "address_data" in request.POST:
+            form = DeliveryInfoForm(
+                request.POST,
+                instance=address
+            )
+
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Address Updated')
+                return redirect('users:settings')
+
+            messages.error(request, 'Data is invalid')
+            return redirect('users:settings')
+    
+    address_form = DeliveryInfoForm(instance = address)
+    
+    context = {
+        'address_form': address_form
+    }
+
+    return render(request, "users/edit_address.html", context)
+
+@login_required
+def delete_address(request, address_id):
+    user = request.user
+    address = DeliveryInfo.objects.filter(id=address_id).first()
+    if not address:
+        messages.error(request, "Address doesn't exist")
+        return redirect('users:settings')
+    
+    if address.user != user:
+        messages.error(request, 'No permission')
+        return redirect('users:settings')
+    
+    address.delete()
+
+    messages.success(request, 'Deleted')
+    return redirect('users:settings')
+
+
+@login_required
 def settings(request):
     if request.method == "POST":
-        if "profile" in request.POST:
+        if "profile_data" in request.POST:
             form = UserUpdateForm(
                 request.POST,
                 instance=request.user
