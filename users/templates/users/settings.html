@@ -47,7 +47,10 @@
                       {% endfor %}
                         
                     </fieldset>
-                    <button class="btn btn-bd-dark mt-3" type="submit" name="profile_data">UPDATE</button>
+                    <div class="container-fluid p-0 d-flex flex-row justify-content-between">
+                      <button class="btn btn-bd-dark mt-3" type="submit" name="profile_data">UPDATE</button>
+                      <a class="btn btn-bd-dark mt-3" href="{% url "users:settings" %}">CANCEL</a>
+                    </div>
                     <hr class="my-2">
                   </form>
                 </div>
@@ -225,17 +228,17 @@
 
 <!-- Modal for DEACTIVATE ACCOUNT -->
 <div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content px-4 pt-4">
       <div class="modal-header">
-        <p class="modal-title fs-5" id="exampleModalLabel">DEACTIVATE ACCOUNT</p>
+        <p class="modal-title fs-5">DEACTIVATE ACCOUNT</p>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <p class="">You can delete your customer account here. You will be able to recover it in the next 30 days after which it will be deleted forever.</p>
       </div>
       <div class="modal-footer d-flex justify-content-center">
-        <button type="button" class="btn btn-bd-dark" href="{% url 'users:deactivate'%}">DEACTIVATE ACCOUNT</button>
+        <a class="btn btn-bd-dark" href="{% url 'users:deactivate' %}">DEACTIVATE ACCOUNT</a>
       </div>
     </div>
   </div>

@@ -67,8 +67,7 @@ def deactivate(request):
     logout(request)
     user.is_active = False
     user.save()
-    messages.success(request, 'Your account has been deactivated')
-    return redirect('store:main')
+    return render(request, 'users/AccountSuccessfullyDeactivated.html')
 
 
 @login_required
