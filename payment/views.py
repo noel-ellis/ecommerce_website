@@ -10,6 +10,8 @@ from ecommerce_website.settings import STRIPE_API_SECRET_KEY
 from cart.cart import Cart
 from users.models import DeliveryInfo
 from orders.views import payment_confirmation
+from users.forms import UserUpdateForm
+from users.models import UserBase
 
 import stripe
 
@@ -17,7 +19,8 @@ import stripe
 @login_required
 def checkout(request):
     cart = Cart(request)
-    address_info = DeliveryInfo.objects.filter(user=request.user.id)
+    user_info = UserBase.objects.filter(id = request.user.id).first()
+    address_info = DeliveryInfo.objects.filter(user=request.user.id).all()
 
     # Convert float to a Stripe-specific int format (same float but w/o the dot: 10.99 -> 1099)
     total_price = str(cart.count_total_price())
@@ -31,7 +34,11 @@ def checkout(request):
         metadata={'userid': request.user.id}
     )
 
-    context = {'client_secret': intent.client_secret, 'address_info': address_info}
+    context = {
+        'client_secret': intent.client_secret, 
+        'address_info': address_info,
+        'user_info': user_info
+    }
     return render(request, 'payment/checkout.html', context)
 
 

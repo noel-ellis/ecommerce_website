@@ -164,7 +164,7 @@ def settings(request):
 
     user_form = UserUpdateForm(instance=request.user)
     address_form = DeliveryInfoForm()
-    address_info = DeliveryInfo.objects.filter(user=request.user.id)
+    address_info = DeliveryInfo.objects.filter(user=request.user.id).all()
     
     order_quiery = Order.objects.filter(user=request.user.id)
     order_history = {}
