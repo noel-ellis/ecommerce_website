@@ -1,5 +1,143 @@
 {% extends "store/base.html" %}
 {% block content %}
+<div class="container-fluid p-0 pb-5">
+  <div class="d-flex justify-content-center container-fluid col-10 p-0">
+    <div class="d-flex flex-column container-fluid p-0">
+      
+      <!-- header+divider -->
+      <div class="container-fluid d-flex flex-row justify-content-start p-0">
+        <div class="col-4 mt-4">
+          <p class="text-center fs-3 p-0">SHOPPING CART</p>
+        </div>
+        <div class="container-fluid p-0 mt-4 ms-2 d-flex align-items-center">
+          {% if cart|length == 1 %}
+            <p class="text-start p-0">you have 1 item in your shopping cart</p>
+          {% else %}
+            <p class="text-start p-0">you have {{ cart|length }} items in your shopping cart</p>
+          {% endif %}
+        </div>
+      </div>
+      <hr class="mt-3 mb-0 border-dark" style="opacity: 1;">
+
+      <!-- cart table -->
+      <div class="container-fluid d-flex flex-column align-items-center p-0">
+
+        <!-- table header -->
+        <div class="container-fluid d-flex flex-row m-0 mt-2 p-0 px-5">
+          <div class="col-2">
+            <p class="m-0 p-0 text-center fs-5">ITEM</p>
+          </div>
+          <div class="col-3"></div>
+          <div class="col-2">
+            <p class="m-0 p-0 text-center fs-5">UNIT PRICE</p>
+          </div>
+          <div class="col-2">
+            <p class="m-0 p-0 text-center fs-5">QUANTITY</p>
+          </div>
+          <div class="col-2">
+            <p class="m-0 p-0 text-center fs-5">TOTAL PRICE</p>
+          </div>
+        </div>
+
+        <!-- item card -->
+        {% for item in cart %}
+        <div class="container-fluid d-flex flex-column p-0">
+          <div class="container-fluid d-flex flex-row p-0 px-5">
+
+            <!-- image -->
+            <div class="col-2">
+              <img src="{{ item.product_image.url }}" class="img-fluid">
+            </div>
+
+            <!-- info -->
+            <div class="col-3 d-flex align-items-center justify-content-center">
+              <div class="container-fluid d-flex flex-column mx-5 p-0">
+                <p class="m-0 p-0"><strong>{{ item.product_name }}</strong></p>
+                <p class="m-0 mt-2 p-0">Color: {{ item.product_color }}</p>
+                <p class="m-0 mt-2 p-0">Size: {{ item.product_size }}</p>
+                {% if item.product_availability %}
+                <p class="m-0 mt-2 p-0 text-success">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                  </svg>
+                  In Stock
+                </p>
+                {% else %}
+                <p class="m-0 mt-2 p-0 text-danger">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                  </svg>
+                  Out of Stock
+                </p>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- unit price -->
+            <div class="col-2 d-flex align-items-center justify-content-center">
+              <p>${{ item.product_price }}</p>
+            </div>
+
+            <!-- quantity -->
+            <div class="col-2 d-flex align-items-center justify-content-center">
+              <p>{{ item.product_qty }}</p>
+            </div>
+
+            <!-- total price -->
+            <div class="col-2 d-flex align-items-center justify-content-center">
+              <p>${{ item.product_subtotal }}</p>
+            </div>
+
+            <!-- close button -->
+            <div class="col-1 d-flex align-items-start justify-content-center">
+              <button type="button" class="mt-4 cart-delete-btn btn-close"></button>
+            </div>
+
+          </div>
+          <hr class="m-0 my-2 p-0 border-dark">
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- payment summary -->
+      <div class="container-fluid d-flex flex-column p-0">
+        <div class="col-5 d-flex flex-column mx-5 px-5 py-3">
+          <p class="m-0 mb-2 p-0 fs-5"><strong>SUMMARY</strong></p>
+
+          <!-- quantity -->
+          <div class="container-fluid d-flex flex-row mb-2 p-0">
+            <div class="col-9">
+              <p class="m-0 p-0">Quantity</p>
+            </div>
+            <div class="col-3">
+              <p class="m-0 p-0">{{ cart|length }}</p>
+            </div>
+          </div>
+
+          <!-- total price -->
+          <div class="container-fluid d-flex flex-row mb-2 p-0">
+            <div class="col-9">
+              <p class="m-0 p-0">Total price</p>
+            </div>
+            <div class="col-3">
+              <p class="m-0 p-0">${{ cart.total_price }}</p>
+            </div>
+          </div>
+
+          <a class="btn btn-bd-dark mt-3" href="{% url 'payment:checkout' %}">PROCEED TO CHECKOUT</a>
+
+        </div>
+        <hr class="m-0 my-2 p-0 border-dark">
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+{% endblock content%}
+
+{% comment "old code" %}
     <div class="d-flex flex-column mb-5 pb-5">
         {% for item in cart %}
         <div id="cart-product-{{ item.product_id }}" class="d-flex flex-row justify-content-center align-items-center">
@@ -100,4 +238,5 @@
             });
         })
     </script>
-{% endblock content%}
+
+{% endcomment %}

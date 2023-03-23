@@ -76,6 +76,10 @@ class Cart:
             cart['product_id'] = product.id
             cart['product_color'] = product.color
             cart['product_size'] = product.size
+            cart['product_availability'] = False
+            if product.quantity > 0:
+                cart['product_availability'] = True
+            
             yield cart        
 
     def __len__(self):

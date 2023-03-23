@@ -315,3 +315,17 @@ small {
     border-radius: 0rem;
     opacity: 1;
 }
+
+.dropdown-menu {
+    border-radius: 0rem;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    color: #fff;
+    text-decoration: none;
+    background-color: #000000;
+}
+
+.text-success {
+    color: #69A042 !important;
+  }

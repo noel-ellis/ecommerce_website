@@ -22,7 +22,7 @@
 
             <!--navigation-->
             <header class="navbar navbar-expand-lg">
-                <div class="container-fluid justify-content-around">
+                <div class="container-fluid justify-content-between mx-5 px-5">
                     
                     <!-- Left elements -->
                     <ul class="navbar-nav flex-row">
@@ -249,7 +249,11 @@
                         {% if not cart %}
                         <p class="text-dark m-2 ms-3 p-0 mt-0" id="offcanvasCartLabel">Empty</p>
                         {% else %}
-                        <p class="text-dark m-2 ms-3 p-0 mt-0" id="offcanvasCartLabel">You have {{ cart|length }} items in your shopping cart</p>
+                            {% if cart|length == 1 %}
+                            <p class="text-dark m-2 ms-3 p-0 mt-0" id="offcanvasCartLabel">You have 1 item in your shopping cart</p>
+                            {% else %}
+                            <p class="text-dark m-2 ms-3 p-0 mt-0" id="offcanvasCartLabel">You have {{ cart|length }} items in your shopping cart</p>
+                            {% endif %}
                         {% endif %}
                     </div>
                 </div>
@@ -323,6 +327,7 @@
                 <small class="mb-5 mt-1">Note: You can opt-out at any time. See our Privacy Policy and Terms.</small>
             </div>
         </footer>
+
         <footer class="d-flex flex-column justify-content-center bg-black border-top border-3 border-light">
             <div class="d-flex flex-row justify-content-center mt-5 pt-3">
                 <div class="flex-column px-5">
