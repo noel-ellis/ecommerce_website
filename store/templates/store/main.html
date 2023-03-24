@@ -19,13 +19,14 @@
     {% if promo %}
     <div class="row row-cols-xxl-4 d-flex justify-content-center mb-5 pb-5">
       {% for product in promo %}
-      <div class="col d-flex justify-content-center" style="width: 15rem;">
+      <div class="col d-flex justify-content-center position-relative" style="width: 15rem;">
         <div class="card p-0 m-0">
           <img src="{{ product.image.url }}" class="card-img-top">
           <div class="card-body">
             <h5 class="card-title text-center">{{ product.name }}</h5>
             <p class="card-text text-center">{{ product.material }}</p>
             <p class="card-text text-center">${{ product.price }}</p>
+            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.slug %}"></a>
           </div>
         </div>
       </div>
@@ -58,13 +59,14 @@
     {% if new %}
     <div class="row row-cols-xxl-4 d-flex justify-content-center mb-5 pb-5">
       {% for product in new %}
-      <div class="col d-flex justify-content-center" style="width: 15rem;">
+      <div class="col d-flex justify-content-center position-relative" style="width: 15rem;">
         <div class="card p-0 m-0">
           <img src="{{ product.image.url }}" class="card-img-top">
           <div class="card-body">
             <h5 class="card-title text-center">{{ product.name }}</h5>
             <p class="card-text text-center">{{ product.material }}</p>
             <p class="card-text text-center">${{ product.price }}</p>
+            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.slug %}"></a>
           </div>
         </div>
       </div>
