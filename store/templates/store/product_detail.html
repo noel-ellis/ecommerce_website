@@ -50,7 +50,7 @@
                         </div>
                         <div class="p-2 px-4">
                             {% for color in colors %}
-                            <input type="radio" class="btn-check" name="color-options" id="btn-radio-color-{{ color.id }}" autocomplete="off">
+                            <input type="radio" class="btn-check" name="color-options" id="btn-radio-color-{{ color.id }}" autocomplete="off" data-color-id="{{ color.id }}" >
                             {% if color.name == "White" %}
                             <label class="btn btn-colors-checkbox" for="btn-radio-color-{{ color.id }}" style="--bs-btn-bg: #{{ color.code }}; --bs-btn-active-bg: #{{ color.code }}; --bs-btn-border-color: #d3d3d3;"></label>
                             {% else %}
@@ -71,7 +71,7 @@
                                 {% for size in sizes %}
                                 <div class="col">
                                     <input type="radio" class="btn-check" name="size-options" id="btn-radio-size-{{ size }}" autocomplete="off">
-                                    <label class="btn btn-custom-checkbox" for="btn-radio-size-{{ size }}" style="--bs-btn-padding-x: 2.88rem; --bs-btn-padding-y: 0.7rem;">{{ size }}</label>
+                                    <label class="btn btn-custom-checkbox" for="btn-radio-size-{{ size }}" style="--bs-btn-padding-x: 2.88rem; --bs-btn-padding-y: 0.7rem;" value="{{ size }}">{{ size }}</label>
                                 </div>
                                 {% endfor %}
                             </div>
@@ -161,13 +161,17 @@
 <script>
     $(document).on('click', '#cart-add-btn', function (e) {
         e.preventDefault();
-        var product_id = $(this).data('productid');
+        const product_id = $(this).data('productid');
+        const selected_size = document.querySelector('input[name="size-options"]:checked + label').textContent;
+        const selected_color_id = document.querySelector('input[name="color-options"]:checked').dataset.colorId;
         $.ajax({
             type: 'POST',
             url: '{% url "cart:modify" %}',
             data: {
                 product_id: product_id,
                 product_qty: '1',
+                product_size: selected_size,
+                product_color_id: selected_color_id,
                 csrfmiddlewaretoken: "{{csrf_token}}",
                 action: 'add'
             },

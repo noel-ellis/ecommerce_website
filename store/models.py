@@ -40,12 +40,9 @@ class Product(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
-    quantity = models.PositiveIntegerField()
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     sex = models.CharField(max_length=5, choices=SEXES)
-    size = models.CharField(max_length=4, choices=SIZES)
-    color = models.ForeignKey(Color, on_delete=models.CASCADE)
     sale = models.BooleanField(default=False)
     new = models.BooleanField(default=False)
     promo = models.BooleanField(default=False)
@@ -57,6 +54,21 @@ class Product(models.Model):
 
     class Meta:
         ordering = ('-date_modified',)
+        verbose_name_plural = 'Products'
 
     def __str__(self):
         return self.name
+    
+
+class ProductVariant(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    size = models.CharField(max_length=4, choices=SIZES)
+    color = models.ForeignKey(Color, on_delete=models.CASCADE)
+    available_units = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{self.product.name}; Size: {self.size}, Color: {self.color}\nAvailable Units: {self.available_units}'
+    
+    class Meta:
+        verbose_name_plural = 'Product Variants'
+

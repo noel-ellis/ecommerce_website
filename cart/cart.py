@@ -1,4 +1,4 @@
-from store.models import Product
+from store.models import Product, ProductVariant
 
 from decimal import Decimal
 
@@ -18,20 +18,23 @@ class Cart:
             self.count_total_price()
             return
 
-    def add(self, product: Product, product_qty: int):
-        product_id = str(product.id)
+    def add(self, product_variant: ProductVariant, product_qty: int):
+        product_variation_id = str(product_variant.id)
+        product_price = str(product_variant.product.price)
+        product_name = str(product_variant.product.name)
+        product_slug = str(product_variant.product.slug)
         
-        if product_id not in self.cart:
-            self.cart[product_id] = {
+        if product_variation_id not in self.cart:
+            self.cart[product_variation_id] = {
                 'product_qty': product_qty,
-                'product_price': str(product.price),
-                'product_name': product.name,
-                'product_slug': product.slug,
+                'product_price': product_price,
+                'product_name': product_name,
+                'product_slug': product_slug,
             }
             self.save()
             return
         
-        self.cart[product_id]['product_qty'] += product_qty
+        self.cart[product_variation_id]['product_qty'] += product_qty
         self.save()
 
     def update_qty(self, product: Product, product_qty: int):
@@ -61,23 +64,23 @@ class Cart:
         self.session.modified = True
 
     def __iter__(self):
-        product_ids = self.cart.keys()
-        products = Product.objects.filter(id__in=product_ids)
+        product_variant_ids = self.cart.keys()
+        products = ProductVariant.objects.filter(id__in=product_variant_ids)
         cart = self.cart.copy()
         
-        for product in products:
-            cart['product_qty'] = self.cart[str(product.id)]['product_qty']
-            cart['product_price'] = str(product.price)
-            cart['product_subtotal'] = product.price*self.cart[str(product.id)]['product_qty']
-            cart['product_name'] = product.name
-            cart['product_description'] = product.description
-            cart['product_image'] = product.image
-            cart['product_slug'] = product.slug
-            cart['product_id'] = product.id
-            cart['product_color'] = product.color
-            cart['product_size'] = product.size
+        for product_variant in products:
+            cart['product_qty'] = self.cart[str(product_variant.id)]['product_qty']
+            cart['product_price'] = str(product_variant.product.price)
+            cart['product_subtotal'] = product_variant.product.price*self.cart[str(product_variant.id)]['product_qty']
+            cart['product_name'] = product_variant.product.name
+            cart['product_description'] = product_variant.product.description
+            cart['product_image'] = product_variant.product.image
+            cart['product_slug'] = product_variant.product.slug
+            cart['product_id'] = product_variant.product.id
+            cart['product_color'] = product_variant.color
+            cart['product_size'] = product_variant.size
             cart['product_availability'] = False
-            if product.quantity > 0:
+            if product_variant.available_units > 0:
                 cart['product_availability'] = True
             
             yield cart        

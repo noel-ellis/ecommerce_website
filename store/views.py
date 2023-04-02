@@ -17,22 +17,17 @@ def main(request):
     return render(request, 'store/main.html', context=context)
 
 
-def category_list(request):
-    categories = Category.objects.all()
-    return render(request, 'store/category_list.html', {'categories': categories})
-
-
 def product_list_view(request):
     wishlist = Wishlist(request)
     wishlist_product_ids = [wishlist_product['id'] for wishlist_product in list(wishlist)]
-    all_products = Product.objects.all()
+    all_products = Product.objects.all() # later: use select_related instead to optimize quiering
     colors = Color.objects.all()
     materials = Material.objects.all()
     categories = Category.objects.all()
 
     product_list = []
     for product in all_products:
-        product_wishlist_mixed = {}
+        product_wishlist_mixed = {} # later: unpack product.values() directly into the dictionary
         product_wishlist_mixed['id'] = product.id
         product_wishlist_mixed['image'] = product.image
         product_wishlist_mixed['name'] = product.name
@@ -59,19 +54,6 @@ def product_list_view(request):
         'is_paginated': False,
     }
     return render(request, 'store/product_list.html', context=context)
-    
-
-class CategoryUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
-    model = Category
-    fields = [
-        'image',
-        'name',
-        'slug',
-        'description',
-    ]
-
-    def test_func(self):
-        return self.request.user.has_perm('store.change_product')
 
 
 def product_detail_view(request, slug):
