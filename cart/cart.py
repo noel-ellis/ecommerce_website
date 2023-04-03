@@ -74,7 +74,7 @@ class Cart:
             cart['product_subtotal'] = product_variant.product.price*self.cart[str(product_variant.id)]['product_qty']
             cart['product_name'] = product_variant.product.name
             cart['product_description'] = product_variant.product.description
-            cart['product_image'] = product_variant.product.image
+            cart['product_image'] = product_variant.image
             cart['product_slug'] = product_variant.product.slug
             cart['product_id'] = product_variant.product.id
             cart['product_color'] = product_variant.color

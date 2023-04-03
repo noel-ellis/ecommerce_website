@@ -11,6 +11,10 @@ class Wishlist:
             return 
         self.wishlist = request.session.get(self.session_wishlist_name)
 
+    @property
+    def ids(self):
+        return list(self.wishlist)
+    
     def save(self):
         self.session.modified = True
 
@@ -27,16 +31,18 @@ class Wishlist:
             del self.wishlist[product_id]
             self.save()
             return
+        
+    def contains(self, product_id: str):
+        return product_id in self.ids
 
     def __len__(self):
         return len(self.wishlist)
     
     def __str__(self):
-        return f'{list(self.wishlist.keys())}'
+        return self.ids
     
     def __iter__(self):
-        product_ids = self.wishlist.keys()
-        products_from_wishlist = Product.objects.filter(id__in=product_ids)
+        products_from_wishlist = Product.objects.filter(id__in=self.ids)
         for product in products_from_wishlist:
             product_from_wishlist = {}
             product_from_wishlist['id'] = product.id

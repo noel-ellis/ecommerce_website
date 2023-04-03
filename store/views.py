@@ -1,8 +1,9 @@
+from django.core.files.storage import default_storage
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
 from django.views import generic
 
-from .models import Category, Product, Color, Material
+from .models import Category, Product, ProductVariant, Color, Material
 from wishlist.wishlist import Wishlist
 from ecommerce_website.choices import SIZES_LIST as sizes
 
@@ -19,46 +20,35 @@ def main(request):
 
 def product_list_view(request):
     wishlist = Wishlist(request)
-    wishlist_product_ids = [wishlist_product['id'] for wishlist_product in list(wishlist)]
-    all_products = Product.objects.all() # later: use select_related instead to optimize quiering
     colors = Color.objects.all()
     materials = Material.objects.all()
     categories = Category.objects.all()
 
-    product_list = []
+    all_products = ProductVariant.objects.select_related('product__material', 'color').values("product__material__name", "product__name", "product__price", "product__slug", "product__id", "color__name", "image").all()
     for product in all_products:
-        product_wishlist_mixed = {} # later: unpack product.values() directly into the dictionary
-        product_wishlist_mixed['id'] = product.id
-        product_wishlist_mixed['image'] = product.image
-        product_wishlist_mixed['name'] = product.name
-        product_wishlist_mixed['slug'] = product.slug
-        product_wishlist_mixed['sex'] = product.sex
-        product_wishlist_mixed['price'] = str(product.price)
-        product_wishlist_mixed['sale'] = product.sale
-        product_wishlist_mixed['new'] = product.new
-        product_wishlist_mixed['promo'] = product.promo
-        product_wishlist_mixed['material'] = product.material.name
-        product_wishlist_mixed['color'] = product.color.name
-        product_wishlist_mixed['category'] = product.category
-        product_wishlist_mixed['in_wishlist'] = False
-        if product.id in wishlist_product_ids:
-            product_wishlist_mixed['in_wishlist'] = True
-        product_list.append(product_wishlist_mixed)
+        product['in_wishlist'] = wishlist.contains(product['product__id'])
+        image_url = default_storage.url(product['image'])
+        product['image'] = image_url
+        print(f'\n\n===================\nproduct #:\n{product["image"]}\n===================\n\n')
 
     context = {
-        'product_list': product_list,
+        'product_list': all_products,
         'sizes': sizes,
         'colors': colors,
         'materials': materials,
-        'categories': categories,
-        'is_paginated': False,
+        'categories': categories
     }
     return render(request, 'store/product_list.html', context=context)
 
 
 def product_detail_view(request, slug):
     product = Product.objects.filter(slug=slug).first()
-    colors = Color.objects.all()
+    product_variants = ProductVariant.objects.select_related('color').filter(product=product)
+    colors = []
+    sizes = []
+    for product_variant in product_variants:
+        colors.append(product_variant.color)
+        sizes.append(product_variant.size)
     promo = Product.objects.filter(promo=True)[:3]
 
     context = {

@@ -235,13 +235,13 @@
                                                 
                                                 <!-- clickable card-->
                                                 <div class="container px-4 position-relative">
-                                                    <img src="{{ product.image.url }}" class="card-img-top img-fluid">
+                                                    <img src="{{ product.image }}" class="card-img-top img-fluid">
                                                     <div class="card-body">
-                                                        <h5 class="card-title text-center">{{ product.name|title }}</h5>
-                                                        <p class="card-text text-center m-0 mb-1 p-0">{{ product.material }}</p>
-                                                        <p class="card-text text-center m-0 p-0">{{ product.color }}</p>
-                                                        <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product.price }}</strong></p>
-                                                        <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.slug %}"></a>
+                                                        <h5 class="card-title text-center">{{ product.product__name|title }}</h5>
+                                                        <p class="card-text text-center m-0 mb-1 p-0">{{ product.product__material__name }}</p>
+                                                        <p class="card-text text-center m-0 p-0">{{ product.color__name }}</p>
+                                                        <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product.product__price }}</strong></p>
+                                                        <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.product__slug %}"></a>
                                                     </div>
                                                 </div>
 

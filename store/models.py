@@ -35,7 +35,6 @@ class Material(models.Model):
 
 
 class Product(models.Model):
-    image = models.ImageField(blank=True, default='default_item.png', upload_to='product_pics')
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField()
@@ -62,6 +61,7 @@ class Product(models.Model):
 
 class ProductVariant(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    image = models.ImageField(blank=True, default='/product_pics/default_item.png', upload_to='product_pics')
     size = models.CharField(max_length=4, choices=SIZES)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
     available_units = models.PositiveIntegerField()
