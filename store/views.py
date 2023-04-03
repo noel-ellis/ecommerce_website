@@ -9,8 +9,8 @@ from ecommerce_website.choices import SIZES_LIST as sizes
 
 
 def main(request):
-    promo = Product.objects.filter(promo=True)[:4]
-    new = Product.objects.filter(new=True)[:4]
+    promo = ProductVariant.objects.filter(promo=True).select_related('product', 'product__material')[:4]
+    new = ProductVariant.objects.filter(new=True).select_related('product', 'product__material')[:4]
     context = {
         'promo': promo,
         'new': new,
@@ -29,7 +29,6 @@ def product_list_view(request):
         product['in_wishlist'] = wishlist.contains(product['product__id'])
         image_url = default_storage.url(product['image'])
         product['image'] = image_url
-        print(f'\n\n===================\nproduct #:\n{product["image"]}\n===================\n\n')
 
     context = {
         'product_list': all_products,
@@ -42,17 +41,27 @@ def product_list_view(request):
 
 
 def product_detail_view(request, slug):
-    product = Product.objects.filter(slug=slug).first()
-    product_variants = ProductVariant.objects.select_related('color').filter(product=product)
+    product = Product.objects.get(slug=slug)
+    product_variants = ProductVariant.objects.select_related('color').filter(product=product, available_units__gt=0).values('size', 'color__id', "color__code", "color__name", 'image')
+    
     colors = []
     sizes = []
+    images = []
+
     for product_variant in product_variants:
-        colors.append(product_variant.color)
-        sizes.append(product_variant.size)
-    promo = Product.objects.filter(promo=True)[:3]
+        color_data = {'id': product_variant['color__id'], 'code': product_variant['color__code'], 'name': product_variant['color__name'],}
+        colors.append(color_data)
+
+        sizes.append(product_variant['size'])
+
+        image_url = default_storage.url(product_variant['image'])
+        images.append(image_url)
+
+    promo = ProductVariant.objects.filter(promo=True).select_related('product', 'product__material')[:3]
 
     context = {
         'product': product,
+        'images': images,
         'sizes': sizes,
         'colors': colors,
         'promo': promo,

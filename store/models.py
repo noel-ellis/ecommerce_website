@@ -42,9 +42,6 @@ class Product(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     sex = models.CharField(max_length=5, choices=SEXES)
-    sale = models.BooleanField(default=False)
-    new = models.BooleanField(default=False)
-    promo = models.BooleanField(default=False)
     material = models.ForeignKey(Material, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
@@ -65,9 +62,12 @@ class ProductVariant(models.Model):
     size = models.CharField(max_length=4, choices=SIZES)
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
     available_units = models.PositiveIntegerField()
+    sale = models.BooleanField(default=False)
+    new = models.BooleanField(default=False)
+    promo = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.product.name}; Size: {self.size}, Color: {self.color}\nAvailable Units: {self.available_units}'
+        return f'{self.product.name}; {self.color}, {self.size}'
     
     class Meta:
         verbose_name_plural = 'Product Variants'

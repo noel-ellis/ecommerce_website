@@ -8,9 +8,28 @@
             <!-- product -->
             <div class="d-flex flex-row p-0">
 
-                <!-- image -->
+                <!-- images -->
                 <div class="col-6 px-5">
-                    <img src="{{ product.image.url }}" class="img-fluid">
+                  <div id="product_images" class="carousel slide carousel-fade" data-bs-ride="false">
+                    <div class="carousel-inner">
+                      {% for image_url in images %}
+                      <div class="carousel-item active">
+                        <img src="{{ image_url }}" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                          <h5>Second slide label</h5>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#product_images" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#product_images" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                  </div>
                 </div>
 
                 <!-- product info-->
@@ -137,11 +156,11 @@
                                     <div class="container px-4 position-relative">
                                         <img src="{{ product.image.url }}" class="card-img-top img-fluid">
                                         <div class="card-body">
-                                            <h5 class="card-title text-center">{{ product.name|title }}</h5>
-                                            <p class="card-text text-center m-0 mb-1 p-0">{{ product.material }}</p>
+                                            <h5 class="card-title text-center">{{ product.product.name|title }}</h5>
+                                            <p class="card-text text-center m-0 mb-1 p-0">{{ product.product.material.name }}</p>
                                             <p class="card-text text-center m-0 p-0">{{ product.color }}</p>
-                                            <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product.price }}</strong></p>
-                                            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.slug %}"></a>
+                                            <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product.product.price }}</strong></p>
+                                            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.product.slug %}"></a>
                                         </div>
                                     </div>
 

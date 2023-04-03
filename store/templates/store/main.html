@@ -3,7 +3,7 @@
 <div class="container-fluid p-0">
   <!-- HEADLINE 1 -->
   <div class="p-0 m-0 container-fluid position-relative">
-    <img src="/../../../media/src/main/headline_1.png" class="img-fluid">
+    <img src="/../../../media/headline_images/headline_1.png" class="img-fluid">
     <div class="d-flex flex-column justify-content-center position-absolute top-50 start-50 translate-middle">
       <h1 class="text-light display-3">NEW COLLECTION</h1>
       <div class="d-flex container-fluid justify-content-center">
@@ -23,10 +23,10 @@
         <div class="card p-0 m-0">
           <img src="{{ product.image.url }}" class="card-img-top">
           <div class="card-body">
-            <h5 class="card-title text-center">{{ product.name }}</h5>
-            <p class="card-text text-center">{{ product.material }}</p>
-            <p class="card-text text-center">${{ product.price }}</p>
-            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.slug %}"></a>
+            <h5 class="card-title text-center">{{ product.product.name }}</h5>
+            <p class="card-text text-center">{{ product.product.material.name }}</p>
+            <p class="card-text text-center">${{ product.product.price }}</p>
+            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.product.slug %}"></a>
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
 
   <!-- HEADLINE 2 -->
   <div class="p-0 m-0 container-fluid position-relative">
-    <img src="/../../../media/src/main/headline_2.png" class="img-fluid">
+    <img src="/../../../media/headline_images/headline_2.png" class="img-fluid">
     <div class="d-flex flex-column justify-content-center position-absolute top-50 start-50 translate-middle">
       <h4 class="text-light text-center mb-4">SANDALS WITH A SOFT FOOTBED</h4>
       <p class="text-light text-center">
@@ -63,10 +63,10 @@
         <div class="card p-0 m-0">
           <img src="{{ product.image.url }}" class="card-img-top">
           <div class="card-body">
-            <h5 class="card-title text-center">{{ product.name }}</h5>
-            <p class="card-text text-center">{{ product.material }}</p>
-            <p class="card-text text-center">${{ product.price }}</p>
-            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.slug %}"></a>
+            <h5 class="card-title text-center">{{ product.product.name }}</h5>
+            <p class="card-text text-center">{{ product.product.material }}</p>
+            <p class="card-text text-center">${{ product.product.price }}</p>
+            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.product.slug %}"></a>
           </div>
         </div>
       </div>
@@ -77,7 +77,7 @@
 
   <!-- HEADLINE 3 -->
   <div class="p-0 m-0 container-fluid position-relative">
-    <img src="/../../../media/src/main/headline_3.png" class="img-fluid">
+    <img src="/../../../media/headline_images/headline_3.png" class="img-fluid">
     <div class="d-flex flex-column justify-content-center position-absolute top-50 start-50 translate-middle">
       <h1 class="text-light text-center display-5 text-nowrap">Are you comfortable in your shoes?</h1>
       <p class="text-light text-center fs-4">Meet our classics and wear your way</p>
