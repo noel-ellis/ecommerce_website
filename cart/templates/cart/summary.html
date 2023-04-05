@@ -210,11 +210,11 @@
                     action: 'update'
                 },
                 success: function (json) {
-                    document.getElementById('cart-totalqty-badge').innerHTML = json.totalqty
-                    document.getElementById('cart-total-price').innerHTML = '$'+json.totalprice
-                    document.getElementById('offcanvas-cart-total-price').innerHTML = '$'+json.totalprice                 
-                    document.getElementById('cart-subtotal-'+product_id).innerHTML = '$'+json.subtotalprice
-                    document.getElementById('offcanvas-cart-qty-'+product_id).innerHTML = '✕'+json.qty
+                    document.getElementById('cart-totalqty-badge').innerHTML = json.totalqty // TODO: fix innerHTML security issue
+                    document.getElementById('cart-total-price').innerHTML = '$'+json.totalprice // TODO: fix innerHTML security issue
+                    document.getElementById('offcanvas-cart-total-price').innerHTML = '$'+json.totalprice // TODO: fix innerHTML security issue             
+                    document.getElementById('cart-subtotal-'+product_id).innerHTML = '$'+json.subtotalprice // TODO: fix innerHTML security issue
+                    document.getElementById('offcanvas-cart-qty-'+product_id).innerHTML = '✕'+json.qty // TODO: fix innerHTML security issue
                 },
                 error: function (xhr, errmsg, err) {}
             });
@@ -236,7 +236,7 @@
                 },
                 success: function (json) {
                     document.getElementById('cart-product-'+product_id).remove()
-                    document.getElementById('cart-total-price').innerHTML = '$'+json.totalprice
+                    document.getElementById('cart-total-price').innerHTML = '$'+json.totalprice // TODO: fix innerHTML security issue
                 },
                 error: function (xhr, errmsg, err) {}
             });

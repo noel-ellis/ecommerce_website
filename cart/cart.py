@@ -76,8 +76,9 @@ class Cart:
             cart['product_description'] = product_variant.product.description
             cart['product_image'] = product_variant.image
             cart['product_slug'] = product_variant.product.slug
-            cart['product_id'] = product_variant.product.id
+            cart['product_id'] = product_variant.id
             cart['product_color'] = product_variant.color
+            cart['product_color_id'] = product_variant.color.id
             cart['product_size'] = product_variant.size
             cart['product_availability'] = False
             if product_variant.available_units > 0:

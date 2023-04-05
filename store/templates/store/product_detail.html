@@ -10,14 +10,11 @@
 
                 <!-- images -->
                 <div class="col-6 px-5">
-                  <div id="product_images" class="carousel slide carousel-fade" data-bs-ride="false">
+                  <div id="product_images" class="carousel carousel-dark slide carousel-fade" data-bs-ride="false">
                     <div class="carousel-inner">
                       {% for image_url in images %}
                       <div class="carousel-item active">
                         <img src="{{ image_url }}" class="d-block w-100" alt="...">
-                        <div class="carousel-caption d-none d-md-block">
-                          <h5>Second slide label</h5>
-                        </div>
                       </div>
                       {% endfor %}
                     </div>
@@ -48,7 +45,7 @@
                     <!-- name, material-->
                     <div class="container-fluid p-0 pt-2">
                         <div class="p-0 px-4" aria-label="name-material">
-                            <h2 class="py-1"><strong>{{ product.name|upper }}</strong></h2>
+                            <h2 class="py-1"><strong id="product-name">{{ product.name|upper }}</strong></h2>
                             <p class="fs-5">{{ product.material }}</p>
                         </div>
                         <hr class="my-1">
@@ -57,28 +54,10 @@
                     <!-- price -->
                     <div class="container-fluid p-0 pt-2">
                         <div class="p-0 px-4" aria-label="price">
-                            <h3 class="pb-2">${{ product.price }}</h3>
+                            <h3 id="product-price" class="pb-2">${{ product.price }}</h3>
                         </div>
                         <hr class="my-1">
                     </div>
-
-                    <!-- color -->
-                    <div class="d-flex flex-column align-items-start">
-                        <div class="d-flex flex-row align-items-start p-0 pt-2 px-4">
-                            <p class="m-0 p-0 fs-5">Color:</p>
-                        </div>
-                        <div class="p-2 px-4">
-                            {% for color in colors %}
-                            <input type="radio" class="btn-check" name="color-options" id="btn-radio-color-{{ color.id }}" autocomplete="off" data-color-id="{{ color.id }}" >
-                            {% if color.name == "White" %}
-                            <label class="btn btn-colors-checkbox" for="btn-radio-color-{{ color.id }}" style="--bs-btn-bg: #{{ color.code }}; --bs-btn-active-bg: #{{ color.code }}; --bs-btn-border-color: #d3d3d3;"></label>
-                            {% else %}
-                            <label class="btn btn-colors-checkbox" for="btn-radio-color-{{ color.id }}" style="--bs-btn-bg: #{{ color.code }}; --bs-btn-active-bg: #{{ color.code }};"></label>
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <hr class="mb-1 mt-2">
 
                     <!-- size -->
                     <div class="d-flex flex-column justify-content-start">
@@ -87,15 +66,25 @@
                         </div>
                         <div class="p-2 px-4">
                             <div class="row row-cols-5 g-1">
-                                {% for size in sizes %}
+                                {% for size, list_of_colors in size_color_pairs.items %}
                                 <div class="col">
                                     <input type="radio" class="btn-check" name="size-options" id="btn-radio-size-{{ size }}" autocomplete="off">
-                                    <label class="btn btn-custom-checkbox" for="btn-radio-size-{{ size }}" style="--bs-btn-padding-x: 2.88rem; --bs-btn-padding-y: 0.7rem;" value="{{ size }}">{{ size }}</label>
+                                    <label class="btn btn-custom-checkbox btn-size" for="btn-radio-size-{{ size }}" style="--bs-btn-padding-x: 2.88rem; --bs-btn-padding-y: 0.7rem;" value="{{ size }}" data-list-of-colors="{{list_of_colors}}">{{ size }}</label>
                                 </div>
                                 {% endfor %}
                             </div>
                         </div>
+                        <hr class="mb-1 mt-2">
                     </div>
+
+                    <!-- color -->
+                    <div class="d-flex flex-column align-items-start">
+                        <div class="d-flex flex-row align-items-start p-0 pt-2 px-4">
+                            <p class="m-0 p-0 fs-5">Color:</p>
+                        </div>
+                        <div id="color-radios" class="p-2 px-4"></div>
+                    </div>
+                    
 
                     <!-- buttons -->
                     <div class="d-flex flex-row mt-3">
@@ -176,37 +165,133 @@
     </div>
 </div>
 
-<!-- ADD TO CART -->
+<!-- DISPLAY AVAILABLE COLORS FOR CHOSEN SIZE -->
 <script>
-    $(document).on('click', '#cart-add-btn', function (e) {
-        e.preventDefault();
-        const product_id = $(this).data('productid');
-        const selected_size = document.querySelector('input[name="size-options"]:checked + label').textContent;
-        const selected_color_id = document.querySelector('input[name="color-options"]:checked').dataset.colorId;
-        $.ajax({
-            type: 'POST',
-            url: '{% url "cart:modify" %}',
-            data: {
-                product_id: product_id,
-                product_qty: '1',
-                product_size: selected_size,
-                product_color_id: selected_color_id,
-                csrfmiddlewaretoken: "{{csrf_token}}",
-                action: 'add'
-            },
-            success: function (json) {
-                document.getElementById('cart-totalqty-badge').innerHTML = json.totalqty
-                document.getElementById('offcanvas-cart-total-price').innerHTML = '$'+json.totalprice
-                document.getElementById('offcanvas-cart-qty-'+product_id).innerHTML = '✕'+json.qty
-            },
-            error: function (xhr, errmsg, err) {}
-        });
-    });
+  $(document).on('click', '.btn-size', function (e) {
+    const colorsElement = document.querySelector("#color-radios");
+    colorsElement.textContent = '';
+    const listOfColorsJson = this.dataset.listOfColors.replace(/'/g, '"');
+    const listOfColors = JSON.parse(listOfColorsJson);
+
+    for (let i = 0; i < listOfColors.length; i++) {
+      const colorData = listOfColors[i];
+      const colorId = colorData.id;
+      const colorCode = colorData.code;
+      const colorName = colorData.name;
+
+      let input = document.createElement('input');
+      input.setAttribute("type", "radio");
+      input.setAttribute("class", "btn-check");
+      input.setAttribute("name", "color-options");
+      input.setAttribute("id", "btn-radio-color-" + colorId);
+      input.setAttribute("autocomplete", "off");
+      input.dataset.colorId=colorId;
+
+      let label = document.createElement('label');
+      label.setAttribute("class", "btn btn-colors-checkbox");
+      label.setAttribute("for", "btn-radio-color-" + colorId);
+      label.setAttribute("style", "--bs-btn-bg: #" + colorCode + ";" + " --bs-btn-active-bg: #" + colorCode + ";");
+      if (colorName == "White") {
+        label.style +=  " --bs-btn-border-color: #d3d3d3;";
+      };
+
+      colorsElement.append(input);
+      colorsElement.append(label);
+    };
+  });
 </script>
 
-<!-- CHOOSE COLOR -->
+<!-- ADD TO CART -->
 <script>
+  $(document).on('click', '#cart-add-btn', function (e) {
+    e.preventDefault();
+    const product_id = $(this).data('productid');
+    const selected_size = document.querySelector('input[name="size-options"]:checked + label').textContent;
+    const selected_color_id = document.querySelector('input[name="color-options"]:checked').dataset.colorId;
+    $.ajax({
+      type: 'POST',
+      url: '{% url "cart:modify" %}',
+      data: {
+        product_id: product_id,
+        product_qty: '1',
+        product_size: selected_size,
+        product_color_id: selected_color_id,
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: 'add'
+      },
+      success: function (json) {
+        document.getElementById('cart-totalqty-badge').textContent = json.totalqty;
+        
+        console.log(product_id);
 
+        if (document.getElementById("offcanvas-cart-product-" + product_id) == null) {
+          // construct base of the product card
+          let cardBase = document.createElement('div');
+          cardBase.setAttribute("class", "d-flex flex-row align-items-top justify-content-between py-3 border-bottom border-dark");
+          cardBase.setAttribute("id", "offcanvas-cart-product-" + product_id);
+
+          //construct image
+          let img = document.createElement('img');
+          img.setAttribute("src", json.img_url);
+          img.setAttribute("class", "img-fluid m-1 ms-4");
+          img.setAttribute("style", "height: 8rem;");
+
+          //construct base of the info section
+          let infoBase = document.createElement('div');
+          infoBase.setAttribute("class", "d-flex flex-column align-items-start justify-content-between");
+
+          //construct name base
+          let nameBase = document.createElement('p');
+          nameBase.setAttribute("class", "text-dark text-decoration-none m-0 mt-2 p-0");
+
+          //construct name
+          let name = document.createElement('strong');
+          name.textContent = document.getElementById('product-name').textContent;
+
+          //construct color
+          let color = document.createElement('p');
+          color.setAttribute("class", "m-0 p-0");
+          color.textContent = "Color : " + json.color_name;
+
+          //construct size
+          let size = document.createElement('p');
+          size.setAttribute("class", "m-0 p-0");
+          size.textContent = "Size : " + json.size;
+
+          //construct priceBase
+          let priceBase = document.createElement('p');
+          priceBase.setAttribute("class", "text-end m-0 mb-2");
+
+          //construct price
+          let price = document.createElement("strong");
+          price.textContent = document.getElementById("product-price").textContent;
+
+          //construct delete button
+          let deleteButton = document.createElement("button");
+          deleteButton.setAttribute("href", "#");
+          deleteButton.setAttribute("class", "cart-delete-btn btn-close m-0 mt-2 me-3");
+          deleteButton.setAttribute("aria-label", "Close");
+          deleteButton.dataset.productId = product_id;
+          deleteButton.dataset.productSize = selected_size;
+          deleteButton.dataset.productColorId = selected_color_id;
+
+          // insert the card into column with products (part of cart-offcanvas)
+          const columnWithProducts = document.getElementById('cart-items');
+          columnWithProducts.append(cardBase);
+          cardBase.append(img);
+          cardBase.append(infoBase);
+            infoBase.append(nameBase);
+              nameBase.append(name);
+            infoBase.append(color);
+            infoBase.append(size);
+            infoBase.append(priceBase);
+              priceBase.append(price);
+          cardBase.append(deleteButton);
+        }
+      },
+      error: function (xhr, errmsg, err) {}
+    });
+  });
 </script>
 
 <!-- ADD TO WISHLIST -->

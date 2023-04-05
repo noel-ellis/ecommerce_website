@@ -123,9 +123,9 @@
                 action: 'add'
             },
             success: function (json) {
-                document.getElementById('cart-totalqty-badge').innerHTML = json.totalqty
-                document.getElementById('offcanvas-cart-total-price').innerHTML = '$'+json.totalprice
-                document.getElementById('offcanvas-cart-qty-'+product_id).innerHTML = '✕'+json.qty
+                document.getElementById('cart-totalqty-badge').innerHTML = json.totalqty // TODO: fix innerHTML security issue
+                document.getElementById('offcanvas-cart-total-price').innerHTML = '$'+json.totalprice // TODO: fix innerHTML security issue
+                document.getElementById('offcanvas-cart-qty-'+product_id).innerHTML = '✕'+json.qty // TODO: fix innerHTML security issue
             },
             error: function (xhr, errmsg, err) {}
         });
