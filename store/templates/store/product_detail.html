@@ -221,9 +221,10 @@
       },
       success: function (json) {
         document.getElementById('cart-totalqty-badge').textContent = json.totalqty;
-        
-        console.log(product_id);
+        document.getElementById('offcanvas-cart-totalqty').textContent = json.totalqty;
+        document.getElementById('offcanvas-cart-total-price').textContent = "$" + json.totalprice;
 
+        // add product to product list in offcanvas-cart
         if (document.getElementById("offcanvas-cart-product-" + product_id) == null) {
           // construct base of the product card
           let cardBase = document.createElement('div');
@@ -262,9 +263,9 @@
           let priceBase = document.createElement('p');
           priceBase.setAttribute("class", "text-end m-0 mb-2");
 
-          //construct price
-          let price = document.createElement("strong");
-          price.textContent = document.getElementById("product-price").textContent;
+          //construct productPrice
+          let productPrice = document.createElement("strong");
+          productPrice.textContent = document.getElementById("product-price").textContent;
 
           //construct delete button
           let deleteButton = document.createElement("button");
@@ -285,14 +286,41 @@
             infoBase.append(color);
             infoBase.append(size);
             infoBase.append(priceBase);
-              priceBase.append(price);
+              priceBase.append(productPrice);
           cardBase.append(deleteButton);
-        }
+        };
+
+
       },
       error: function (xhr, errmsg, err) {}
     });
   });
 </script>
+
+{% comment "" %}
+<!-- offcanvas-footer -->
+                <div id="offcanvas-cart-footer" class="container-fluid p-0">
+                    {% if cart %}
+                    <!-- summary -->
+                    <div id="offcanvas-cart-summary" class="container-fluid">
+                        <h5 class="m-0 ms-3 mt-2 p-0">SUMMARY</h5>
+                        <div class="d-flex flex-row justify-content-between">
+                            <p class="m-0 ms-3 mt-3 p-0">Items</p>
+                            <p id="offcanvas-cart-totalqty" class="m-0 me-3 mt-3 p-0">{{ cart|length }}</p>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between">
+                            <p class="m-0 ms-3 mt-2 mb-2 p-0">Total Price</p>
+                            <p id="offcanvas-cart-total-price" class="m-0 me-3 mt-2 mb-2 p-0">${{ cart.total_price }}</p>
+                        </div>
+                    </div>
+                    
+                    <!-- button -->
+                    <div class="d-grid gap-0 p-0 m-0">
+                        <a role="button" class="btn btn-bd-dark m-0 py-2" href="{% url 'cart:summary' %}">SHOW CART</a>
+                    </div>
+                    {% endif %}  
+                </div>
+{% endcomment %}
 
 <!-- ADD TO WISHLIST -->
 <script>
