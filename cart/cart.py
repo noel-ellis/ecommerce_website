@@ -8,6 +8,7 @@ class Cart:
         self.session_cart_name = 'cart'
         self.session = request.session
         
+        # Get cart data or create new cart
         if self.session_cart_name not in self.session:
             self.cart = self.session[self.session_cart_name] = {}
             return
@@ -37,15 +38,15 @@ class Cart:
         self.cart[product_variation_id]['product_qty'] += product_qty
         self.save()
 
-    def update_qty(self, product: Product, product_qty: int):
-        product_id = str(product.id)
+    def update_qty(self, product_variant: ProductVariant, product_qty: int):
+        product_id = str(product_variant.id)
 
         if product_id in self.cart:
             self.cart[product_id]['product_qty'] = product_qty
             self.save()
 
-    def delete(self, product: Product):
-        product_id = str(product.id)
+    def delete(self, product_variant: ProductVariant):
+        product_id = str(product_variant.id)
         
         if product_id in self.cart:
             del self.cart[product_id]

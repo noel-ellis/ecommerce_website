@@ -126,30 +126,30 @@
                     </div>
                     <div class="p-0 py-5 d-flex flex-row justify-content-center border">
                         <div class="row row-cols-3 gx-4">
-                            {% for product in promo %}
+                            {% for product_variant in promo %}
                             <div class="col">
                                 <div class="card h-100">
 
                                     <!-- wishlist button -->
                                     <div class="d-flex justify-content-end container mt-3 p-0 pe-3">
-                                        {% if product.in_wishlist %}
-                                        <a class="btn wishlist-btn wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
+                                        {% if product_variant.in_wishlist %}
+                                        <a class="btn wishlist-btn wishlist-btn-delete" id="wishlist-btn-{{ product_variant.id }}" data-productid="{{ product_variant.id }}">
                                         </a>
                                         {% else %}
-                                        <a class="btn wishlist-btn wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
+                                        <a class="btn wishlist-btn wishlist-btn-add" id="wishlist-btn-{{ product_variant.id }}" data-productid="{{ product_variant.id }}">
                                         </a>
                                         {% endif %}
                                     </div>
                                     
                                     <!-- clickable card-->
                                     <div class="container px-4 position-relative">
-                                        <img src="{{ product.image.url }}" class="card-img-top img-fluid">
+                                        <img src="{{ product_variant.image.url }}" class="card-img-top img-fluid">
                                         <div class="card-body">
-                                            <h5 class="card-title text-center">{{ product.product.name|title }}</h5>
-                                            <p class="card-text text-center m-0 mb-1 p-0">{{ product.product.material.name }}</p>
-                                            <p class="card-text text-center m-0 p-0">{{ product.color }}</p>
-                                            <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product.product.price }}</strong></p>
-                                            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.product.slug %}"></a>
+                                            <h5 class="card-title text-center">{{ product_variant.product.name|title }}</h5>
+                                            <p class="card-text text-center m-0 mb-1 p-0">{{ product_variant.product.material.name }}</p>
+                                            <p class="card-text text-center m-0 p-0">{{ product_variant.color }}</p>
+                                            <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product_variant.product.price }}</strong></p>
+                                            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product_variant.product.slug %}"></a>
                                         </div>
                                     </div>
 

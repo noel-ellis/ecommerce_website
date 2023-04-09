@@ -44,7 +44,7 @@ def modify(request):
 
     if request.POST.get('action') == 'update':
         product_qty = int(request.POST.get('product_qty'))
-        cart.update_qty(product=product, product_qty=product_qty)
+        cart.update_qty(product_variant=selected_product_variant, product_qty=product_qty)
         
         subtotal_price = product.price*product_qty
         total_price = cart.count_total_price()
