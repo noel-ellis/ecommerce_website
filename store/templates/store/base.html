@@ -94,23 +94,12 @@
                         <!--Cart-->
                         <li class="d-flex nav-item mx-2">
                             <a class="text-white text-decoration-none align-middle position-relative" data-bs-toggle="offcanvas" href="#offcanvasCart" role="button" aria-controls="offcanvasCart">
-                                {% if cart %}
-                                    <svg id="cart-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
-                                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/>
-                                        <span id="cart-totalqty-badge" class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
-                                            {{ cart|length }}
-                                            <span class="visually-hidden">amount of items in cart</span>
-                                        </span>
-                                    </svg>
-                                {% else%}
-                                    <svg id="cart-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
-                                        <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
-                                        <span id="cart-totalqty-badge" class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
-                                            {{ cart|length }}
-                                            <span class="visually-hidden">amount of items in cart</span>
-                                        </span>
-                                    </svg>
-                                {% endif %}
+                                <svg id="cart-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+                                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                                    <span id="cart-totalqty-badge" class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ cart|length }}
+                                    </span>
+                                </svg>
                             </a>
                         </li>
                     </ul>
@@ -387,9 +376,6 @@
             const product_id = this.dataset.productId;
             const product_size = this.dataset.productSize;
             const product_color_id = this.dataset.productColorId;
-            console.log(product_id);
-            console.log(product_size);
-            console.log(product_color_id);
             $.ajax({
               type: 'POST',
               url: '{% url "cart:modify" %}',
@@ -404,7 +390,8 @@
                 const product_variant_id = json.product_variant_id;
                 document.getElementById("offcanvas-cart-product-" + product_variant_id).remove();
                 document.getElementById('offcanvas-cart-total-price').textContent = '$'+json.totalprice;
-                document.getElementById("offcanvas-cart-totalqty").textContent = json.totalqty;
+                document.getElementById('offcanvas-cart-totalqty').textContent = json.totalqty;
+                document.getElementById('cart-totalqty-badge').textContent = json.totalqty;
               },
               error: function (xhr, errmsg, err) {}
             });

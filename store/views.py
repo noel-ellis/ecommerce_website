@@ -57,7 +57,6 @@ def product_detail_view(request, slug):
         images.append(image_url)
 
     promo = ProductVariant.objects.filter(promo=True).select_related("product", "product__material")[:3]
-
     context = {
         "product": product,
         "images": images,

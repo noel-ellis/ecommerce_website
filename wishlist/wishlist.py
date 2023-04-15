@@ -49,7 +49,5 @@ class Wishlist:
             product_from_wishlist['name'] = product.name
             product_from_wishlist['slug'] = product.slug
             product_from_wishlist['material'] = product.material
-            product_from_wishlist['color'] = product.color
             product_from_wishlist['price'] = product.price
-            product_from_wishlist['image'] = product.image
             yield product_from_wishlist

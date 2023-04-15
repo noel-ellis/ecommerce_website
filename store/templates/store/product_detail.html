@@ -298,31 +298,6 @@
   });
 </script>
 
-{% comment "" %}
-<!-- offcanvas-footer -->
-                <div id="offcanvas-cart-footer" class="container-fluid p-0">
-                    {% if cart %}
-                    <!-- summary -->
-                    <div id="offcanvas-cart-summary" class="container-fluid">
-                        <h5 class="m-0 ms-3 mt-2 p-0">SUMMARY</h5>
-                        <div class="d-flex flex-row justify-content-between">
-                            <p class="m-0 ms-3 mt-3 p-0">Items</p>
-                            <p id="offcanvas-cart-totalqty" class="m-0 me-3 mt-3 p-0">{{ cart|length }}</p>
-                        </div>
-                        <div class="d-flex flex-row justify-content-between">
-                            <p class="m-0 ms-3 mt-2 mb-2 p-0">Total Price</p>
-                            <p id="offcanvas-cart-total-price" class="m-0 me-3 mt-2 mb-2 p-0">${{ cart.total_price }}</p>
-                        </div>
-                    </div>
-                    
-                    <!-- button -->
-                    <div class="d-grid gap-0 p-0 m-0">
-                        <a role="button" class="btn btn-bd-dark m-0 py-2" href="{% url 'cart:summary' %}">SHOW CART</a>
-                    </div>
-                    {% endif %}  
-                </div>
-{% endcomment %}
-
 <!-- ADD TO WISHLIST -->
 <script>
     $(document).on('click', '.wishlist-btn-add', function (e) {
