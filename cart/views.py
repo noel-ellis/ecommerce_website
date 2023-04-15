@@ -12,10 +12,10 @@ def summary(request):
 def modify(request):
     cart = Cart(request)
     product_id = int(request.POST.get('product_id'))
+    product = get_object_or_404(Product, id=product_id)
     product_size = request.POST.get('product_size')
     product_color_id = request.POST.get('product_color_id')
-    selected_product_variant = ProductVariant.objects.get(size=product_size, color_id=product_color_id)
-    product = get_object_or_404(Product, id=selected_product_variant.product.id)
+    selected_product_variant = ProductVariant.objects.get(product=product, size=product_size, color_id=product_color_id)
 
     if request.POST.get('action') == 'add':
         product_qty = int(request.POST.get('product_qty'))
@@ -25,6 +25,7 @@ def modify(request):
         cart_qty = cart.__len__()
         context = {
             'qty': cart.cart[str(selected_product_variant.id)]['product_qty'],
+            'product_variant_id': selected_product_variant.id,
             'totalqty': cart_qty,
             'totalprice': total_price,
             'img_url': selected_product_variant.image.url,
@@ -35,11 +36,16 @@ def modify(request):
         return response
     
     if request.POST.get('action') == 'delete':
-        cart.delete(product=selected_product_variant)
+        cart.delete(product_variant=selected_product_variant)
 
         total_price = cart.count_total_price()
         cart_qty = cart.__len__()
-        response = JsonResponse({'totalqty': cart_qty, 'totalprice': total_price})
+        context = {
+            'product_variant_id': selected_product_variant.id,
+            'totalqty': cart_qty,
+            'totalprice': total_price
+        }
+        response = JsonResponse(context)
         return response
 
     if request.POST.get('action') == 'update':

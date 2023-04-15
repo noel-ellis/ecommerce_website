@@ -220,16 +220,17 @@
         action: 'add'
       },
       success: function (json) {
+        const product_variant_id = json.product_variant_id;
         document.getElementById('cart-totalqty-badge').textContent = json.totalqty;
         document.getElementById('offcanvas-cart-totalqty').textContent = json.totalqty;
         document.getElementById('offcanvas-cart-total-price').textContent = "$" + json.totalprice;
 
         // add product to product list in offcanvas-cart
-        if (document.getElementById("offcanvas-cart-product-" + product_id) == null) {
+        if (document.getElementById("offcanvas-cart-product-" + product_variant_id) == null) {
           // construct base of the product card
           let cardBase = document.createElement('div');
           cardBase.setAttribute("class", "d-flex flex-row align-items-top justify-content-between py-3 border-bottom border-dark");
-          cardBase.setAttribute("id", "offcanvas-cart-product-" + product_id);
+          cardBase.setAttribute("id", "offcanvas-cart-product-" + product_variant_id);
 
           //construct image
           let img = document.createElement('img');

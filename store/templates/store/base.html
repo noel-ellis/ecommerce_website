@@ -253,7 +253,7 @@
                         {% if cart %}
                             {% for item in cart %}
                             <!-- product -->
-                            <div id="offcanvas-cart-product-{{ item.product_id }}" class='d-flex flex-row align-items-top justify-content-between py-3 border-bottom border-dark'>
+                            <div id="offcanvas-cart-product-{{ item.product_variant_id }}" class='d-flex flex-row align-items-top justify-content-between py-3 border-bottom border-dark'>
     
                                 <!-- image -->
                                 <img src="{{ item.product_image.url }}" class="img-fluid m-1 ms-4" style="height: 8rem;">
@@ -401,7 +401,8 @@
                 action: 'delete'
               },
               success: function (json) {
-                document.getElementById("offcanvas-cart-product-" + product_id).remove();
+                const product_variant_id = json.product_variant_id;
+                document.getElementById("offcanvas-cart-product-" + product_variant_id).remove();
                 document.getElementById('offcanvas-cart-total-price').textContent = '$'+json.totalprice;
                 document.getElementById("offcanvas-cart-totalqty").textContent = json.totalqty;
               },
