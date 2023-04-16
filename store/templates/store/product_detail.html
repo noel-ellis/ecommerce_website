@@ -300,48 +300,56 @@
 
 <!-- ADD TO WISHLIST -->
 <script>
-    $(document).on('click', '.wishlist-btn-add', function (e) {
-        e.preventDefault();
-        var product_id = $(this).data('productid');
-        $.ajax({
-            type: 'POST',
-            url: '{% url "wishlist:modify" %}',
-            data: {
-                product_id: product_id,
-                csrfmiddlewaretoken: "{{csrf_token}}",
-                action: 'add'
-            },
-            success: function (json) {
-                var wishlist_button_id = '#wishlist-btn-' + product_id;
-                $(wishlist_button_id).removeClass('wishlist-btn-add');
-                $(wishlist_button_id).addClass('wishlist-btn-delete');
-            },
-            error: function (xhr, errmsg, err) {}
-        });
+  $(document).on('click', '.wishlist-btn-add', function (e) {
+    e.preventDefault();
+    const product_id = $(this).data('productid');
+    const selected_size = document.querySelector('input[name="size-options"]:checked + label').textContent;
+    const selected_color_id = document.querySelector('input[name="color-options"]:checked').dataset.colorId;
+    $.ajax({
+      type: 'POST',
+      url: '{% url "wishlist:modify" %}',
+      data: {
+        product_id: product_id,
+        product_size: selected_size,
+        product_color_id: selected_color_id,
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: 'add'
+      },
+      success: function (json) {
+        var wishlist_button_id = '#wishlist-btn-' + product_id;
+        $(wishlist_button_id).removeClass('wishlist-btn-add');
+        $(wishlist_button_id).addClass('wishlist-btn-delete');
+      },
+      error: function (xhr, errmsg, err) {}
     });
+  });
 </script>
 
 <!-- DELETE FROM WISHLIST -->
 <script>
-    $(document).on('click', '.wishlist-btn-delete', function (e) {
-        e.preventDefault();
-        var product_id = $(this).data('productid');
-        $.ajax({
-            type: 'POST',
-            url: '{% url "wishlist:modify" %}',
-            data: {
-                product_id: product_id,
-                csrfmiddlewaretoken: "{{csrf_token}}",
-                action: 'delete'
-            },
-            success: function (json) {
-                var wishlist_button_id = '#wishlist-btn-' + product_id;
-                $(wishlist_button_id).removeClass('wishlist-btn-delete');
-                $(wishlist_button_id).addClass('wishlist-btn-add');
-            },
-            error: function (xhr, errmsg, err) {}
-        });
+  $(document).on('click', '.wishlist-btn-delete', function (e) {
+    e.preventDefault();
+    const product_id = $(this).data('productid');
+    const selected_size = document.querySelector('input[name="size-options"]:checked + label').textContent;
+    const selected_color_id = document.querySelector('input[name="color-options"]:checked').dataset.colorId;
+    $.ajax({
+      type: 'POST',
+      url: '{% url "wishlist:modify" %}',
+      data: {
+        product_id: product_id,
+        product_size: selected_size,
+        product_color_id: selected_color_id,
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: 'delete'
+      },
+      success: function (json) {
+        var wishlist_button_id = '#wishlist-btn-' + product_id;
+        $(wishlist_button_id).removeClass('wishlist-btn-delete');
+        $(wishlist_button_id).addClass('wishlist-btn-add');
+      },
+      error: function (xhr, errmsg, err) {}
     });
+  });
 </script>
 
 {% endblock content %}

@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 
 from .wishlist import Wishlist
-from store.models import Product
+from store.models import ProductVariant
 
 
 def summary(request):
@@ -11,14 +11,22 @@ def summary(request):
 def modify(request):
     wishlist = Wishlist(request)
     product_id = int(request.POST.get('product_id'))
-    product = get_object_or_404(Product, id=product_id)
+    product_size = request.POST.get('product_size')
+    product_color_id = request.POST.get('product_color_id')
+    product = get_object_or_404(ProductVariant, product__id=product_id, color=product_color_id, size=product_size)
 
     if request.POST.get('action') == 'add':
         wishlist.add(product)
-        response = JsonResponse({'wishlist_qty': len(wishlist)})
+        context = {
+            'wishlist_qty': len(wishlist)
+        }
+        response = JsonResponse(context)
         return response
 
     if request.POST.get('action') == 'delete':
         wishlist.delete(product)
-        response = JsonResponse({'wishlist_qty': len(wishlist)})
+        context = {
+            'wishlist_qty': len(wishlist)
+        }
+        response = JsonResponse(context)
         return response

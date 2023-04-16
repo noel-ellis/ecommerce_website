@@ -6,7 +6,7 @@
 
       <!-- header+divider -->
       <div class="col-4 mt-4">
-        <p class="text-center fs-3 p-0">WISHLIST ({{ wishlist|length }})</p>
+        <p id="wishlist-total-qty" class="text-center fs-3 p-0">WISHLIST ({{ wishlist|length }})</p>
       </div>
       <hr class="my-3 border-dark" style="opacity: 1;">
 
@@ -17,14 +17,15 @@
             <div id="wishlist-item-{{ product.id }}" class="col">
               <div class="card h-100">
                   
-                <!-- wishlist button -->
+                <!-- delete from wishlist button -->
                 <div class="d-flex justify-content-end container mt-3 p-0 pe-3">
-                  <a class="btn wishlist-btn wishlist-btn-delete-alt" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}"></a>
+                  <a class="btn wishlist-btn wishlist-btn-delete-alt" id="wishlist-btn-{{ product.id }}" data-elementid="{{ product.id }}" data-productid="{{ product.product__id }}" data-colorid="{{ product.color__id }}", data-size="{{ product.size }}"></a>
                 </div>
 
                 <!-- clickable card-->
                 <div class="container px-4">
                   <div class="container-fluid p-0 position-relative">
+                    <img src="{{ product.image.url }}" class="card-img-top img-fluid">
                     <div class="card-body">
                       <h5 class="card-title text-center">{{ product.name|title }}</h5>
                       <p class="card-text text-center m-0 mb-1 p-0">{{ product.material }}</p>
@@ -50,18 +51,25 @@
 <script>
   $(document).on('click', '.wishlist-btn-delete-alt', function (e) {
       e.preventDefault();
-      var product_id = $(this).data('productid');
+      const ITEM_ID = $(this).data('elementid');
+      let product_id = $(this).data('productid');
+      let product_color_id = $(this).data('colorid');
+      let product_size = $(this).data('size');
       $.ajax({
           type: 'POST',
           url: '{% url "wishlist:modify" %}',
           data: {
-              product_id: product_id,
-              csrfmiddlewaretoken: "{{csrf_token}}",
-              action: 'delete'
+            product_id: product_id,
+            product_size: product_size,
+            product_color_id: product_color_id,
+            csrfmiddlewaretoken: "{{csrf_token}}",
+            action: 'delete'
           },
           success: function (json) {
-              var wishlist_item = '#wishlist-item-' + product_id;
-              $(wishlist_item).remove();
+            let wishlist_total_qty = document.getElementById("wishlist-total-qty");
+            wishlist_total_qty.textContent = "WISHLIST (" + json.wishlist_qty + ")"
+            let wishlist_item = '#wishlist-item-' + ITEM_ID;
+            $(wishlist_item).remove();
           },
           error: function (xhr, errmsg, err) {}
       });

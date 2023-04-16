@@ -225,10 +225,10 @@
                                                 <!-- wishlist button -->
                                                 <div class="d-flex justify-content-end container mt-3 p-0 pe-3">
                                                     {% if product.in_wishlist %}
-                                                    <a class="btn wishlist-btn wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
+                                                    <a class="btn wishlist-btn wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.product__id }}" data-colorid="{{ product.color__id }}", data-size="{{ product.size }}">
                                                     </a>
                                                     {% else %}
-                                                    <a class="btn wishlist-btn wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}">
+                                                    <a class="btn wishlist-btn wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.product__id }}" data-colorid="{{ product.color__id }}", data-size="{{ product.size }}">
                                                     </a>
                                                     {% endif %}
                                                 </div>
@@ -262,19 +262,23 @@
 <script>
     $(document).on('click', '.wishlist-btn-add', function (e) {
         e.preventDefault();
-        var product_id = $(this).data('productid');
+        const ELEMENT = $(this);
+        let product_id = ELEMENT.data('productid');
+        let product_color_id = ELEMENT.data('colorid');
+        let product_size = ELEMENT.data('size');
         $.ajax({
             type: 'POST',
             url: '{% url "wishlist:modify" %}',
             data: {
                 product_id: product_id,
+                product_size: product_size,
+                product_color_id: product_color_id,
                 csrfmiddlewaretoken: "{{csrf_token}}",
                 action: 'add'
             },
             success: function (json) {
-                var wishlist_button_id = '#wishlist-btn-' + product_id;
-                $(wishlist_button_id).removeClass('wishlist-btn-add');
-                $(wishlist_button_id).addClass('wishlist-btn-delete');
+                ELEMENT.removeClass('wishlist-btn-add');
+                ELEMENT.addClass('wishlist-btn-delete');
             },
             error: function (xhr, errmsg, err) {}
         });
@@ -285,19 +289,23 @@
 <script>
     $(document).on('click', '.wishlist-btn-delete', function (e) {
         e.preventDefault();
-        var product_id = $(this).data('productid');
+        const ELEMENT = $(this);
+        let product_id = ELEMENT.data('productid');
+        let product_color_id = ELEMENT.data('colorid');
+        let product_size = ELEMENT.data('size');
         $.ajax({
             type: 'POST',
             url: '{% url "wishlist:modify" %}',
             data: {
                 product_id: product_id,
+                product_size: product_size,
+                product_color_id: product_color_id,
                 csrfmiddlewaretoken: "{{csrf_token}}",
                 action: 'delete'
             },
             success: function (json) {
-                var wishlist_button_id = '#wishlist-btn-' + product_id;
-                $(wishlist_button_id).removeClass('wishlist-btn-delete');
-                $(wishlist_button_id).addClass('wishlist-btn-add');
+                ELEMENT.removeClass('wishlist-btn-delete');
+                ELEMENT.addClass('wishlist-btn-add');
             },
             error: function (xhr, errmsg, err) {}
         });

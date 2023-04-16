@@ -1,4 +1,4 @@
-from store.models import Product
+from store.models import ProductVariant
 
 
 class Wishlist:
@@ -18,14 +18,14 @@ class Wishlist:
     def save(self):
         self.session.modified = True
 
-    def add(self, product: Product):
+    def add(self, product: ProductVariant):
         product_id = str(product.id)
         if product_id not in self.wishlist:
             self.wishlist[product_id] = 'data'
             self.save()
             return
 
-    def delete(self, product: Product):
+    def delete(self, product: ProductVariant):
         product_id = str(product.id)
         if product_id in self.wishlist:
             del self.wishlist[product_id]
@@ -39,15 +39,19 @@ class Wishlist:
         return len(self.wishlist)
     
     def __str__(self):
-        return self.ids
+        return str(self.ids)
     
     def __iter__(self):
-        products_from_wishlist = Product.objects.filter(id__in=self.ids)
+        products_from_wishlist = ProductVariant.objects.filter(id__in=self.ids)
         for product in products_from_wishlist:
             product_from_wishlist = {}
             product_from_wishlist['id'] = product.id
-            product_from_wishlist['name'] = product.name
-            product_from_wishlist['slug'] = product.slug
-            product_from_wishlist['material'] = product.material
-            product_from_wishlist['price'] = product.price
+            product_from_wishlist['product__id'] = product.product.id
+            product_from_wishlist['color__id'] = product.color.id
+            product_from_wishlist['size'] = product.size
+            product_from_wishlist['name'] = product.product.name
+            product_from_wishlist['slug'] = product.product.slug
+            product_from_wishlist['material'] = product.product.material
+            product_from_wishlist['price'] = product.product.price
+            product_from_wishlist['image'] = product.image
             yield product_from_wishlist

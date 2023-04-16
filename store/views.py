@@ -24,11 +24,11 @@ def product_list_view(request):
     materials = Material.objects.all()
     categories = Category.objects.all()
 
-    all_products = ProductVariant.objects.select_related("product__material", "color").values("product__material__name", "product__name", "product__price", "product__slug", "product__id", "color__name", "image").all()
+    all_products = ProductVariant.objects.select_related("product__material", "color").values("product__material__name", "product__name", "product__price", "product__slug", "product__id", "color__name", "color__id", "image", "id", "size").all()
     for product in all_products:
-        product["in_wishlist"] = wishlist.contains(product["product__id"])
+        product["in_wishlist"] = wishlist.contains(str(product["id"]))
         image_url = default_storage.url(product["image"])
-        product["image"] = image_url
+        product["image"] = image_url  
 
     context = {
         "product_list": all_products,
