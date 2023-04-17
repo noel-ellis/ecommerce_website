@@ -2,167 +2,161 @@
 {% block content %}
 
 <div class="container-fluid p-0 pb-5">
-    <div class="d-flex justify-content-center container-fluid col-10 p-0">
-        <div class="d-flex flex-column container-fluid p-0">
+  <div class="d-flex justify-content-center container-fluid col-10 p-0">
+    <div class="d-flex flex-column container-fluid p-0">
 
-            <!-- product -->
-            <div class="d-flex flex-row p-0">
+      <!-- product -->
+      <div class="d-flex flex-row p-0">
 
-                <!-- images -->
-                <div class="col-6 px-5">
-                  <div id="product_images" class="carousel carousel-dark slide carousel-fade" data-bs-ride="false">
-                    <div class="carousel-inner">
-                      {% for image_url in images %}
-                      <div class="carousel-item active">
-                        <img src="{{ image_url }}" class="d-block w-100" alt="...">
-                      </div>
-                      {% endfor %}
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#product_images" data-bs-slide="prev">
-                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                      <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#product_images" data-bs-slide="next">
-                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                      <span class="visually-hidden">Next</span>
-                    </button>
-                  </div>
-                </div>
-
-                <!-- product info-->
-                <div class="col-6 p-0">
-
-                    <!-- breadcrumb -->
-                    <div class="container-fluid p-0 pt-2">
-                        <div class="p-0 px-4" aria-label="breadcrumb">
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item active" aria-current="page">STORE/ {{ product.sex|upper }}/ {{ product.category|upper }}/ {{ product.name|upper }}</li>
-                            </ol>
-                        </div>
-                        <hr class="my-1">
-                    </div>
-
-                    <!-- name, material-->
-                    <div class="container-fluid p-0 pt-2">
-                        <div class="p-0 px-4" aria-label="name-material">
-                            <h2 class="py-1"><strong id="product-name">{{ product.name|upper }}</strong></h2>
-                            <p class="fs-5">{{ product.material }}</p>
-                        </div>
-                        <hr class="my-1">
-                    </div>
-
-                    <!-- price -->
-                    <div class="container-fluid p-0 pt-2">
-                        <div class="p-0 px-4" aria-label="price">
-                            <h3 id="product-price" class="pb-2">${{ product.price }}</h3>
-                        </div>
-                        <hr class="my-1">
-                    </div>
-
-                    <!-- size -->
-                    <div class="d-flex flex-column justify-content-start">
-                        <div class="p-2 px-4">
-                            <p class="m-0 p-0 fs-5">Size:</p>
-                        </div>
-                        <div class="p-2 px-4">
-                            <div class="row row-cols-5 g-1">
-                                {% for size, list_of_colors in size_color_pairs.items %}
-                                <div class="col">
-                                    <input type="radio" class="btn-check" name="size-options" id="btn-radio-size-{{ size }}" autocomplete="off">
-                                    <label class="btn btn-custom-checkbox btn-size" for="btn-radio-size-{{ size }}" style="--bs-btn-padding-x: 2.88rem; --bs-btn-padding-y: 0.7rem;" value="{{ size }}" data-list-of-colors="{{list_of_colors}}">{{ size }}</label>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <hr class="mb-1 mt-2">
-                    </div>
-
-                    <!-- color -->
-                    <div class="d-flex flex-column align-items-start">
-                        <div class="d-flex flex-row align-items-start p-0 pt-2 px-4">
-                            <p class="m-0 p-0 fs-5">Color:</p>
-                        </div>
-                        <div id="color-radios" class="p-2 px-4"></div>
-                    </div>
-                    
-
-                    <!-- buttons -->
-                    <div class="d-flex flex-row mt-3">
-                        
-                        <!-- wishlist button -->
-                        {% if product.in_wishlist %}
-                        <a class="me-1 btn wishlist-btn-bordered wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}"></a>
-                        {% else %}
-                        <a class="me-1 btn wishlist-btn-bordered wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}"></a>
-                        {% endif %}
-
-                        <!-- cart button -->
-                        <button id="cart-add-btn" type="button" class="ms-1 btn btn-bd-dark container-fluid text-center text-nowrap" data-productid="{{ product.id }}">ADD TO CART</button>
-                    </div>
-
-                </div>
-
+        <!-- images -->
+        <div class="col-6 px-5">
+          <div id="product_images" class="carousel carousel-dark slide carousel-fade" data-bs-ride="false">
+            <div class="carousel-inner">
+              {% for image_url in images %}
+              <div class="carousel-item active">
+                <img src="{{ image_url }}" class="d-block w-100" alt="...">
+              </div>
+              {% endfor %}
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#product_images" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#product_images" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
 
+        <!-- product info-->
+        <div class="col-6 p-0">
+
+          <!-- breadcrumb -->
+          <div class="container-fluid p-0 pt-2">
+            <div class="p-0 px-4" aria-label="breadcrumb">
+              <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item active" aria-current="page">STORE/ {{ product.sex|upper }}/ {{ product.category|upper }}/ {{ product.name|upper }}</li>
+              </ol>
+            </div>
+            <hr class="my-1">
+          </div>
+
+          <!-- name, material-->
+          <div class="container-fluid p-0 pt-2">
+            <div class="p-0 px-4" aria-label="name-material">
+              <h2 class="py-1"><strong id="product-name">{{ product.name|upper }}</strong></h2>
+              <p class="fs-5">{{ product.material }}</p>
+            </div>
+            <hr class="my-1">
+          </div>
+
+          <!-- price -->
+          <div class="container-fluid p-0 pt-2">
+            <div class="p-0 px-4" aria-label="price">
+              <h3 id="product-price" class="pb-2">${{ product.price }}</h3>
+            </div>
+            <hr class="my-1">
+          </div>
+
+          <!-- size -->
+          <div class="d-flex flex-column justify-content-start">
+            <div class="p-2 px-4">
+              <p class="m-0 p-0 fs-5">Size:</p>
+            </div>
+            <div class="p-2 px-4">
+              <div class="row row-cols-5 g-1">
+                {% for size, list_of_colors in size_color_pairs.items %}
+                <div class="col">
+                  <input type="radio" class="btn-check" name="size-options" id="btn-radio-size-{{ size }}" autocomplete="off">
+                  <label class="btn btn-custom-checkbox btn-size" for="btn-radio-size-{{ size }}" style="--bs-btn-padding-x: 2.88rem; --bs-btn-padding-y: 0.7rem;" value="{{ size }}" data-list-of-colors="{{list_of_colors}}">{{ size }}</label>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <hr class="mb-1 mt-2">
+          </div>
+
+          <!-- color -->
+          <div class="d-flex flex-column align-items-start">
+              <div class="d-flex flex-row align-items-start p-0 pt-2 px-4">
+                  <p class="m-0 p-0 fs-5">Color:</p>
+              </div>
+              <div id="color-radios" class="p-2 px-4"></div>
+          </div>
+          
+
+          <!-- buttons -->
+          <div class="d-flex flex-row mt-3">
             
-            <div class="d-flex flex-column p-0">
+            <!-- wishlist button -->
+            {% if product.in_wishlist %}
+            <a class="me-1 btn wishlist-btn-bordered wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}"></a>
+            {% else %}
+            <a class="me-1 btn wishlist-btn-bordered wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.id }}"></a>
+            {% endif %}
 
-                <!-- product description -->
-                <div class="col-11 mt-5 p-0">
-                    <div class="col-3 d-flex flex-column">
-                        <hr class="my-1">
-                        <p class="text-center">DETAILS</p>
-                    </div>
-                    <div class="p-0 border">
-                        <p class="p-5 text-center">{{ product.description }}</p>
-                    </div>
-                </div>
-
-                <!-- promo -->
-                <div class="col-11 mt-5 p-0">
-                    <div class="col-3 d-flex flex-column">
-                        <hr class="my-1">
-                        <p class="text-center">YOU MAY ALSO LIKE</p>
-                    </div>
-                    <div class="p-0 py-5 d-flex flex-row justify-content-center border">
-                        <div class="row row-cols-3 gx-4">
-                            {% for product_variant in promo %}
-                            <div class="col">
-                                <div class="card h-100">
-
-                                    <!-- wishlist button -->
-                                    <div class="d-flex justify-content-end container mt-3 p-0 pe-3">
-                                        {% if product_variant.in_wishlist %}
-                                        <a class="btn wishlist-btn wishlist-btn-delete" id="wishlist-btn-{{ product_variant.id }}" data-productid="{{ product_variant.id }}">
-                                        </a>
-                                        {% else %}
-                                        <a class="btn wishlist-btn wishlist-btn-add" id="wishlist-btn-{{ product_variant.id }}" data-productid="{{ product_variant.id }}">
-                                        </a>
-                                        {% endif %}
-                                    </div>
-                                    
-                                    <!-- clickable card-->
-                                    <div class="container px-4 position-relative">
-                                        <img src="{{ product_variant.image.url }}" class="card-img-top img-fluid">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-center">{{ product_variant.product.name|title }}</h5>
-                                            <p class="card-text text-center m-0 mb-1 p-0">{{ product_variant.product.material.name }}</p>
-                                            <p class="card-text text-center m-0 p-0">{{ product_variant.color }}</p>
-                                            <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product_variant.product.price }}</strong></p>
-                                            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product_variant.product.slug %}"></a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            <!-- cart button -->
+            <button id="cart-add-btn" type="button" class="ms-1 btn btn-bd-dark container-fluid text-center text-nowrap" data-productid="{{ product.id }}">ADD TO CART</button>
+          </div>
         </div>
     </div>
+    
+    <div class="d-flex flex-column p-0">
+      <!-- product description -->
+      <div class="col-11 mt-5 p-0">
+          <div class="col-3 d-flex flex-column">
+              <hr class="my-1">
+              <p class="text-center">DETAILS</p>
+          </div>
+          <div class="p-0 border">
+              <p class="p-5 text-center">{{ product.description }}</p>
+          </div>
+      </div>
+
+      <!-- promo -->
+      <div class="col-11 mt-5 p-0">
+          <div class="col-3 d-flex flex-column">
+            <hr class="my-1">
+            <p class="text-center">YOU MAY ALSO LIKE</p>
+          </div>
+          <div class="p-0 py-5 d-flex flex-row justify-content-center border">
+            <div class="row row-cols-3 gx-4">
+              {% for product_variant in promo %}
+              <div class="col">
+                <div class="card h-100">
+
+                  <!-- wishlist button -->
+                  <div class="d-flex justify-content-end container mt-3 p-0 pe-3">
+                    {% if product_variant.in_wishlist %}
+                    <a class="btn wishlist-btn wishlist-btn-delete" id="wishlist-btn-{{ product_variant.id }}" data-productid="{{ product_variant.id }}">
+                    </a>
+                    {% else %}
+                    <a class="btn wishlist-btn wishlist-btn-add" id="wishlist-btn-{{ product_variant.id }}" data-productid="{{ product_variant.id }}">
+                    </a>
+                    {% endif %}
+                  </div>
+                  
+                  <!-- clickable card-->
+                  <div class="container px-4 position-relative">
+                    <img src="{{ product_variant.image.url }}" class="card-img-top img-fluid">
+                    <div class="card-body">
+                      <h5 class="card-title text-center">{{ product_variant.product.name|title }}</h5>
+                      <p class="card-text text-center m-0 mb-1 p-0">{{ product_variant.product.material.name }}</p>
+                      <p class="card-text text-center m-0 p-0">{{ product_variant.color }}</p>
+                      <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product_variant.product.price }}</strong></p>
+                      <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product_variant.product.slug %}"></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- DISPLAY AVAILABLE COLORS FOR CHOSEN SIZE -->

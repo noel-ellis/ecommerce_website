@@ -16,25 +16,24 @@ card.on('change', function(event) {
     }
 });
 
-$('#address-list input').on('change', function() {
-    delivery_info_id = $('input[name=address-options]:checked', '#address-list').attr('data-id');
-    country = $('input[name=address-options]:checked', '#address-list').attr('data-country');
-    state = $('input[name=address-options]:checked', '#address-list').attr('data-state');
-    line1 = $('input[name=address-options]:checked', '#address-list').attr('data-address');
-});
-
-
-var payment_form = document.getElementById('payment-form');
-
-payment_form.addEventListener('submit', function(ev) {
+var payButton = document.getElementById('checkout-submit');
+payButton.addEventListener('click', function(ev) {
     ev.preventDefault();
 
-    var first_name = document.getElementById('user-info-name').getAttribute("value");
-    var second_name = document.getElementById('user-info-surname').getAttribute("value");
-    var name = first_name + ' ' + second_name;
-    var email = document.getElementById('user-info-email').getAttribute("value");
-    var phone = document.getElementById('user-info-phone').getAttribute("value");
+    // profile data
+    var first_name = document.getElementById('first-name').getAttribute("value");
+    var last_name = document.getElementById('last-name').getAttribute("value");
+    var name = first_name + ' ' + last_name;
+    var email = document.getElementById('email').getAttribute("value");
+    var phone = document.getElementById('phone-number').getAttribute("value");
     var client_secret = document.getElementById('checkout-submit').getAttribute('data-secret');
+
+    // address data
+    var selectedAddress = document.querySelector('input[name="address-radio"]:checked');
+    var delivery_info_id = selectedAddress.dataset.id;
+    var country = selectedAddress.dataset.country;
+    var state = selectedAddress.dataset.state;
+    var line1 = selectedAddress.dataset.address;
 
     $.ajax({
         type: 'POST',

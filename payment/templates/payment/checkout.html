@@ -23,7 +23,6 @@
 
             <!-- profile_info -->
             <div class="container-fluid p-0">
-
               <div class="d-flex flex-row">
                 <!-- first name -->
                 <div class="col-6 pe-1">
@@ -31,7 +30,7 @@
                     <hr class="mt-3 mb-0">
                   </div>
                   <p class='ms-3 my-2' style="font-size: 0.75rem;">FIRST NAME</p>
-                  <input type="text" name="name" value="{{ user_info.name }}" class="form-control mb-2" required="" id="id_name" disabled>
+                  <input type="text" name="name" value="{{ user_info.name }}" class="form-control mb-2" required="" id="first-name" disabled>
                 </div>
 
                 <!-- last name -->
@@ -40,7 +39,7 @@
                     <hr class="mt-3 mb-0">
                   </div>
                   <p class='ms-3 my-2' style="font-size: 0.75rem;">LAST NAME</p>
-                  <input type="text" name="name" value="{{ user_info.surname }}" class="form-control mb-2" required="" id="id_surname" disabled>
+                  <input type="text" name="name" value="{{ user_info.surname }}" class="form-control mb-2" required="" id="last-name" disabled>
                 </div>
               </div>
               
@@ -51,7 +50,7 @@
                     <hr class="mt-3 mb-0">
                   </div>
                   <p class='ms-3 my-2' style="font-size: 0.75rem;">PHONE NUMBER</p>
-                  <input type="text" name="name" value="{{ user_info.phone_number }}" class="form-control mb-2" required="" id="id_name" disabled>
+                  <input type="text" name="name" value="{{ user_info.phone_number }}" class="form-control mb-2" required="" id="phone-number" disabled>
                 </div>
 
                 <!-- email -->
@@ -60,7 +59,7 @@
                     <hr class="mt-3 mb-0">
                   </div>
                   <p class='ms-3 my-2' style="font-size: 0.75rem;">EMAIL</p>
-                  <input type="text" name="name" value="{{ user_info.email }}" class="form-control mb-2" required="" id="id_surname" disabled>
+                  <input type="text" name="name" value="{{ user_info.email }}" class="form-control mb-2" required="" id="email" disabled>
                 </div>
               </div>
               
@@ -74,13 +73,13 @@
             <hr class="my-2 border-dark">
 
             <!-- address_info list -->
-            <div class="container-fluid p-0">
+            <div id="address-list" class="container-fluid p-0">
               {% for address in address_info %}
               <div class="d-flex flex-row">
                 <div class="col-2 d-flex justify-content-center align-items-center">
                   <!-- radio check -->
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="address-radio" id="address-radio-{{ address.id }}">
+                    <input class="form-check-input" type="radio" name="address-radio" id="address-radio-{{ address.id }}" data-id="{{ address.id }}" data-country="{{ address.country }}" data-state="{{ address.state }}" data-address="{{ address.address }}">
                     <label class="form-check-label" for="address-radio-{{ address.id }}"></label>
                   </div>
                 </div>
