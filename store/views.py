@@ -25,10 +25,10 @@ def product_list_view(request):
     categories = Category.objects.all()
 
     all_products = ProductVariant.objects.select_related("product__material", "color").values("product__material__name", "product__name", "product__price", "product__slug", "product__id", "color__name", "color__id", "image", "id", "size").all()
-    for product in all_products:
-        product["in_wishlist"] = wishlist.contains(str(product["id"]))
-        image_url = default_storage.url(product["image"])
-        product["image"] = image_url  
+    for product_variant in all_products:
+        product_variant["in_wishlist"] = wishlist.contains(str(product_variant["id"]))
+        image_url = default_storage.url(product_variant["image"])
+        product_variant["image"] = image_url  
 
     context = {
         "product_list": all_products,
@@ -41,18 +41,31 @@ def product_list_view(request):
 
 
 def product_detail_view(request, slug):
+    wishlist = Wishlist(request)
     product = Product.objects.get(slug=slug)
-    product_variants = ProductVariant.objects.select_related("color").filter(product=product, available_units__gt=0).values("size", "color__id", "color__code", "color__name", "image")
+    product_variants = ProductVariant.objects.select_related("color").filter(product=product, available_units__gt=0).values("id", "size", "color__id", "color__code", "color__name", "image")
 
     size_color_pairs = {}
     images = []
 
     for product_variant in product_variants:
-        color_data = {"id": product_variant["color__id"], "code": product_variant["color__code"], "name": product_variant["color__name"],}
+        # creating size-color pairs to: 
+        # 1. properly reflect the availability of each color for each size
+        # 2. determine whether or not the user added ProductVariant with that color to the wishlist
+        # format: 
+        # size_color_pairs = {size: [{'id': color_id, 'code': color_code, 'name': color_name, 'in_wishlist': bool'}, ...]}
+        in_wishlist = wishlist.contains(str(product_variant['id']))
+        product_variant_specs = {
+            "color_id": product_variant["color__id"], 
+            "color_code": product_variant["color__code"], 
+            "color_name": product_variant["color__name"],
+            "in_wishlist": str(in_wishlist),
+        }
         if product_variant["size"] not in size_color_pairs.keys():
             size_color_pairs[product_variant["size"]] = []
-        size_color_pairs[product_variant["size"]].append(color_data)
+        size_color_pairs[product_variant["size"]].append(product_variant_specs)
 
+        # creating list of images to display on product detail page
         image_url = default_storage.url(product_variant["image"])
         images.append(image_url)
 

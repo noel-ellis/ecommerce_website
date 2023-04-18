@@ -1,6 +1,8 @@
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
+
 
 from cart.cart import Cart
 from .models import Order, OrderedItem
@@ -11,7 +13,6 @@ def new_order(request):
         user_id = request.user.id
         delivery_info_id = request.POST.get('delivery_info_id')
         order_key = request.POST.get('order_key')
-        print(f'\n\n\n {order_key}\n\n\n')
         status = 'ST1'
 
         order_quiery = Order.objects.filter(order_key=order_key)
@@ -37,11 +38,10 @@ def orderplaced(request):
     cart.clear()
     return render(request, 'orders/orderplaced.html')
 
+# Handled through Stripe webhook
+# Use this command to activate webhook:
+# stripe listen --forward-to localhost:8000/payment/webhook/
 def payment_confirmation(order_key):
     order_quiery = Order.objects.filter(order_key=order_key)
     if order_quiery.exists():
         order_quiery.update(paid=True)
-    
-
-
-

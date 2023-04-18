@@ -50,10 +50,14 @@ hr {
     display: inline-block;
     color: #212529;
     background-color: transparent;
-    border: 1.5px solid;
+    border: 1.5px solid transparent;
     padding: 1.5rem 3rem;
     font-size: 0rem;
     border-radius: 0rem;
+}
+
+.wishlist-btn-bordered:hover {
+    border: 1.5px solid;
 }
 
 .wishlist-btn-delete {

@@ -68,8 +68,6 @@ payButton.addEventListener('click', function(ev) {
                         // execution. Set up a webhook or plugin to listen for the
                         // payment intent. succeeded event that handles any business critical
                         // post-payment actions.
-
-                        // TO DO: tick order as paid through ajax request
                         order_placed_url = "http://127.0.0.1:8000/orders/orderplaced/";
                         window.location.replace(order_placed_url);
                     }
