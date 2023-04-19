@@ -198,13 +198,19 @@
 <!-- DISPLAY CORRECT WISHLIST BUTTON FOR A SELECTED COLOR -->
 <script>
   $(document).on('click', '.btn-color', function (e) {
-    var wishlistButton = '#wishlist-btn-product';
+    var wishlistButton = $('#wishlist-btn-product');
+    console.log("! .btn-color.data", $(this).data())
     if ($(this).data("inWishlist") === "True") {
-      $(wishlistButton).removeClass('wishlist-btn-add');
-      $(wishlistButton).addClass('wishlist-btn-delete');
+      console.log("! inWishlist === True");
+      if (wishlistButton.hasClass('wishlist-btn-add')) {
+        wishlistButton.removeClass('wishlist-btn-add');
+      };
+      wishlistButton.addClass('wishlist-btn-delete');
     } else {
-      $(wishlistButton).removeClass('wishlist-btn-delete');
-      $(wishlistButton).addClass('wishlist-btn-add');
+      if (wishlistButton.hasClass('wishlist-btn-delete')) {
+        wishlistButton.removeClass('wishlist-btn-delete');
+      };
+      wishlistButton.addClass('wishlist-btn-add');
     };
   });
 </script>
@@ -232,16 +238,11 @@
         $(wishlistButton).addClass('wishlist-btn-delete');
 
         //TODO: 
-        // 1. fix issue with "DISPLAY AVAILABLE COLORS FOR CHOSEN SIZE" falsely
-        // overriding correct data-in-wishlist after the item has been added to wishlist
+        // 1. fix issue with "DISPLAY AVAILABLE COLORS FOR CHOSEN SIZE" falsely overriding
+        // correct data-in-wishlist after the item has been added to wishlist
         let selectedColorInput = document.querySelector('input[name="color-options"]:checked');
-        console.log("selectedColorInput (default):", selectedColorInput);
         selectedColorInput.dataset.inWishlist = "True";
-        console.log("selectedColorInput (changed):", selectedColorInput);
-
-        var sizeButton = document.querySelector('input[name="color-options"]:checked + label');
-        var productVariantSpecsJson = sizeButton.dataset.productVariantSpecs.replace(/'/g, '"');
-        var productVariantSpecs = JSON.parse(productVariantSpecsJson);
+        console.log("changed input[name='color-options']:checked", selectedColorInput.dataset.inWishlist);
         // productVariantSpecs is a LIST of all the colors available for the selected size with respecting in_wishlist parameters
       },
       error: function (xhr, errmsg, err) {}
