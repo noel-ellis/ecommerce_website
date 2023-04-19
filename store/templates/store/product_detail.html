@@ -199,7 +199,8 @@
 <script>
   $(document).on('click', '.btn-color', function (e) {
     var wishlistButton = $('#wishlist-btn-product');
-    console.log("! .btn-color.data", $(this).data())
+    // ISSUE: doesn't fetch correct inWishlist data value when it's been changed by the "ADD TO WISHLIST" script
+    console.log("! .btn-color.data", $(this).data());
     if ($(this).data("inWishlist") === "True") {
       console.log("! inWishlist === True");
       if (wishlistButton.hasClass('wishlist-btn-add')) {
