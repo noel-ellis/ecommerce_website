@@ -56,7 +56,7 @@
             <hr class="my-1">
           </div>
 
-          <!-- sizes -->
+          <!-- 1: sizes -->
           <div class="d-flex flex-column justify-content-start">
             <div class="p-2 px-4">
               <p class="m-0 p-0 fs-5">Size:</p>
@@ -66,7 +66,7 @@
                 {% for size, product_variant_specs in size_color_pairs.items %}
                 <div class="col">
                   <input type="radio" class="btn-check" name="size-options" id="btn-radio-size-{{ size }}" autocomplete="off">
-                  <label class="btn btn-custom-checkbox btn-size" for="btn-radio-size-{{ size }}" style="--bs-btn-padding-x: 2.88rem; --bs-btn-padding-y: 0.7rem;" value="{{ size }}" data-product-variant-specs="{{product_variant_specs}}">{{ size }}</label>
+                  <label class="btn btn-custom-checkbox" name="btn-size" for="btn-radio-size-{{ size }}" style="--bs-btn-padding-x: 2.88rem; --bs-btn-padding-y: 0.7rem;" value="{{ size }}" data-product-variant-specs="{{product_variant_specs}}">{{ size }}</label>
                 </div>
                 {% endfor %}
               </div>
@@ -74,7 +74,7 @@
             <hr class="mb-1 mt-2">
           </div>
 
-          <!-- colors -->
+          <!-- 2: colors -->
           <div class="d-flex flex-column align-items-start">
               <div class="d-flex flex-row align-items-start p-0 pt-2 px-4">
                   <p class="m-0 p-0 fs-5">Color:</p>
@@ -84,7 +84,7 @@
 
           <!-- buttons -->
           <div class="d-flex flex-row mt-3">
-            <!-- wishlist button -->
+            <!-- 3: wishlist button -->
             {% if product.in_wishlist %}
             <a class="me-1 btn wishlist-btn-bordered wishlist-btn-delete" id="wishlist-btn-product" data-productid="{{ product.id }}"></a>
             {% else %}
@@ -157,20 +157,20 @@
   </div>
 </div>
 
-<!-- DISPLAY AVAILABLE COLORS FOR CHOSEN SIZE -->
+<!-- 1. DISPLAY AVAILABLE COLORS FOR CHOSEN SIZE -->
 <script>
-  $(document).on('click', '.btn-size', function (e) {
+  $('input[name="size-options"]').change(function (e) {
     var colorsElement = document.querySelector("#color-radios");
     colorsElement.textContent = '';
-    var productVariantSpecsJson = this.dataset.productVariantSpecs.replace(/'/g, '"');
+    var productVariantSpecsJson = $(this).next('label').data('productVariantSpecs').replace(/'/g, '"');
     var productVariantSpecs = JSON.parse(productVariantSpecsJson);
+    console.log('!parsed 1:', productVariantSpecs);
 
     for (let i = 0; i < productVariantSpecs.length; i++) {
       let specs = productVariantSpecs[i];
       let colorId = specs.color_id;
       let colorCode = specs.color_code;
       let colorName = specs.color_name;
-      let inWishlist = specs.in_wishlist;
 
       let input = document.createElement('input');
       input.setAttribute("type", "radio");
@@ -179,7 +179,6 @@
       input.setAttribute("id", "btn-radio-color-" + colorId);
       input.setAttribute("autocomplete", "off");
       input.dataset.colorId=colorId;
-      input.dataset.inWishlist=inWishlist;
 
       var label = document.createElement('label');
       label.setAttribute("class", "btn btn-colors-checkbox");
@@ -195,14 +194,26 @@
   });
 </script>
 
-<!-- DISPLAY CORRECT WISHLIST BUTTON FOR A SELECTED COLOR -->
+<!-- 2. DISPLAY CORRECT WISHLIST BUTTON FOR A SELECTED COLOR -->
 <script>
-  $(document).on('click', '.btn-color', function (e) {
+  $(document).on('change', 'input[name="color-options"]', function (e) {
     var wishlistButton = $('#wishlist-btn-product');
-    // ISSUE: doesn't fetch correct inWishlist data value when it's been changed by the "ADD TO WISHLIST" script
-    console.log("! .btn-color.data", $(this).data());
-    if ($(this).data("inWishlist") === "True") {
-      console.log("! inWishlist === True");
+    var selectedSizeRadioLabel = $('input[name="size-options"]:checked').next('label');
+    var productVariantSpecsJson = selectedSizeRadioLabel.data('productVariantSpecs').replace(/'/g, '"');
+    var productVariantSpecs = JSON.parse(productVariantSpecsJson);
+
+    // check if the chosen productVariant is in the user's wishlist
+    var i = 0;
+    var colorId = -1;
+    var inWishlist;
+    while (i < productVariantSpecs.length && colorId !== $(this).data('colorId')) {
+      let specs = productVariantSpecs[i];
+      colorId = specs.color_id;
+      inWishlist = specs.in_wishlist;
+      i++;
+    };
+
+    if (inWishlist === "True") {
       if (wishlistButton.hasClass('wishlist-btn-add')) {
         wishlistButton.removeClass('wishlist-btn-add');
       };
@@ -216,7 +227,7 @@
   });
 </script>
 
-<!-- ADD TO WISHLIST -->
+<!-- 3.1 ADD TO WISHLIST -->
 <script>
   $(document).on('click', '.wishlist-btn-add', function (e) {
     e.preventDefault();
@@ -251,7 +262,7 @@
   });
 </script>
 
-<!-- DELETE FROM WISHLIST -->
+<!-- 3.2 DELETE FROM WISHLIST -->
 <script>
   $(document).on('click', '.wishlist-btn-delete', function (e) {
     e.preventDefault();
