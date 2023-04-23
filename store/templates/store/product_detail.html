@@ -164,7 +164,6 @@
     colorsElement.textContent = '';
     var productVariantSpecsJson = $(this).next('label').data('productVariantSpecs').replace(/'/g, '"');
     var productVariantSpecs = JSON.parse(productVariantSpecsJson);
-    console.log('parse 1:', $(this).next('label').data('productVariantSpecs'));
 
     for (let i = 0; i < productVariantSpecs.length; i++) {
       let specs = productVariantSpecs[i];
@@ -201,7 +200,6 @@
     var selectedSizeRadioLabel = $('input[name="size-options"]:checked').next('label');
     var productVariantSpecsJson = selectedSizeRadioLabel.data('productVariantSpecs').replace(/'/g, '"');
     var productVariantSpecs = JSON.parse(productVariantSpecsJson);
-    console.log('parsed 2:', selectedSizeRadioLabel.data('productVariantSpecs'));
 
     // check if the chosen productVariant is in the user's wishlist
     var i = 0;
@@ -214,8 +212,6 @@
       inWishlist = specs.in_wishlist;
       i++;
     };
-    console.log('out of these:', productVariantSpecs);
-    console.log('<<<chose this one:', specs);
 
     if (inWishlist === "True") {
       if (wishlistButton.hasClass('wishlist-btn-add')) {
@@ -239,9 +235,6 @@
     const selected_size = document.querySelector('input[name="size-options"]:checked + label').textContent;
     const selected_color_id = document.querySelector('input[name="color-options"]:checked').dataset.colorId;
     var wishlistButton = $(this);
-    console.log('ADDED! product_id:', product_id);
-    console.log('ADDED! size:', selected_size);
-    console.log('ADDED! color_id:', selected_color_id);
     $.ajax({
       type: 'POST',
       url: '{% url "wishlist:modify" %}',
@@ -259,33 +252,26 @@
         // parse product-variant-specs
         var selectedSizeRadioLabel = $('input[name="size-options"]:checked').next('label');
         var productVariantSpecsJson = selectedSizeRadioLabel.data('productVariantSpecs').replace(/'/g, '"');
-        console.log('get JSON data from size label', productVariantSpecsJson);
         // ISSUE: somehow changes in_wishlist parameter of the last element in the hashmap to 'True'
         var productVariantSpecs = JSON.parse(productVariantSpecsJson);
-        console.log('>>> parsed JSON:', productVariantSpecs);
 
         // find selected color and toggle in_wishlist parameter for it
         var i = 0;
         var colorId = -1;
         var inWishlist;
         var specs;
-        console.log('start loop and compare color_id to:', selected_color_id);
         // ISSUE: doesn't catch the right color_id
         while (i < productVariantSpecs.length && colorId != selected_color_id) {
           specs = productVariantSpecs[i];
           colorId = specs.color_id;
-          console.log('color_id:', colorId);
           i++;
         };
-        console.log('chose this color:', productVariantSpecs[i-1])
         specs.in_wishlist = "True";
-        console.log('changed to', specs);
 
         // push back to product-variant-specs
         var updatedProductVariantSpecsJson = JSON.stringify(productVariantSpecs);
         selectedSizeRadioLabel.data('productVariantSpecs', updatedProductVariantSpecsJson);
         selectedSizeRadioLabel.data('productVariantSpecs');
-        console.log('what got pushed to product-variant-specs:', selectedSizeRadioLabel.data('productVariantSpecs'));
       },
       error: function (xhr, errmsg, err) {}
     });
