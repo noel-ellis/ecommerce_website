@@ -228,12 +228,15 @@
 </script>
 
 <!-- 3.1 ADD TO WISHLIST -->
+{% comment "3.1 ADD TO WISHLIST" %}
+TODO: make this event triggerable more than once
+{% endcomment %} 
 <script>
   $(document).on('click', '.wishlist-btn-add', function (e) {
     e.preventDefault();
-    const product_id = $(this).data('productid');
-    const selected_size = document.querySelector('input[name="size-options"]:checked + label').textContent;
-    const selected_color_id = document.querySelector('input[name="color-options"]:checked').dataset.colorId;
+    var product_id = $(this).data('productid');
+    var selected_size = document.querySelector('input[name="size-options"]:checked + label').textContent;
+    var selected_color_id = document.querySelector('input[name="color-options"]:checked').dataset.colorId;
     var wishlistButton = $(this);
     $.ajax({
       type: 'POST',
@@ -252,7 +255,6 @@
         // parse product-variant-specs
         var selectedSizeRadioLabel = $('input[name="size-options"]:checked').next('label');
         var productVariantSpecsJson = selectedSizeRadioLabel.data('productVariantSpecs').replace(/'/g, '"');
-        // ISSUE: somehow changes in_wishlist parameter of the last element in the hashmap to 'True'
         var productVariantSpecs = JSON.parse(productVariantSpecsJson);
 
         // find selected color and toggle in_wishlist parameter for it
@@ -260,7 +262,6 @@
         var colorId = -1;
         var inWishlist;
         var specs;
-        // ISSUE: doesn't catch the right color_id
         while (i < productVariantSpecs.length && colorId != selected_color_id) {
           specs = productVariantSpecs[i];
           colorId = specs.color_id;
@@ -282,9 +283,10 @@
 <script>
   $(document).on('click', '.wishlist-btn-delete', function (e) {
     e.preventDefault();
-    const product_id = $(this).data('productid');
-    const selected_size = document.querySelector('input[name="size-options"]:checked + label').textContent;
-    const selected_color_id = document.querySelector('input[name="color-options"]:checked').dataset.colorId;
+    var product_id = $(this).data('productid');
+    var selected_size = document.querySelector('input[name="size-options"]:checked + label').textContent;
+    var selected_color_id = document.querySelector('input[name="color-options"]:checked').dataset.colorId;
+    var wishlistButton = $(this);
     $.ajax({
       type: 'POST',
       url: '{% url "wishlist:modify" %}',
@@ -296,10 +298,30 @@
         action: 'delete'
       },
       success: function (json) {
-        var wishlistButton = '#wishlist-btn-product';
-        $(wishlistButton).removeClass('wishlist-btn-delete');
-        $(wishlistButton).addClass('wishlist-btn-add');
-        document.querySelector('input[name="color-options"]:checked').dataset.inWishlist = "False";
+        wishlistButton.removeClass('wishlist-btn-delete');
+        wishlistButton.addClass('wishlist-btn-add');
+        
+        // parse product-variant-specs
+        var selectedSizeRadioLabel = $('input[name="size-options"]:checked').next('label');
+        var productVariantSpecsJson = selectedSizeRadioLabel.data('productVariantSpecs').replace(/'/g, '"');
+        var productVariantSpecs = JSON.parse(productVariantSpecsJson);
+
+        // find selected color and toggle in_wishlist parameter for it
+        var i = 0;
+        var colorId = -1;
+        var inWishlist;
+        var specs;
+        while (i < productVariantSpecs.length && colorId != selected_color_id) {
+          specs = productVariantSpecs[i];
+          colorId = specs.color_id;
+          i++;
+        };
+        specs.in_wishlist = "False";
+
+        // push back to product-variant-specs
+        var updatedProductVariantSpecsJson = JSON.stringify(productVariantSpecs);
+        selectedSizeRadioLabel.data('productVariantSpecs', updatedProductVariantSpecsJson);
+        selectedSizeRadioLabel.data('productVariantSpecs');
       },
       error: function (xhr, errmsg, err) {}
     });
