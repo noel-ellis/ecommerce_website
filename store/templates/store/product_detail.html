@@ -238,8 +238,10 @@
     const product_id = $(this).data('productid');
     const selected_size = document.querySelector('input[name="size-options"]:checked + label').textContent;
     const selected_color_id = document.querySelector('input[name="color-options"]:checked').dataset.colorId;
-    console.log('found size:', selected_size);
-    console.log('found color_id:', selected_color_id);
+    var wishlistButton = $(this);
+    console.log('ADDED! product_id:', product_id);
+    console.log('ADDED! size:', selected_size);
+    console.log('ADDED! color_id:', selected_color_id);
     $.ajax({
       type: 'POST',
       url: '{% url "wishlist:modify" %}',
@@ -251,18 +253,16 @@
         action: 'add'
       },
       success: function (json) {
-        var wishlistButton = '#wishlist-btn-product';
-        $(wishlistButton).removeClass('wishlist-btn-add');
-        $(wishlistButton).addClass('wishlist-btn-delete');
+        wishlistButton.removeClass('wishlist-btn-add');
+        wishlistButton.addClass('wishlist-btn-delete');
         
         // parse product-variant-specs
         var selectedSizeRadioLabel = $('input[name="size-options"]:checked').next('label');
-        console.log('selected size:', selectedSizeRadioLabel)
         var productVariantSpecsJson = selectedSizeRadioLabel.data('productVariantSpecs').replace(/'/g, '"');
-        console.log('parse 3', productVariantSpecsJson);
-        // ISSUE: somehow changes the wrong element between these two outputs. I have no idea how and why
+        console.log('get JSON data from size label', productVariantSpecsJson);
+        // ISSUE: somehow changes in_wishlist parameter of the last element in the hashmap to 'True'
         var productVariantSpecs = JSON.parse(productVariantSpecsJson);
-        console.log('>>> parsed 3.1:', productVariantSpecs);
+        console.log('>>> parsed JSON:', productVariantSpecs);
 
         // find selected color and toggle in_wishlist parameter for it
         var i = 0;
@@ -270,7 +270,8 @@
         var inWishlist;
         var specs;
         console.log('start loop and compare color_id to:', selected_color_id);
-        while (i < productVariantSpecs.length && colorId !== selected_color_id) {
+        // ISSUE: doesn't catch the right color_id
+        while (i < productVariantSpecs.length && colorId != selected_color_id) {
           specs = productVariantSpecs[i];
           colorId = specs.color_id;
           console.log('color_id:', colorId);
@@ -283,7 +284,6 @@
         // push back to product-variant-specs
         var updatedProductVariantSpecsJson = JSON.stringify(productVariantSpecs);
         selectedSizeRadioLabel.data('productVariantSpecs', updatedProductVariantSpecsJson);
-        // FIX: pushes garbage
         selectedSizeRadioLabel.data('productVariantSpecs');
         console.log('what got pushed to product-variant-specs:', selectedSizeRadioLabel.data('productVariantSpecs'));
       },

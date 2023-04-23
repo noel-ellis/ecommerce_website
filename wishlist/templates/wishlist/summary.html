@@ -29,6 +29,7 @@
                     <div class="card-body">
                       <h5 class="card-title text-center">{{ product.name|title }}</h5>
                       <p class="card-text text-center m-0 mb-1 p-0">{{ product.material }}</p>
+                      <p class="card-text text-center m-0 mb-1 p-0">{{ product.color }}</p>
                       <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product.price }}</strong></p>
                       
                       <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.slug %}"></a>
