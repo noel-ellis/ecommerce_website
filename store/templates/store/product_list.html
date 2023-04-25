@@ -1,261 +1,265 @@
 {% extends "store/base.html" %}
 {% block content %}
 <div class="container-fluid p-0 pb-5">
-    <div class="d-flex justify-content-center container-fluid col-10 p-0">
-        <div class="d-flex flex-column container-fluid p-0">
+  <div class="d-flex justify-content-center container-fluid col-10 p-0">
+    <div class="d-flex flex-column container-fluid p-0">
 
-            <!-- breadcrumb -->
-            <div class="container-fluid p-0 pt-2">
-                <div class="p-0 px-2" aria-label="breadcrumb">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item active" aria-current="page">STORE</li>
-                    </ol>
-                </div>
-                <hr class="my-1">
-            </div>
-
-            <!-- store -->
-            <div class="container-fluid p-0 pt-2">
-                <div class="d-flex flex-row">
-
-                    <!-- filtering tools -->
-                    <div class="col-3">
-                        <div class="d-flex flex-column">
-
-                            <!-- header -->
-                            <div class="d-flex flex-row ps-2 pe-1 justify-content-between align-items-center p-0 pt-1 pb-1">
-                                <p class="m-0 fs-5">FILTERS</p>
-                                <p class="m-0">[n] items</p>
-                            </div>
-
-                            <hr class="my-1">
-
-                            <!-- accordion -->
-                            <div class="d-flex flex-row p-0 m-0">
-                                <div class="accordion custom-accordion accordion-flush container-fluid p-0" id="accordionFilter">
-                                    
-                                    <!-- category -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="accordionfilter-header-category">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-category" aria-expanded="false" aria-controls="accordionfilter-body-category">
-                                                CATEGORY
-                                            </button>
-                                        </h2>
-                                        <div id="accordionfilter-body-category" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-category">
-                                            <div class="accordion-body">
-                                                <div class="form-check p-0">
-                                                    <div class="row row-cols-1 g-1">
-                                                        
-                                                        {% for category in categories %}
-                                                        <div class="col">
-                                                            <input type="checkbox" class="btn-check" id="btn-check-category-{{ category.id }}" autocomplete="off">
-                                                            <label class="d-flex btn btn-custom-checkbox-minimal-alt" for="btn-check-category-{{ category.id }}">{{ category.name|title }}</label>
-                                                        </div>
-                                                        {% endfor %}
-                                                            
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- size -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="accordionfilter-header-size">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-size" aria-expanded="false" aria-controls="accordionfilter-body-size">
-                                                SIZE
-                                            </button>
-                                        </h2>
-                                        <div id="accordionfilter-body-size" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-size">
-                                            <div class="accordion-body p-0">
-                                                <div class="form-check p-2">
-                                                    <div class="row row-cols-4 g-1">
-                                                        
-                                                        {% for size in sizes %}
-                                                        <div class="col">
-                                                            <input type="checkbox" class="btn-check" id="btn-check-size-{{ size }}" autocomplete="off">
-                                                            <label class="btn btn-custom-checkbox" for="btn-check-size-{{ size }}">{{size}}</label>
-                                                        </div>
-                                                        {% endfor %}
-                                                            
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- color -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="accordionfilter-header-color">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-color" aria-expanded="false" aria-controls="accordionfilter-body-color">
-                                                COLOR
-                                            </button>
-                                        </h2>
-                                        <div id="accordionfilter-body-color" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-color">
-                                            <div class="accordion-body">
-                                                <div class="form-check p-2">
-                                                    <div class="row row-cols-6 g-1">
-                                                        
-                                                        {% for color in colors %}
-                                                        <div class="col">
-                                                            <input type="checkbox" class="btn-check" id="btn-check-color-{{ color.id }}" autocomplete="off">
-                                                            {% if color.name == "White" %}
-                                                            <label class="btn btn-colors-checkbox" for="btn-check-color-{{ color.id }}" style="--bs-btn-bg: #{{ color.code }}; --bs-btn-active-bg: #{{ color.code }}; --bs-btn-border-color: #d3d3d3;"></label>
-                                                            {% else %}
-                                                            <label class="btn btn-colors-checkbox" for="btn-check-color-{{ color.id }}" style="--bs-btn-bg: #{{ color.code }}; --bs-btn-active-bg: #{{ color.code }};"></label>
-                                                            {% endif %}
-                                                        </div>
-                                                        {% endfor %}
-                                                            
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- material -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="accordionfilter-header-material">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-material" aria-expanded="false" aria-controls="accordionfilter-body-material">
-                                                MATERIAL
-                                            </button>
-                                        </h2>
-                                        <div id="accordionfilter-body-material" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-material">
-                                            <div class="accordion-body">
-                                                <div class="form-check p-0">
-                                                    <div class="row row-cols-1 g-1">
-                                                        
-                                                        {% for material in materials %}
-                                                        <div class="col">
-                                                            <input type="checkbox" class="btn-check" id="btn-check-material-{{ material.id }}" autocomplete="off">
-                                                            <label class="d-flex btn btn-custom-checkbox-minimal-alt" for="btn-check-material-{{ material.id }}">{{ material.name|title }}</label>
-                                                        </div>
-                                                        {% endfor %}
-                                                            
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- max price -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="accordionfilter-header-price">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-price" aria-expanded="false" aria-controls="accordionfilter-body-price">
-                                                MAX PRICE
-                                            </button>
-                                        </h2>
-                                        <div id="accordionfilter-body-price" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-price">
-                                            <div class="accordion-body d-flex flex-column align-items-center">
-                                                
-                                                <input id='price-cap' type="range" class="form-range" min="100" max="1000" step="100" value="1000">
-                                                <label id='range-value-label' for="price-range" class="form-label">1000 $</label>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- other -->
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="accordionfilter-header-other">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-other" aria-expanded="false" aria-controls="accordionfilter-body-other">
-                                                OTHER
-                                            </button>
-                                        </h2>
-                                        <div id="accordionfilter-body-other" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-other">
-                                            <div class="accordion-body">
-                                                <div class="d-flex flex-row justify-content-evenly">                                                    
-                                                    <input type="checkbox" class="btn-check" id="btn-check-new" autocomplete="off">
-                                                    <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-new">NEW</label>
-                                                    <input type="checkbox" class="btn-check" id="btn-check-sale" autocomplete="off">
-                                                    <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-sale">SALE</label>
-                                                    <input type="checkbox" class="btn-check" id="btn-check-instock" autocomplete="off">
-                                                    <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-instock">IN STOCK</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>  
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- products -->
-                    <div class="col-9 ps-1">
-                        <div class="d-flex flex-column">
-
-                            <!-- header -->
-                            <div class="d-flex flex-row ps-2 pe-1 justify-content-between align-items-center p-0 pt-2">
-                                
-                                <!-- filter tags -->
-                                <div class="col-8">
-                                    <div class="d-flex flex-row p-0">
-                                        <p class="m-0 mb-1">RESULT:</p>
-
-                                        {% comment "tags will be here" %}{% endcomment %}
-
-                                    </div>
-                                </div>
-
-                                <!-- sort by -->
-                                <div class="col-4">
-                                    <div class="d-flex flex-row p-0 m-0 mb-1">
-                                        <div class="col-4">
-                                            <p class="m-0">SORT BY: </p>
-                                        </div>
-                                        <div class="d-flex col-8 align-items-center">
-                                            <select class="form-select form-select-sort-by p-0 ps-2" aria-label="select-sort-by">
-                                                <option value="name" selected>Name</option>
-                                                <option value="price">Price</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                            <hr class="my-1">
-
-                            <!-- product list -->
-                            <div class="container p-3">
-                                <div class="row row-cols-3 gx-4 gy-3">
-                                    {% for product in product_list %}
-                                        <div class="col">
-                                            <div class="card h-100">
-
-                                                <!-- wishlist button -->
-                                                <div class="d-flex justify-content-end container mt-3 p-0 pe-3">
-                                                    {% if product.in_wishlist %}
-                                                    <a class="btn wishlist-btn wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.product__id }}" data-colorid="{{ product.color__id }}", data-size="{{ product.size }}">
-                                                    </a>
-                                                    {% else %}
-                                                    <a class="btn wishlist-btn wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.product__id }}" data-colorid="{{ product.color__id }}", data-size="{{ product.size }}">
-                                                    </a>
-                                                    {% endif %}
-                                                </div>
-                                                
-                                                <!-- clickable card-->
-                                                <div class="container px-4 position-relative">
-                                                    <img src="{{ product.image }}" class="card-img-top img-fluid">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title text-center">{{ product.product__name|title }}</h5>
-                                                        <p class="card-text text-center m-0 mb-1 p-0">{{ product.product__material__name }}</p>
-                                                        <p class="card-text text-center m-0 p-0">{{ product.color__name }}</p>
-                                                        <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product.product__price }}</strong></p>
-                                                        <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.product__slug %}"></a>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <!-- breadcrumb -->
+      <div class="container-fluid p-0 pt-2">
+        <div class="p-0 px-2" aria-label="breadcrumb">
+          <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item active" aria-current="page">STORE</li>
+          </ol>
         </div>
+        <hr class="my-1">
+      </div>
+
+      <!-- store -->
+      <div class="container-fluid p-0 pt-2">
+        <div class="d-flex flex-row">
+
+          <!-- filtering tools -->
+          <div class="col-3">
+            <div class="d-flex flex-column">
+
+              <!-- header -->
+              <div class="d-flex flex-row ps-2 pe-1 justify-content-between align-items-center p-0 pt-1 pb-1">
+                  <p class="m-0 fs-5">FILTERS</p>
+                  <p class="m-0">[n] items</p>
+              </div>
+
+              <hr class="my-1">
+
+              <!-- accordion -->
+              <div class="d-flex flex-row p-0 m-0">
+                <div class="accordion custom-accordion accordion-flush container-fluid p-0" id="accordionFilter">
+                    
+                  <!-- category -->
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="accordionfilter-header-category">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-category" aria-expanded="false" aria-controls="accordionfilter-body-category">
+                        CATEGORY
+                      </button>
+                    </h2>
+                    <div id="accordionfilter-body-category" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-category">
+                      <div class="accordion-body">
+                        <div class="form-check p-0">
+                          <div class="row row-cols-1 g-1">
+                            {% for category in categories %}
+                            <div class="col">
+                              <input type="checkbox" class="btn-check" id="btn-check-category-{{ category.id }}" autocomplete="off">
+                              <label class="d-flex btn btn-custom-checkbox-minimal-alt" for="btn-check-category-{{ category.id }}">{{ category.name|title }}</label>
+                            </div>
+                            {% endfor %}    
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- size -->
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="accordionfilter-header-size">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-size" aria-expanded="false" aria-controls="accordionfilter-body-size">
+                        SIZE
+                      </button>
+                    </h2>
+                    <div id="accordionfilter-body-size" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-size">
+                      <div class="accordion-body p-0">
+                        <div class="form-check p-2">
+                          <div class="row row-cols-4 g-1">
+                            {% for size in sizes %}
+                            <div class="col">
+                              <input type="checkbox" class="btn-check" id="btn-check-size-{{ size }}" autocomplete="off">
+                              <label class="btn btn-custom-checkbox" for="btn-check-size-{{ size }}">{{size}}</label>
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- color -->
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="accordionfilter-header-color">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-color" aria-expanded="false" aria-controls="accordionfilter-body-color">
+                        COLOR
+                      </button>
+                    </h2>
+                    <div id="accordionfilter-body-color" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-color">
+                      <div class="accordion-body">
+                        <div class="form-check p-2">
+                          <div class="row row-cols-6 g-1">
+                            {% for color in colors %}
+                            <div class="col">
+                              <input type="checkbox" class="btn-check" id="btn-check-color-{{ color.id }}" autocomplete="off">
+                              {% if color.name == "White" %}
+                              <label class="btn btn-colors-checkbox" for="btn-check-color-{{ color.id }}" style="--bs-btn-bg: #{{ color.code }}; --bs-btn-active-bg: #{{ color.code }}; --bs-btn-border-color: #d3d3d3;"></label>
+                              {% else %}
+                              <label class="btn btn-colors-checkbox" for="btn-check-color-{{ color.id }}" style="--bs-btn-bg: #{{ color.code }}; --bs-btn-active-bg: #{{ color.code }};"></label>
+                              {% endif %}
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- material -->
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="accordionfilter-header-material">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-material" aria-expanded="false" aria-controls="accordionfilter-body-material">
+                        MATERIAL
+                      </button>
+                    </h2>
+                    <div id="accordionfilter-body-material" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-material">
+                      <div class="accordion-body">
+                        <div class="form-check p-0">
+                          <div class="row row-cols-1 g-1">
+                            {% for material in materials %}
+                            <div class="col">
+                              <input type="checkbox" class="btn-check" id="btn-check-material-{{ material.id }}" autocomplete="off">
+                              <label class="d-flex btn btn-custom-checkbox-minimal-alt" for="btn-check-material-{{ material.id }}">{{ material.name|title }}</label>
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- max price -->
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="accordionfilter-header-price">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-price" aria-expanded="false" aria-controls="accordionfilter-body-price">
+                        MAX PRICE
+                      </button>
+                    </h2>
+                    <div id="accordionfilter-body-price" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-price">
+                      <div class="accordion-body d-flex flex-column align-items-center">
+                        <input id='price-cap' type="range" class="form-range" min="100" max="1000" step="100" value="1000">
+                        <label id='range-value-label' for="price-range" class="form-label">1000 $</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- other -->
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="accordionfilter-header-other">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionfilter-body-other" aria-expanded="false" aria-controls="accordionfilter-body-other">
+                        OTHER
+                      </button>
+                    </h2>
+                    <div id="accordionfilter-body-other" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-other">
+                      <div class="accordion-body">
+                        <div class="d-flex flex-row justify-content-evenly">                                                    
+                          <input type="checkbox" class="btn-check" id="btn-check-new" autocomplete="off">
+                          <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-new">NEW</label>
+                          <input type="checkbox" class="btn-check" id="btn-check-sale" autocomplete="off">
+                          <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-sale">SALE</label>
+                          <input type="checkbox" class="btn-check" id="btn-check-instock" autocomplete="off">
+                          <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-instock">IN STOCK</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>  
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- products -->
+          <div class="col-9 ps-1">
+            <div class="d-flex flex-column">
+
+              <!-- header -->
+              <div class="d-flex flex-row ps-2 pe-1 justify-content-between align-items-center p-0 pt-2">
+                <!-- filter tags -->
+                <div class="col-8">
+                  <div class="d-flex flex-row p-0">
+                    <p class="m-0 mb-1">RESULT:</p> 
+                    {% comment "tags will be here" %}{% endcomment %}
+                  </div>
+                </div>
+
+                <!-- sort by -->
+                <div class="col-4">
+                  <div class="d-flex flex-row p-0 m-0 mb-1">
+                    <div class="col-4">
+                      <p class="m-0">SORT BY: </p>
+                    </div>
+                    <div class="d-flex col-8 align-items-center">
+                      <select class="form-select form-select-sort-by p-0 ps-2" aria-label="select-sort-by">
+                        <option value="name" selected>Name</option>
+                        <option value="price">Price</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <hr class="my-1">
+
+              <!-- product list -->
+              <div class="container p-3">
+                <div class="row row-cols-3 gx-4 gy-3">
+                  {% for product in page_obj %}
+                    <div class="col">
+                      <div class="card h-100">
+                        <!-- wishlist button -->
+                        <div class="d-flex justify-content-end container mt-3 p-0 pe-3">
+                          {% if product.in_wishlist %}
+                          <a class="btn wishlist-btn wishlist-btn-delete" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.product__id }}" data-colorid="{{ product.color__id }}", data-size="{{ product.size }}">
+                          </a>
+                          {% else %}
+                          <a class="btn wishlist-btn wishlist-btn-add" id="wishlist-btn-{{ product.id }}" data-productid="{{ product.product__id }}" data-colorid="{{ product.color__id }}", data-size="{{ product.size }}">
+                          </a>
+                          {% endif %}
+                        </div>
+                        
+                        <!-- clickable card-->
+                        <div class="container px-4 position-relative">
+                          <img src="{{ product.image }}" class="card-img-top img-fluid">
+                          <div class="card-body">
+                            <h5 class="card-title text-center">{{ product.product__name|title }}</h5>
+                            <p class="card-text text-center m-0 mb-1 p-0">{{ product.product__material__name }}</p>
+                            <p class="card-text text-center m-0 p-0">{{ product.color__name }}</p>
+                            <p class="card-text text-center m-0 mt-2 p-0"><strong>${{ product.product__price }}</strong></p>
+                            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.product__slug %}"></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              <!-- pagination buttons -->
+              <div class="container p-0 mt-5 d-flex justify-content-center align-items-center">
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                  {% comment "first page" %}{% endcomment %}
+                  <div class="btn-group me-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-primary">1</button>
+                  </div>
+                  {% comment "pages around chosen one" %}{% endcomment %}
+                  <div class="btn-group me-2" role="group" aria-label="Second group">
+                    <button type="button" class="btn btn-secondary">5</button>
+                    <button type="button" class="btn btn-secondary">6</button>
+                    <button type="button" class="btn btn-secondary">7</button>
+                  </div>
+                  {% comment "last page" %}{% endcomment %}
+                  <div class="btn-group" role="group" aria-label="Third group">
+                    <button type="button" class="btn btn-info">8</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- ADD TO WISHLIST -->

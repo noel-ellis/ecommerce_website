@@ -2,6 +2,7 @@ from django.core.files.storage import default_storage
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
 from django.views import generic
+from django.core.paginator import Paginator
 
 from .models import Category, Product, ProductVariant, Color, Material
 from wishlist.wishlist import Wishlist
@@ -17,7 +18,11 @@ def main(request):
     }
     return render(request, "store/main.html", context=context)
 
-
+# TODO:
+# pagination
+# search
+# filter by category
+# sorting
 def product_list_view(request):
     wishlist = Wishlist(request)
     colors = Color.objects.all()
@@ -25,13 +30,19 @@ def product_list_view(request):
     categories = Category.objects.all()
 
     all_products = ProductVariant.objects.select_related("product__material", "color").values("product__material__name", "product__name", "product__price", "product__slug", "product__id", "color__name", "color__id", "image", "id", "size").all()
+    # mix-in in_wishlist to each product variant, so that we can properly reflect the availability of each color for each size
     for product_variant in all_products:
         product_variant["in_wishlist"] = wishlist.contains(str(product_variant["id"]))
         image_url = default_storage.url(product_variant["image"])
-        product_variant["image"] = image_url  
+        product_variant["image"] = image_url
+
+    # pagination
+    paginator = Paginator(all_products, 12)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     context = {
-        "product_list": all_products,
+        "page_obj": page_obj,
         "sizes": sizes,
         "colors": colors,
         "materials": materials,
