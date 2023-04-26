@@ -399,3 +399,19 @@ small {
 .form-check-input:checked[type=radio] {
     background-image: none;
 }
+
+.pagination {
+    --bs-pagination-color: #000000;
+    --bs-pagination-bg: transparent;
+    --bs-pagination-border-radius: 0em;
+    --bs-pagination-border-width: 0.1em;
+    --bs-pagination-border-color: #000000;
+    --bs-pagination-padding-y: .8em;
+    --bs-pagination-padding-x: 1.4em;
+    --bs-pagination-disabled-border-color: #000000;
+    --bs-pagination-disabled-bg: #000000;
+    --bs-pagination-disabled-color: #ffffff;
+    --bs-pagination-hover-border-color: #000000;
+    --bs-pagination-hover-bg: #000000;
+    --bs-pagination-hover-color: #ffffff;
+}
