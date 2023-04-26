@@ -123,17 +123,6 @@
               {% for product_variant in promo %}
               <div class="col">
                 <div class="card h-100">
-
-                  <!-- wishlist button -->
-                  <div class="d-flex justify-content-end container mt-3 p-0 pe-3">
-                    {% if product_variant.in_wishlist %}
-                    <a class="btn wishlist-btn wishlist-btn-delete" id="wishlist-btn-{{ product_variant.id }}" data-productid="{{ product_variant.id }}">
-                    </a>
-                    {% else %}
-                    <a class="btn wishlist-btn wishlist-btn-add" id="wishlist-btn-{{ product_variant.id }}" data-productid="{{ product_variant.id }}">
-                    </a>
-                    {% endif %}
-                  </div>
                   
                   <!-- clickable card-->
                   <div class="container px-4 position-relative">
