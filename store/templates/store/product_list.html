@@ -47,7 +47,7 @@
                           <div class="row row-cols-1 g-1">
                             {% for category in categories %}
                             <div class="col">
-                              <input type="checkbox" class="btn-check" id="btn-check-category-{{ category.id }}" autocomplete="off">
+                              <input type="checkbox" class="btn-check" id="btn-check-category-{{ category.id }}" autocomplete="off" name="filter-category-checkbox" data-category-id="{{ category.id }}">
                               <label class="d-flex btn btn-custom-checkbox-minimal-alt" for="btn-check-category-{{ category.id }}">{{ category.name|title }}</label>
                             </div>
                             {% endfor %}    
@@ -70,7 +70,7 @@
                           <div class="row row-cols-4 g-1">
                             {% for size in sizes %}
                             <div class="col">
-                              <input type="checkbox" class="btn-check" id="btn-check-size-{{ size }}" autocomplete="off">
+                              <input type="checkbox" class="btn-check" id="btn-check-size-{{ size }}" autocomplete="off" name="filter-size-checkbox" data-size-id="{{ size }}">
                               <label class="btn btn-custom-checkbox" for="btn-check-size-{{ size }}">{{size}}</label>
                             </div>
                             {% endfor %}
@@ -93,7 +93,7 @@
                           <div class="row row-cols-6 g-1">
                             {% for color in colors %}
                             <div class="col">
-                              <input type="checkbox" class="btn-check" id="btn-check-color-{{ color.id }}" autocomplete="off">
+                              <input type="checkbox" class="btn-check" id="btn-check-color-{{ color.id }}" autocomplete="off" name="filter-color-checkbox" data-color-id="{{ color.id }}">
                               {% if color.name == "White" %}
                               <label class="btn btn-colors-checkbox" for="btn-check-color-{{ color.id }}" style="--bs-btn-bg: #{{ color.code }}; --bs-btn-active-bg: #{{ color.code }}; --bs-btn-border-color: #d3d3d3;"></label>
                               {% else %}
@@ -120,7 +120,7 @@
                           <div class="row row-cols-1 g-1">
                             {% for material in materials %}
                             <div class="col">
-                              <input type="checkbox" class="btn-check" id="btn-check-material-{{ material.id }}" autocomplete="off">
+                              <input type="checkbox" class="btn-check" id="btn-check-material-{{ material.id }}" autocomplete="off" name="filter-material-checkbox" data-material-id="{{ material.id }}">
                               <label class="d-flex btn btn-custom-checkbox-minimal-alt" for="btn-check-material-{{ material.id }}">{{ material.name|title }}</label>
                             </div>
                             {% endfor %}
@@ -139,7 +139,7 @@
                     </h2>
                     <div id="accordionfilter-body-price" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-price">
                       <div class="accordion-body d-flex flex-column align-items-center">
-                        <input id='price-cap' type="range" class="form-range" min="100" max="1000" step="100" value="1000">
+                        <input id='price-cap' type="range" class="form-range" min="100" max="1000" step="100" value="1000" name="filter-price-checkbox">
                         <label id='range-value-label' for="price-range" class="form-label">1000 $</label>
                       </div>
                     </div>
@@ -155,17 +155,22 @@
                     <div id="accordionfilter-body-other" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-other">
                       <div class="accordion-body">
                         <div class="d-flex flex-row justify-content-evenly">                                                    
-                          <input type="checkbox" class="btn-check" id="btn-check-new" autocomplete="off">
+                          <input type="checkbox" class="btn-check" id="btn-check-new" autocomplete="off" name="filter-other-new-checkbox">
                           <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-new">NEW</label>
-                          <input type="checkbox" class="btn-check" id="btn-check-sale" autocomplete="off">
+                          <input type="checkbox" class="btn-check" id="btn-check-sale" autocomplete="off" name="filter-other-sale-checkbox">
                           <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-sale">SALE</label>
-                          <input type="checkbox" class="btn-check" id="btn-check-instock" autocomplete="off">
+                          <input type="checkbox" class="btn-check" id="btn-check-instock" autocomplete="off" name="filter-other-in-stock-checkbox">
                           <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-instock">IN STOCK</label>
                         </div>
                       </div>
                     </div>
                   </div>  
                 </div>
+              </div>
+
+              <!-- apply button -->
+              <div class="d-flex flex-row p-0 my-2 justify-content-center">
+                <a href="#" class="btn btn-bd-dark" id='apply-filters-btn'>APPLY</a>
               </div>
             </div>
           </div>
@@ -287,66 +292,108 @@
 
 <!-- ADD TO WISHLIST -->
 <script>
-    $(document).on('click', '.wishlist-btn-add', function (e) {
-        e.preventDefault();
-        const ELEMENT = $(this);
-        let product_id = ELEMENT.data('productid');
-        let product_color_id = ELEMENT.data('colorid');
-        let product_size = ELEMENT.data('size');
-        $.ajax({
-            type: 'POST',
-            url: '{% url "wishlist:modify" %}',
-            data: {
-                product_id: product_id,
-                product_size: product_size,
-                product_color_id: product_color_id,
-                csrfmiddlewaretoken: "{{csrf_token}}",
-                action: 'add'
-            },
-            success: function (json) {
-                ELEMENT.removeClass('wishlist-btn-add');
-                ELEMENT.addClass('wishlist-btn-delete');
-            },
-            error: function (xhr, errmsg, err) {}
-        });
+  $(document).on('click', '.wishlist-btn-add', function (e) {
+    e.preventDefault();
+    const ELEMENT = $(this);
+    let product_id = ELEMENT.data('productid');
+    let product_color_id = ELEMENT.data('colorid');
+    let product_size = ELEMENT.data('size');
+    $.ajax({
+      type: 'POST',
+      url: '{% url "wishlist:modify" %}',
+      data: {
+        product_id: product_id,
+        product_size: product_size,
+        product_color_id: product_color_id,
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: 'add'
+      },
+      success: function (json) {
+        ELEMENT.removeClass('wishlist-btn-add');
+        ELEMENT.addClass('wishlist-btn-delete');
+      },
+      error: function (xhr, errmsg, err) {}
     });
+  });
 </script>
 
 <!-- DELETE FROM WISHLIST -->
 <script>
-    $(document).on('click', '.wishlist-btn-delete', function (e) {
-        e.preventDefault();
-        const ELEMENT = $(this);
-        let product_id = ELEMENT.data('productid');
-        let product_color_id = ELEMENT.data('colorid');
-        let product_size = ELEMENT.data('size');
-        $.ajax({
-            type: 'POST',
-            url: '{% url "wishlist:modify" %}',
-            data: {
-                product_id: product_id,
-                product_size: product_size,
-                product_color_id: product_color_id,
-                csrfmiddlewaretoken: "{{csrf_token}}",
-                action: 'delete'
-            },
-            success: function (json) {
-                ELEMENT.removeClass('wishlist-btn-delete');
-                ELEMENT.addClass('wishlist-btn-add');
-            },
-            error: function (xhr, errmsg, err) {}
-        });
+  $(document).on('click', '.wishlist-btn-delete', function (e) {
+    e.preventDefault();
+    const ELEMENT = $(this);
+    let product_id = ELEMENT.data('productid');
+    let product_color_id = ELEMENT.data('colorid');
+    let product_size = ELEMENT.data('size');
+    $.ajax({
+      type: 'POST',
+      url: '{% url "wishlist:modify" %}',
+      data: {
+        product_id: product_id,
+        product_size: product_size,
+        product_color_id: product_color_id,
+        csrfmiddlewaretoken: "{{csrf_token}}",
+        action: 'delete'
+      },
+      success: function (json) {
+        ELEMENT.removeClass('wishlist-btn-delete');
+        ELEMENT.addClass('wishlist-btn-add');
+      },
+      error: function (xhr, errmsg, err) {}
     });
+  });
 </script>
 
 <!-- SHOW MAX PRICE RANGE VALUE -->
 <script>
-    var slider = document.getElementById("price-cap");
-    var output = document.getElementById("range-value-label");
-    output.textContent = slider.value + " $";
+  var slider = document.getElementById("price-cap");
+  var output = document.getElementById("range-value-label");
+  output.textContent = slider.value + " $";
 
-    slider.oninput = function() {
-    output.textContent = this.value + " $";
-    }
+  slider.oninput = function() {
+  output.textContent = this.value + " $";
+  }
+</script>
+
+<!-- APPLY FILTERS -->
+<script>
+  $(document).on('click', '#apply-filters-btn', function(e) {
+    e.preventDefault();
+    
+    function getFilterIds(filterName) {
+      var objectQuery = 'input[name="filter-' + filterName + '-checkbox"]:checked';
+      var dataPropertyName = filterName + 'Id';
+
+      var selectedCheckboxes = $(objectQuery);
+      var selectedFilterIds = [];
+      for (let i = 0; i < selectedCheckboxes.length; i++) {
+        let selectedCategoryElement = selectedCheckboxes[i];
+        selectedFilterIds.push($(selectedCategoryElement).data(dataPropertyName));
+      };
+
+      return selectedFilterIds;
+    };
+
+    // priceCap;
+    // isNew;
+    // isOnSale;
+    // isInStock
+
+    // selectedCategoryIds
+    var selectedCategoryIds = getFilterIds('category');
+    var selectedSizeIds = getFilterIds('size');
+    var selectedColorIds = getFilterIds('color');
+    var selectedMaterialIds = getFilterIds('material');
+
+    
+    // outputs
+    console.log('fectched category ids:', selectedCategoryIds);
+    console.log('fectched size ids:', selectedSizeIds);
+    console.log('fectched color ids:', selectedColorIds);
+    console.log('fectched material ids:', selectedMaterialIds);
+
+
+    
+  });
 </script>
 {% endblock content %}
