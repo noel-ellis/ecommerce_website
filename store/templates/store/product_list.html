@@ -34,6 +34,10 @@
               <div class="d-flex flex-row p-0 m-0">
                 <div class="accordion custom-accordion accordion-flush container-fluid p-0" id="accordionFilter">
                     
+                  {% comment "TODO" %}
+                    align default values with applied URL parameters if any available
+                  {% endcomment %}
+
                   <!-- category -->
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="accordionfilter-header-category">
@@ -139,7 +143,7 @@
                     </h2>
                     <div id="accordionfilter-body-price" class="accordion-collapse collapse" aria-labelledby="accordionfilter-header-price">
                       <div class="accordion-body d-flex flex-column align-items-center">
-                        <input id='price-cap' type="range" class="form-range" min="100" max="1000" step="100" value="1000" name="filter-price-checkbox">
+                        <input id='price-cap' type="range" class="form-range" min="100" max="1000" step="100" value="1000" name="filter-price-slider">
                         <label id='range-value-label' for="price-range" class="form-label">1000 $</label>
                       </div>
                     </div>
@@ -157,9 +161,9 @@
                         <div class="d-flex flex-row justify-content-evenly">                                                    
                           <input type="checkbox" class="btn-check" id="btn-check-new" autocomplete="off" name="filter-other-new-checkbox">
                           <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-new">NEW</label>
-                          <input type="checkbox" class="btn-check" id="btn-check-sale" autocomplete="off" name="filter-other-sale-checkbox">
+                          <input type="checkbox" class="btn-check" id="btn-check-sale" autocomplete="off" name="filter-other-onsale-checkbox">
                           <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-sale">SALE</label>
-                          <input type="checkbox" class="btn-check" id="btn-check-instock" autocomplete="off" name="filter-other-in-stock-checkbox">
+                          <input type="checkbox" class="btn-check" id="btn-check-instock" autocomplete="off" name="filter-other-instock-checkbox">
                           <label class="d-flex btn btn-custom-checkbox-minimal" for="btn-check-instock">IN STOCK</label>
                         </div>
                       </div>
@@ -185,7 +189,9 @@
                 <div class="col-8">
                   <div class="d-flex flex-row p-0">
                     <p class="m-0 mb-1">RESULT:</p> 
-                    {% comment "tags will be here" %}{% endcomment %}
+                    {% comment "TODO" %}
+                      add tags that reflect all the applied filters
+                    {% endcomment %}
                   </div>
                 </div>
 
@@ -270,15 +276,17 @@
                   <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
                   {% endif %}
                   
-                  {% if page_obj.number == page_obj.paginator.num_pages %}
                   {% comment "last page" %}{% endcomment %}
-                  <li class="page-item disabled">
-                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
-                  </li>
-                  {% else %}
-                  <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
-                  </li>
+                  {% if page_obj.paginator.num_pages != 1 %}
+                    {% if page_obj.number == page_obj.paginator.num_pages %}
+                    <li class="page-item disabled">
+                      <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+                    </li>
+                    {% endif %}
                   {% endif %}
                 </ul>
               </nav>
@@ -374,26 +382,37 @@
       return selectedFilterIds;
     };
 
-    // priceCap;
-    // isNew;
-    // isOnSale;
-    // isInStock
+    function isChecked(filterName) {
+      var objectQuery = 'input[name="filter-other-' + filterName + '-checkbox"]:checked';
+      return $(objectQuery).length > 0;
+    };
 
-    // selectedCategoryIds
+    // priceCap;
+    var priceCap = $('input[name="filter-price-slider"]').val();
+
+    // selected ids
     var selectedCategoryIds = getFilterIds('category');
     var selectedSizeIds = getFilterIds('size');
     var selectedColorIds = getFilterIds('color');
     var selectedMaterialIds = getFilterIds('material');
 
-    
-    // outputs
-    console.log('fectched category ids:', selectedCategoryIds);
-    console.log('fectched size ids:', selectedSizeIds);
-    console.log('fectched color ids:', selectedColorIds);
-    console.log('fectched material ids:', selectedMaterialIds);
+    // checked 'other'
+    var isNew = isChecked('new');
+    var isOnSale = isChecked('onsale');
+    var isInStock = isChecked('instock');
 
-
-    
+    // reload the page with the new url parameters
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('categories', selectedCategoryIds);
+    urlSearchParams.append('sizes', selectedSizeIds);
+    urlSearchParams.append('colors', selectedColorIds);
+    urlSearchParams.append('materials', selectedMaterialIds);
+    urlSearchParams.append('new', isNew);
+    urlSearchParams.append('sale', isOnSale);
+    urlSearchParams.append('instock', isInStock);
+    urlSearchParams.append('pricecap', priceCap);
+    const customUrl = `{% url "store:store" %}?${urlSearchParams.toString()}`;
+    window.location.href = customUrl;
   });
 </script>
 {% endblock content %}

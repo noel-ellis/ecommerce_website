@@ -19,7 +19,6 @@ def main(request):
     return render(request, "store/main.html", context=context)
 
 # TODO:
-# pagination
 # search
 # filter by category
 # sorting
@@ -29,7 +28,42 @@ def product_list_view(request):
     materials = Material.objects.all()
     categories = Category.objects.all()
 
+    # catching filters
+    categories_ids = request.GET.get("categories", "").split(",")
+    sizes_ids = request.GET.get("sizes", "").split(",")
+    colors_ids = request.GET.get("colors", "").split(",")
+    materials_ids = request.GET.get("materials", "").split(",")
+    price_cap = request.GET.get("pricecap", "1000")
+    select_new = request.GET.get("isnew", False)
+    select_in_stock = request.GET.get("instock", False)
+    select_on_sale = request.GET.get("sale", False)
+
+    # TESTING outputs
+    print(f'\n!!!!!!!!\n category ids: {categories_ids}\n size ids: {sizes_ids}\n color ids: {colors_ids}\n material ids: {materials_ids}\n price cap: {price_cap}\n select new: {select_new}\n select in stock: {select_in_stock}\n select on sale: {select_on_sale}\n!!!!!!!!\n')
+
+    # I'll be modifying this query according to filters recieved from the frontend
     all_products = ProductVariant.objects.select_related("product__material", "color").values("product__material__name", "product__name", "product__price", "product__slug", "product__id", "color__name", "color__id", "image", "id", "size").all()
+    
+    # apply available filters
+    # DEBUG: possilbe trouble with bool values
+    all_products = all_products.filter(product__price__lte=price_cap)
+    
+    if categories_ids != ['']:
+        all_products = all_products.filter(product__category__id__in=categories_ids)
+    if sizes_ids != ['']:
+        all_products = all_products.filter(size__in=sizes_ids)
+    if colors_ids != ['']:
+        all_products = all_products.filter(color__id__in=colors_ids)
+    if materials_ids != ['']:
+        all_products = all_products.filter(product__material__id__in=materials_ids)
+
+    if select_new:
+        all_products = all_products.filter(new=True)
+    if select_in_stock:
+        all_products = all_products.filter(available_units__gt=0)
+    if select_on_sale:
+        all_products = all_products.filter(sale=True)
+
     # mix-in in_wishlist to each product variant, so that we can properly reflect the availability of each color for each size
     for product_variant in all_products:
         product_variant["in_wishlist"] = wishlist.contains(str(product_variant["id"]))
