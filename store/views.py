@@ -20,8 +20,6 @@ def main(request):
 
 # TODO:
 # search
-# filter by category
-# sorting
 def product_list_view(request):
     wishlist = Wishlist(request)
     colors = Color.objects.all()
@@ -34,9 +32,9 @@ def product_list_view(request):
     colors_ids = request.GET.get("colors", "").split(",")
     materials_ids = request.GET.get("materials", "").split(",")
     price_cap = request.GET.get("pricecap", "1000")
-    select_new = request.GET.get("isnew", False)
-    select_in_stock = request.GET.get("instock", False)
+    select_new = request.GET.get("new", False)
     select_on_sale = request.GET.get("sale", False)
+    select_in_stock = request.GET.get("instock", False)
 
     # TESTING outputs
     print(f'\n!!!!!!!!\n category ids: {categories_ids}\n size ids: {sizes_ids}\n color ids: {colors_ids}\n material ids: {materials_ids}\n price cap: {price_cap}\n select new: {select_new}\n select in stock: {select_in_stock}\n select on sale: {select_on_sale}\n!!!!!!!!\n')
@@ -45,7 +43,6 @@ def product_list_view(request):
     all_products = ProductVariant.objects.select_related("product__material", "color").values("product__material__name", "product__name", "product__price", "product__slug", "product__id", "color__name", "color__id", "image", "id", "size").all()
     
     # apply available filters
-    # DEBUG: possilbe trouble with bool values
     all_products = all_products.filter(product__price__lte=price_cap)
     
     if categories_ids != ['']:

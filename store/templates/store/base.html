@@ -33,7 +33,7 @@
                             <a class="text-white text-decoration-none accordion-button collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#collapseMen">MEN</a>
                         </li>
                         <li class="nav-item px-3">
-                            <a href="{% url 'store:store' %}" class="text-white text-decoration-none" role="button">SALE</a>
+                            <a href="{% url 'store:store' %}?{{ 'sale=true'|addslashes }}" class="text-white text-decoration-none" role="button">SALE</a>
                         </li>
                     </ul>
                 
