@@ -19,6 +19,7 @@ def main(request):
     return render(request, "store/main.html", context=context)
 
 # TODO:
+# convert to a class-based view. Separate functionality into different methods.
 # search
 def product_list_view(request):
     wishlist = Wishlist(request)
@@ -36,10 +37,6 @@ def product_list_view(request):
     select_on_sale = request.GET.get("sale", False)
     select_in_stock = request.GET.get("instock", False)
 
-    # TESTING outputs
-    print(f'\n!!!!!!!!\n category ids: {categories_ids}\n size ids: {sizes_ids}\n color ids: {colors_ids}\n material ids: {materials_ids}\n price cap: {price_cap}\n select new: {select_new}\n select in stock: {select_in_stock}\n select on sale: {select_on_sale}\n!!!!!!!!\n')
-
-    # I'll be modifying this query according to filters recieved from the frontend
     all_products = ProductVariant.objects.select_related("product__material", "color").values("product__material__name", "product__name", "product__price", "product__slug", "product__id", "color__name", "color__id", "image", "id", "size").all()
     
     # apply available filters
