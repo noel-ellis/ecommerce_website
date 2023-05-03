@@ -77,6 +77,8 @@ def signout(request):
     return redirect('users:login')
 
 
+# TODO:
+# convert to a class-based view
 @login_required
 def edit_address(request, address_id):
     user = request.user
@@ -130,6 +132,8 @@ def delete_address(request, address_id):
     return redirect('users:settings')
 
 
+# TODO:
+# convert to a class-based view
 @login_required
 def settings(request):
     if request.method == "POST":
