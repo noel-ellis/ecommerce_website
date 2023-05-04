@@ -86,41 +86,63 @@ class ProductListView(View):
 
         return render(request, "store/product_list.html", context=context)
 
-# TODO:
-# convert to a class-based view. Separate functionality into different methods.
-def product_detail_view(request, slug):
-    product = Product.objects.get(slug=slug)
-    product_variants = ProductVariant.objects.select_related("color").filter(product=product, available_units__gt=0).values("id", "size", "color__id", "color__code", "color__name", "image")
 
-    # creating size-color pairs to: 
+class ProductDetailView(View):
+
+    def get_product(self, slug):
+        return Product.objects.get(slug=slug)
+    
+    def get_product_variants(self, product):
+        return ProductVariant.objects.select_related("color").filter(product=product, available_units__gt=0).values("id", "size", "color__id", "color__code", "color__name", "image")
+    
+    def get_wishlist(self, request):
+        wishlist = Wishlist(request)
+        return wishlist
+    
+    def get_promo(self):
+        return ProductVariant.objects.filter(promo=True).select_related("product", "product__material")[:3]
+
+    # product_variants_data = {size: [{'id': color_id, 'code': color_code, 'name': color_name, 'in_wishlist': bool'}, ...]}
+    # purpose: 
     # 1. properly reflect the availability of each color for each size
-    # 2. determine whether or not the user added ProductVariant with that color to the wishlist
-    # format: 
-    # size_color_pairs = {size: [{'id': color_id, 'code': color_code, 'name': color_name, 'in_wishlist': bool'}, ...]}
-    wishlist = Wishlist(request)
-    size_color_pairs = {}
-    images = []
-    for product_variant in product_variants:
-        in_wishlist = wishlist.contains(str(product_variant['id']))
-        product_variant_specs = {
-            "color_id": product_variant["color__id"], 
-            "color_code": product_variant["color__code"], 
-            "color_name": product_variant["color__name"],
-            "in_wishlist": str(in_wishlist),
-        }
-        if product_variant["size"] not in size_color_pairs.keys():
-            size_color_pairs[product_variant["size"]] = []
-        size_color_pairs[product_variant["size"]].append(product_variant_specs)
+    # 2. determine if particular ProductVariant is in the user's wishlist
+    def get_product_variants_data(self, product, wishlist):
+        product_variants = self.get_product_variants(product)
 
-        # creating list of images to display on product detail page
-        image_url = default_storage.url(product_variant["image"])
-        images.append(image_url)
+        product_variants_data = {}
+        for product_variant in product_variants:
+            in_wishlist = wishlist.contains(str(product_variant['id']))
+            product_variant_specs = {
+                "color_id": product_variant["color__id"], 
+                "color_code": product_variant["color__code"], 
+                "color_name": product_variant["color__name"],
+                "in_wishlist": str(in_wishlist),
+            }
+            if product_variant["size"] not in product_variants_data.keys():
+                product_variants_data[product_variant["size"]] = []
+            product_variants_data[product_variant["size"]].append(product_variant_specs)
 
-    promo = ProductVariant.objects.filter(promo=True).select_related("product", "product__material")[:3]
-    context = {
+        return product_variants_data
+    
+    def get_images(self, product):
+        product_variants = self.get_product_variants(product)
+        product_images = []
+        for product_variant in product_variants:
+            image_url = default_storage.url(product_variant["image"])
+            product_images.append(image_url)
+
+        return product_images
+
+    def get(self, request, slug):
+        product = self.get_product(slug)
+        wishlist = self.get_wishlist(request)
+        product_variants_data = self.get_product_variants_data(product, wishlist)
+
+        context = {
         "product": product,
-        "images": images,
-        "size_color_pairs": size_color_pairs,
-        "promo": promo,
-    }
-    return render(request, "store/product_detail.html", context=context)
+        "images": self.get_images(product),
+        "size_color_pairs": product_variants_data,
+        "promo": self.get_promo(),
+        }
+
+        return render(request, "store/product_detail.html", context=context)
