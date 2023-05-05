@@ -63,7 +63,7 @@
             </div>
             <div class="p-2 px-4">
               <div class="row row-cols-5 g-1">
-                {% for size, product_variant_specs in size_color_pairs.items %}
+                {% for size, product_variant_specs in product_variants_data.items %}
                 <div class="col">
                   <input type="radio" class="btn-check" name="size-options" id="btn-radio-size-{{ size }}" autocomplete="off">
                   <label class="btn btn-custom-checkbox" name="btn-size" for="btn-radio-size-{{ size }}" style="--bs-btn-padding-x: 2.88rem; --bs-btn-padding-y: 0.7rem;" value="{{ size }}" data-product-variant-specs="{{product_variant_specs}}">{{ size }}</label>
