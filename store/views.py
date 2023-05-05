@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from django.views import View
 
+from watson import search as watson
+
 from .models import Category, Product, ProductVariant, Color, Material
 from wishlist.wishlist import Wishlist
 from ecommerce_website.choices import SIZES_LIST as SIZES
@@ -24,6 +26,15 @@ class ProductListView(View):
     colors = Color.objects.all()
     materials = Material.objects.all()
     categories = Category.objects.all()
+
+    def search(self, request):
+        search_query = request.GET.get("search", "")
+        if search_query:
+            search_results = watson.search(search_query)
+            search_results_ids = [result.object.id for result in search_results]
+            self.db_query = self.db_query.filter(product__id__in=search_results_ids)
+
+        return search_query
 
     def apply_filters(self, request):
         
@@ -72,6 +83,7 @@ class ProductListView(View):
         return paginator.get_page(page_number)
     
     def get(self, request):
+        search_query = self.search(request)
         self.apply_filters(request)
         self.add_wishlist_data(request)
         self.add_images()
@@ -81,7 +93,8 @@ class ProductListView(View):
         "sizes": SIZES,
         "colors": self.colors,
         "materials": self.materials,
-        "categories": self.categories
+        "categories": self.categories,
+        "search_query": search_query,
         }
 
         return render(request, "store/product_list.html", context=context)

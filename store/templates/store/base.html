@@ -111,9 +111,17 @@
             <div class="d-flex flex-column accordion accordion-flush" id="HeaderAccordion">
                 <!--collapseSearchBar-->
                 <div class="accordion-item bg-black border-0">
+                    {% if search_query == "" %}
                     <div class="accordion-collapse collapse" id="collapseSearchBar" data-bs-parent="#HeaderAccordion">
+                    {% else %}
+                    <div class="accordion-collapse collapse show" id="collapseSearchBar" data-bs-parent="#HeaderAccordion">
+                    {% endif %}
                         <div class="d-flex justify-content-center">
-                            <input class="form-control w-75 my-2" placeholder="Search" maxlength="64" type="search">
+                            {% if search_query == "" %}
+                            <input class="form-control w-75 my-2" id="searchInput" placeholder="Search" maxlength="64" type="search">
+                            {% else %}
+                            <input class="form-control w-75 my-2" id="searchInput" value="{{ search_query }}" maxlength="64" type="search">
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -396,6 +404,20 @@
               error: function (xhr, errmsg, err) {}
             });
           });
+        </script>
+
+        <!-- SEARCH -->
+        <script>
+            $('#searchInput').keydown(function(e) {
+                if (event.key === 'Enter') {
+                    const searchQuery = $(this).val().trim();
+                    const url = new URL(window.location.href);
+                    const urlSearchParams = new URLSearchParams(url.search);
+                    urlSearchParams.set('search', searchQuery);
+                    const customUrl = `${url.origin}${url.pathname}?${urlSearchParams}`;
+                    window.location.href = customUrl;
+                }
+            });
         </script>
     </body>
 </html>
