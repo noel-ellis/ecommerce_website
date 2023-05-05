@@ -111,16 +111,16 @@
             <div class="d-flex flex-column accordion accordion-flush" id="HeaderAccordion">
                 <!--collapseSearchBar-->
                 <div class="accordion-item bg-black border-0">
-                    {% if search_query == "" %}
+                    {% if not search_query %}
                     <div class="accordion-collapse collapse" id="collapseSearchBar" data-bs-parent="#HeaderAccordion">
                     {% else %}
-                    <div class="accordion-collapse collapse show" id="collapseSearchBar" data-bs-parent="#HeaderAccordion">
+                    <div class="accordion-collapse collapse {% if search_query != "" %}show{% endif %}" id="collapseSearchBar" data-bs-parent="#HeaderAccordion">
                     {% endif %}
                         <div class="d-flex justify-content-center">
-                            {% if search_query == "" %}
+                            {% if not search_query %}
                             <input class="form-control w-75 my-2" id="searchInput" placeholder="Search" maxlength="64" type="search">
                             {% else %}
-                            <input class="form-control w-75 my-2" id="searchInput" value="{{ search_query }}" maxlength="64" type="search">
+                            <input class="form-control w-75 my-2" id="searchInput" {% if search_query != "" %}value="{{ search_query }}"{% endif %} maxlength="64" type="search">
                             {% endif %}
                         </div>
                     </div>

@@ -19,8 +19,7 @@ def main(request):
     }
     return render(request, "store/main.html", context=context)
 
-# TODO:
-# search
+
 class ProductListView(View):
     db_query = ProductVariant.objects.select_related("product__material", "color").values("product__material__name", "product__name", "product__price", "product__slug", "product__id", "color__name", "color__id", "image", "id", "size")
     colors = Color.objects.all()
