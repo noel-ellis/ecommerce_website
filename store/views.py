@@ -86,7 +86,8 @@ class ProductListView(View):
 
         return render(request, "store/product_list.html", context=context)
 
-
+# TODO:
+# rename size_color_pairs to product_variants_data
 class ProductDetailView(View):
 
     def get_product(self, slug):
