@@ -8,13 +8,13 @@ class Wishlist:
 
         if self.session_wishlist_name not in self.session:
             self.wishlist = request.session[self.session_wishlist_name] = {}
-            return 
+            return
         self.wishlist = request.session.get(self.session_wishlist_name)
 
     @property
     def ids(self):
         return list(self.wishlist)
-    
+
     def save(self):
         self.session.modified = True
 
@@ -31,16 +31,16 @@ class Wishlist:
             del self.wishlist[product_id]
             self.save()
             return
-        
+
     def contains(self, product_id: str):
         return product_id in self.ids
 
     def __len__(self):
         return len(self.wishlist)
-    
+
     def __str__(self):
         return str(self.ids)
-    
+
     def __iter__(self):
         products_from_wishlist = ProductVariant.objects.filter(id__in=self.ids)
         for product in products_from_wishlist:

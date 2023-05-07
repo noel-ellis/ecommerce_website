@@ -12,13 +12,13 @@ class CustomAccountManager(BaseUserManager):
             raise ValueError('Superuser must be assigned to is_staff=True')
         if other_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must be assigned to is_superuser=True')
-        
+
         return self.create_user(email, password, **other_fields)
-    
+
     def create_user(self, email, password, **other_fields):
         if not email:
             raise ValueError('You must provide an email address')
-        
+
         email = self.normalize_email(email)
         user = self.model(email=email, **other_fields)
         user.set_password(password)
@@ -55,7 +55,7 @@ class UserBase(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-    
+
 
 class DeliveryInfo(models.Model):
     COUNTRIES = [('US', 'United States')]

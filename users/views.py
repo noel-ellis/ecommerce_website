@@ -86,12 +86,12 @@ def edit_address(request, address_id):
     if not address:
         messages.error(request, "Address doesn't exist")
         return redirect('users:settings')
-    
+
     if address.user != user:
         messages.error(request, 'No permission')
         return redirect('users:settings')
-    
-    if request.method == "POST":   
+
+    if request.method == "POST":
         if "address_data" in request.POST:
             form = DeliveryInfoForm(
                 request.POST,
@@ -105,14 +105,15 @@ def edit_address(request, address_id):
 
             messages.error(request, 'Data is invalid')
             return redirect('users:settings')
-    
-    address_form = DeliveryInfoForm(instance = address)
-    
+
+    address_form = DeliveryInfoForm(instance=address)
+
     context = {
         'address_form': address_form
     }
 
     return render(request, "users/edit_address.html", context)
+
 
 @login_required
 def delete_address(request, address_id):
@@ -121,11 +122,11 @@ def delete_address(request, address_id):
     if not address:
         messages.error(request, "Address doesn't exist")
         return redirect('users:settings')
-    
+
     if address.user != user:
         messages.error(request, 'No permission')
         return redirect('users:settings')
-    
+
     address.delete()
 
     messages.success(request, 'Deleted')
@@ -169,20 +170,20 @@ def settings(request):
     user_form = UserUpdateForm(instance=request.user)
     address_form = DeliveryInfoForm()
     address_info = DeliveryInfo.objects.filter(user=request.user.id).all()
-    
+
     order_quiery = Order.objects.filter(user=request.user.id)
     order_history = {}
 
-    for order in order_quiery: 
+    for order in order_quiery:
 
         ordered_items_data = {}
         total_price = 0
-        
+
         for ordered_item in order.ordered_items.all():
             product_quiery = Product.objects.get(pk=ordered_item.product_id)
             product_name = product_quiery.name
             product_slug = product_quiery.slug
-            
+
             ordered_item_data = {
                 'price': ordered_item.price,
                 'quantity': ordered_item.quantity,
@@ -193,7 +194,6 @@ def settings(request):
 
             ordered_item_total = ordered_item.price*ordered_item.quantity
             total_price += ordered_item_total
-
 
         delivery_info_data = {
             'country': order.delivery_info.country,

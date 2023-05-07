@@ -16,29 +16,29 @@ urlpatterns = [
     path("logout/", views.signout, name='logout'),
     path('deactivate/', views.deactivate, name='deactivate'),
     path("password-reset/",
-        auth_views.PasswordResetView.as_view(
-                                        template_name='users/pwd_reset/password_reset.html', 
-                                        form_class=PwdResetForm, 
-                                        email_template_name='users/pwd_reset/pwd_reset_email.html', 
-                                        success_url='done'
-        ),
-        name='password_reset'
-    ),
+         auth_views.PasswordResetView.as_view(
+             template_name='users/pwd_reset/password_reset.html',
+             form_class=PwdResetForm,
+             email_template_name='users/pwd_reset/pwd_reset_email.html',
+             success_url='done'
+         ),
+         name='password_reset'
+         ),
     path('password-reset-complete/',
-        auth_views.PasswordResetCompleteView.as_view(template_name='users/pwd_reset/password_reset_complete.html'),
-        name='password_reset_complete'
-    ),
+         auth_views.PasswordResetCompleteView.as_view(template_name='users/pwd_reset/password_reset_complete.html'),
+         name='password_reset_complete'
+         ),
     path("password-reset/done/",
-        auth_views.PasswordResetDoneView.as_view(
-                                            template_name='users/pwd_reset/password_reset_done.html'
-        ),
-        name='password_reset_done'
-    ),
+         auth_views.PasswordResetDoneView.as_view(
+             template_name='users/pwd_reset/password_reset_done.html'
+         ),
+         name='password_reset_done'
+         ),
     path('password-reset-confirm/<uidb64>/<token>',
-        auth_views.PasswordResetConfirmView.as_view(
-                                            template_name='users/pwd_reset/password_reset_confirm.html',
-                                            success_url='/password-reset-complete/'
-        ),
-        name='password_reset_confirm'
-    )   
+         auth_views.PasswordResetConfirmView.as_view(
+             template_name='users/pwd_reset/password_reset_confirm.html',
+             success_url='/password-reset-complete/'
+         ),
+         name='password_reset_confirm'
+         )
 ]

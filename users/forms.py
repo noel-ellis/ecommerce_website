@@ -6,21 +6,21 @@ from .models import UserBase, DeliveryInfo
 class UserSignUpForm(UserCreationForm):
     email = forms.EmailField(label="Email", widget=forms.EmailInput(
         attrs={
-            'class': 'form-control mb-2', 
+            'class': 'form-control mb-2',
             'type': 'email',
             'placeholder': 'Email'
         }
     ))
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput(
         attrs={
-            'class': 'form-control mb-2', 
+            'class': 'form-control mb-2',
             'type': 'password',
             'placeholder': 'Password'
         }
     ))
     password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput(
         attrs={
-            'class': 'form-control mb-2', 
+            'class': 'form-control mb-2',
             'type': 'password',
             'placeholder': 'Confirm Password'
         }
@@ -34,14 +34,14 @@ class UserSignUpForm(UserCreationForm):
 class UserLoginForm(AuthenticationForm):
     username = forms.EmailField(label="Email", widget=forms.EmailInput(
         attrs={
-            'class': 'form-control mb-2', 
+            'class': 'form-control mb-2',
             'type': 'email',
             'placeholder': 'Email'
         }
     ))
     password = forms.CharField(label="Password", widget=forms.PasswordInput(
         attrs={
-            'class': 'form-control mb-2', 
+            'class': 'form-control mb-2',
             'type': 'password',
             'placeholder': 'Password'
         }
@@ -101,7 +101,7 @@ class UserUpdateForm(forms.ModelForm):
 class PwdResetForm(PasswordResetForm):
     email = forms.EmailField(label="Email", widget=forms.EmailInput(
         attrs={
-            'class': 'form-control', 
+            'class': 'form-control',
             'type': 'email',
             'placeholder': 'Email'
         }
@@ -109,5 +109,3 @@ class PwdResetForm(PasswordResetForm):
 
     class Meta:
         fields = ['email']
-
-    

@@ -11,17 +11,20 @@ class TestCollectionModel(TestCase):
         self.username = 'admin'
         self.password = 'admin123'
         self.user = User.objects.create_superuser(username=self.username, password=self.password)
-        self.collection = Collection.objects.create(name='testcollection', slug='testcollection', description='description', season='SP')
+        self.collection = Collection.objects.create(
+            name='testcollection', slug='testcollection', description='description', season='SP')
 
     def test_collection_model_return(self):
         self.assertEqual(str(self.collection), 'testcollection')
 
     def test_collection_model_get_abs_url(self):
-        self.assertEqual(self.collection.get_absolute_url(), reverse("store:collection", kwargs={"slug": "testcollection"}))
+        self.assertEqual(self.collection.get_absolute_url(), reverse(
+            "store:collection", kwargs={"slug": "testcollection"}))
 
     """
     Test views
     """
+
     def test_collection_list_view(self):
         response = self.c.get(reverse("store:collection", kwargs={"slug": "testcollection"}))
         self.assertEqual(response.status_code, 200)
@@ -30,7 +33,8 @@ class TestCollectionModel(TestCase):
         name = 'testing'
 
         self.c.login(username=self.username, password=self.password)
-        response = self.c.post(reverse("store:collection-create"), {'name': name, 'slug': name, 'description': 'description', 'season': 'SP'})
+        response = self.c.post(reverse("store:collection-create"),
+                               {'name': name, 'slug': name, 'description': 'description', 'season': 'SP'})
         new_collection = Collection.objects.get(name=name)
 
         self.assertEqual(response.status_code, 302)
@@ -45,7 +49,8 @@ class TestProductModel(TestCase):
         self.password = 'admin123'
         self.user = User.objects.create_superuser(username=self.username, password=self.password)
 
-        self.collection = Collection.objects.create(name='testcollection', slug='testcollection', description='description', season='SP')
+        self.collection = Collection.objects.create(
+            name='testcollection', slug='testcollection', description='description', season='SP')
         self.product = Product.objects.create(
             name='testproduct',
             slug='testproduct',
@@ -69,6 +74,7 @@ class TestProductModel(TestCase):
     """
     Test views
     """
+
     def test_product_deatil_view(self):
         response = self.c.get(reverse("store:product-detail", kwargs={"slug": "testproduct"}))
         self.assertEqual(response.status_code, 200)
@@ -87,7 +93,7 @@ class TestProductModel(TestCase):
                                    'collection': self.collection.id,
                                    'sex': 'M',
                                    'size': '43'
-                               })
+        })
         new_product = Product.objects.get(name=name)
 
         self.assertEqual(response.status_code, 302)
@@ -106,7 +112,7 @@ class TestProductModel(TestCase):
                                    'price': 100,
                                    'quantity': 99,
                                    'collection': self.collection.id
-                               })
+        })
         updated_product = Product.objects.get(name=self.product.name)
 
         self.assertEqual(response.status_code, 302)

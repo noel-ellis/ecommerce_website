@@ -2,423 +2,438 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="{% static 'store/main.css' %}">
-        <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+			crossorigin="anonymous"
+		/>
+		<link rel="stylesheet" type="text/css" href="{% static 'store/main.css' %}" />
+		<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 
-        {% if title %}
-            <title> Store -- {{ title }} </title>
-        {% else %}
-            <title> Store </title>
-        {% endif %}
-    </head>
-    <body>
-        <!-- header -->
-        <div class="d-flex flex-column sticky-top bg-black shadow-lg"> 
+		{% if title %}
+		<title>Store -- {{ title }}</title>
+		{% else %}
+		<title>Store</title>
+		{% endif %}
+	</head>
+	<body>
+		<!-- header -->
+		<div class="d-flex flex-column sticky-top bg-black shadow-lg">
+			<!--navigation-->
+			<header class="navbar navbar-expand-lg">
+				<div class="container-fluid justify-content-between mx-5 px-5">
+					<!-- Left elements -->
+					<ul class="navbar-nav flex-row">
+						<li class="nav-item px-3">
+							<a class="text-white text-decoration-none accordion-button collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#collapseWomen">WOMEN</a>
+						</li>
+						<li class="nav-item px-3">
+							<a class="text-white text-decoration-none accordion-button collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#collapseMen">MEN</a>
+						</li>
+						<li class="nav-item px-3">
+							<a href="{% url 'store:store' %}?{{ 'sale=true'|addslashes }}" class="text-white text-decoration-none" role="button">SALE</a>
+						</li>
+					</ul>
 
-            <!--navigation-->
-            <header class="navbar navbar-expand-lg">
-                <div class="container-fluid justify-content-between mx-5 px-5">
-                    
-                    <!-- Left elements -->
-                    <ul class="navbar-nav flex-row">
-                        <li class="nav-item px-3">
-                            <a class="text-white text-decoration-none accordion-button collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#collapseWomen">WOMEN</a>
-                        </li>
-                        <li class="nav-item px-3">
-                            <a class="text-white text-decoration-none accordion-button collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#collapseMen">MEN</a>
-                        </li>
-                        <li class="nav-item px-3">
-                            <a href="{% url 'store:store' %}?{{ 'sale=true'|addslashes }}" class="text-white text-decoration-none" role="button">SALE</a>
-                        </li>
-                    </ul>
-                
-                    <!-- Center logo -->
-                    <ul class="navbar-nav d-flex flex-row">
-                        <li class="nav-item d-flex align-items-center">
-                            <a class="text-white text-decoration-none fs-2" href="{% url 'store:main' %}">NIFTYSHOES</a>
-                        </li>
-                    </ul>
-                
-                    <!-- Right elements -->
-                    <ul class="navbar-nav flex-row">
-                        <!--Search-->
-                        <li class="d-flex nav-item mx-2">
-                            <a class="text-white text-decoration-none align-middle accordion-button collapsed " role="button" data-bs-toggle="collapse" data-bs-target="#collapseSearchBar">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                </svg>
-                            </a>
-                        </li>
-    
-                        <!--Account-->
-                        {% if user.is_authenticated %}
-                        <li class="d-flex nav-item dropdown mx-2">
-                            <a class="text-white text-decoration-none align-middle " data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
-                                    <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"/>
-                                </svg>
-                            </a>
-    
-                            <ul class="dropdown-menu dropdown-menu-end mt-2 my-auto">
-                                <li><h6 class="dropdown-header">{{ user.email }}</h6></li>
-                                <li><a class="dropdown-item" href="{% url 'users:settings' %}">Settings</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'users:logout' %}">Sign out</a></li>
-                            </ul>
-                        </li>
-                        {% else %}
-                        <li class="d-flex nav-item mx-2">
-                            <a class="text-white text-decoration-none align-middle" href="{% url 'users:login' %}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
-                                    <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-                                    <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
-                                </svg>
-                            </a>
-                        </li>
-                        {% endif %}
+					<!-- Center logo -->
+					<ul class="navbar-nav d-flex flex-row">
+						<li class="nav-item d-flex align-items-center">
+							<a class="text-white text-decoration-none fs-2" href="{% url 'store:main' %}">NIFTYSHOES</a>
+						</li>
+					</ul>
 
-                        <!--Wishlist-->
-                        <li class="d-flex nav-item mx-2 ">
-                            <a class="text-white text-decoration-none align-middle" href="{% url 'wishlist:summary' %}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                                </svg>
-                            </a> 
-                        </li>
-    
-                        <!--Cart-->
-                        <li class="d-flex nav-item mx-2">
-                            <a class="text-white text-decoration-none align-middle position-relative" data-bs-toggle="offcanvas" href="#offcanvasCart" role="button" aria-controls="offcanvasCart">
-                                <svg id="cart-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
-                                    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
-                                    <span id="cart-totalqty-badge" class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
-                                        {{ cart|length }}
-                                    </span>
-                                </svg>
-                            </a>
-                        </li>
-                    </ul>
+					<!-- Right elements -->
+					<ul class="navbar-nav flex-row">
+						<!--Search-->
+						<li class="d-flex nav-item mx-2">
+							<a class="text-white text-decoration-none align-middle accordion-button collapsed" role="button" data-bs-toggle="collapse" data-bs-target="#collapseSearchBar">
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+									<path
+										d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
+									/>
+								</svg>
+							</a>
+						</li>
 
-                </div>
-            </header>
+						<!--Account-->
+						{% if user.is_authenticated %}
+						<li class="d-flex nav-item dropdown mx-2">
+							<a class="text-white text-decoration-none align-middle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+								<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-person-lines-fill" viewBox="0 0 16 16">
+									<path
+										d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zM11 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm.5 2.5a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1h-4zm2 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2zm0 3a.5.5 0 0 0 0 1h2a.5.5 0 0 0 0-1h-2z"
+									/>
+								</svg>
+							</a>
 
-            <!-- ACCORDION -->
-            <div class="d-flex flex-column accordion accordion-flush" id="HeaderAccordion">
-                <!--collapseSearchBar-->
-                <div class="accordion-item bg-black border-0">
-                    {% if not search_query %}
-                    <div class="accordion-collapse collapse" id="collapseSearchBar" data-bs-parent="#HeaderAccordion">
-                    {% else %}
-                    <div class="accordion-collapse collapse {% if search_query != "" %}show{% endif %}" id="collapseSearchBar" data-bs-parent="#HeaderAccordion">
-                    {% endif %}
-                        <div class="d-flex justify-content-center">
-                            {% if not search_query %}
-                            <input class="form-control w-75 my-2" id="searchInput" placeholder="Search" maxlength="64" type="search">
-                            {% else %}
-                            <input class="form-control w-75 my-2" id="searchInput" {% if search_query != "" %}value="{{ search_query }}"{% endif %} maxlength="64" type="search">
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+							<ul class="dropdown-menu dropdown-menu-end mt-2 my-auto">
+								<li><h6 class="dropdown-header">{{ user.email }}</h6></li>
+								<li><a class="dropdown-item" href="{% url 'users:settings' %}">Settings</a></li>
+								<li><hr class="dropdown-divider" /></li>
+								<li><a class="dropdown-item" href="{% url 'users:logout' %}">Sign out</a></li>
+							</ul>
+						</li>
+						{% else %}
+						<li class="d-flex nav-item mx-2">
+							<a class="text-white text-decoration-none align-middle" href="{% url 'users:login' %}">
+								<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-person-plus" viewBox="0 0 16 16">
+									<path
+										d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"
+									/>
+									<path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+								</svg>
+							</a>
+						</li>
+						{% endif %}
 
-                <!--collapseWomen-->
-                <div class="accordion-item bg-black border-0">
-                    <div class="accordion-collapse collapse" id="collapseWomen" data-bs-parent="#HeaderAccordion">
-                        <div class="d-flex justify-content-center my-5">
-                            <div class="flex-column mx-5 px-5">
-                                <h5 class="text-white ">SANDALS</h5>
-                                <ul class="nav flex-column">
-                                    <li>
-                                        <a class="text-white nav-link p-0" href="{% url 'store:store' %}">One-strap sandals</a>
-                                    </li>
-                                    <li>
-                                        <a class="text-white nav-link p-0" href="#">Two-strap sandals</a>
-                                    </li>
-                                    <li>
-                                        <a class="text-white nav-link p-0" href="#">Ankle-strap sandals</a>
-                                    </li>
-                                    <li>
-                                        <a class="text-white nav-link p-0" href="#">Clogs</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="flex-column mx-5 px-5">
-                                <h5 class="text-white">SHOES</h5>
-                                <ul class="nav flex-column">
-                                    <li>
-                                        <a class="text-white nav-link p-0" href="#">Sneakers</a>
-                                    </li>
-                                    <li>
-                                        <a class="text-white nav-link p-0" href="#">Boots</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="d-flex flex-column mx-5 px-5">
-                                <a class="container-fluid position-relative mb-2" href="#">
-                                    <img src="/../../../media/category_pics/category-sandals-dim.png" class="img-fluid" style="height: 4rem;">
-                                    <p class="text-white position-absolute top-50 start-50 translate-middle">COZY SANDALS</p>
-                                </a>
-                                <a class="container-fluid position-relative" href="#">
-                                    <img src="/../../../media/category_pics/category-shoes-dim.png" class="img-fluid" style="height: 4rem;">
-                                    <p class="text-white position-absolute top-50 start-50 translate-middle">NIFTY SHOES</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+						<!--Wishlist-->
+						<li class="d-flex nav-item mx-2">
+							<a class="text-white text-decoration-none align-middle" href="{% url 'wishlist:summary' %}">
+								<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+									<path
+										d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"
+									/>
+								</svg>
+							</a>
+						</li>
 
-                <!--collapseMen-->
-                <div class="accordion-item bg-black border-0">
-                    <div class="accordion-collapse collapse" id="collapseMen" data-bs-parent="#HeaderAccordion">
-                        <div class="d-flex justify-content-center my-5">
-                            <div class="flex-column mx-5 px-5">
-                                <h5 class="text-white ">SANDALS</h5>
-                                <ul class="nav flex-column">
-                                    <li>
-                                        <a class="text-white nav-link p-0" href="{% url 'store:store' %}">One-strap sandals</a>
-                                    </li>
-                                    <li>
-                                        <a class="text-white nav-link p-0" href="#">Two-strap sandals</a>
-                                    </li>
-                                    <li>
-                                        <a class="text-white nav-link p-0" href="#">Ankle-strap sandals</a>
-                                    </li>
-                                    <li>
-                                        <a class="text-white nav-link p-0" href="#">Clogs</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="flex-column mx-5 px-5">
-                                <h5 class="text-white">SHOES</h5>
-                                <ul class="nav flex-column">
-                                    <li>
-                                        <a class="text-white nav-link p-0" href="#">Sneakers</a>
-                                    </li>
-                                    <li>
-                                        <a class="text-white nav-link p-0" href="#">Boots</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="d-flex flex-column mx-5 px-5">
-                                <a class="container-fluid position-relative mb-2" href="#">
-                                    <img src="/../../../media/category_pics/category-sandals-dim.png" class="img-fluid" style="height: 4rem;">
-                                    <p class="text-white position-absolute top-50 start-50 translate-middle">COZY SANDALS</p>
-                                </a>
-                                <a class="container-fluid position-relative" href="#">
-                                    <img src="/../../../media/category_pics/category-shoes-dim.png" class="img-fluid" style="height: 4rem;">
-                                    <p class="text-white position-absolute top-50 start-50 translate-middle">NIFTY SHOES</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>   
-        </div>
+						<!--Cart-->
+						<li class="d-flex nav-item mx-2">
+							<a class="text-white text-decoration-none align-middle position-relative" data-bs-toggle="offcanvas" href="#offcanvasCart" role="button" aria-controls="offcanvasCart">
+								<svg id="cart-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+									<path
+										d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"
+									/>
+									<span id="cart-totalqty-badge" class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">{{ cart|length }}</span>
+								</svg>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</header>
 
-        <!-- messages -->
-        <div class="container-fluid">
-            {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-success alert-dismissible my-2" role="alert">
-                    <div class='text-center'>{{ message }}</div>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endfor %}
-            {% endif %}
-        </div>
+			<!-- ACCORDION -->
+			<div class="d-flex flex-column accordion accordion-flush" id="HeaderAccordion">
+				<!--collapseSearchBar-->
+				<div class="accordion-item bg-black border-0">
+					{% if not search_query %}
+					<div class="accordion-collapse collapse" id="collapseSearchBar" data-bs-parent="#HeaderAccordion">
+						{% else %} <div class="accordion-collapse collapse {% if search_query != "" %}show{% endif %}" id="collapseSearchBar" data-bs-parent="#HeaderAccordion"> {% endif %}
+						<div class="d-flex justify-content-center">
+							{% if not search_query %}
+							<input class="form-control w-75 my-2" id="searchInput" placeholder="Search" maxlength="64" type="search" />
+							{% else %}
+							<input class="form-control w-75 my-2" id="searchInput" {% if search_query != "" %}value="{{ search_query }}" {% endif %} maxlength="64" type="search" />
+							{% endif %}
+						</div>
+					</div>
+				</div>
 
-        <!-- main -->
-        <main role="main" class="container-fluid p-0">
-            <!-- cart-offcanvas -->
-            <div class="offcanvas offcanvas-end border border-dark" tabindex="-1" id="offcanvasCart" data-bs-scroll="true" aria-labelledby="offcanvasCartLabel">
-                
-                <!-- offcanvas-header -->
-                <div class="d-flex flex-column offcanvas-header p-0 border-bottom border-dark">
-                    <div class="container-fluid">
-                        <h4 class="text-dark m-2 ms-3 p-0" id="offcanvasCartLabel">CART</h4>
-                    </div>
-                </div>
+				<!--collapseWomen-->
+				<div class="accordion-item bg-black border-0">
+					<div class="accordion-collapse collapse" id="collapseWomen" data-bs-parent="#HeaderAccordion">
+						<div class="d-flex justify-content-center my-5">
+							<div class="flex-column mx-5 px-5">
+								<h5 class="text-white">SANDALS</h5>
+								<ul class="nav flex-column">
+									<li>
+										<a class="text-white nav-link p-0" href="{% url 'store:store' %}">One-strap sandals</a>
+									</li>
+									<li>
+										<a class="text-white nav-link p-0" href="#">Two-strap sandals</a>
+									</li>
+									<li>
+										<a class="text-white nav-link p-0" href="#">Ankle-strap sandals</a>
+									</li>
+									<li>
+										<a class="text-white nav-link p-0" href="#">Clogs</a>
+									</li>
+								</ul>
+							</div>
+							<div class="flex-column mx-5 px-5">
+								<h5 class="text-white">SHOES</h5>
+								<ul class="nav flex-column">
+									<li>
+										<a class="text-white nav-link p-0" href="#">Sneakers</a>
+									</li>
+									<li>
+										<a class="text-white nav-link p-0" href="#">Boots</a>
+									</li>
+								</ul>
+							</div>
+							<div class="d-flex flex-column mx-5 px-5">
+								<a class="container-fluid position-relative mb-2" href="#">
+									<img src="/../../../media/category_pics/category-sandals-dim.png" class="img-fluid" style="height: 4rem" />
+									<p class="text-white position-absolute top-50 start-50 translate-middle">COZY SANDALS</p>
+								</a>
+								<a class="container-fluid position-relative" href="#">
+									<img src="/../../../media/category_pics/category-shoes-dim.png" class="img-fluid" style="height: 4rem" />
+									<p class="text-white position-absolute top-50 start-50 translate-middle">NIFTY SHOES</p>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
 
-                <!-- offcanvas-cart-items -->
-                <div class="offcanvas-body border-bottom border-dark p-0">
-                    <div id="cart-items" class="d-flex flex-column">
-                        {% if cart %}
-                            {% for item in cart %}
-                            <!-- product -->
-                            <div id="offcanvas-cart-product-{{ item.product_variant_id }}" class='d-flex flex-row align-items-top justify-content-between py-3 border-bottom border-dark'>
-    
-                                <!-- image -->
-                                <img src="{{ item.product_image.url }}" class="img-fluid m-1 ms-4" style="height: 8rem;">
+				<!--collapseMen-->
+				<div class="accordion-item bg-black border-0">
+					<div class="accordion-collapse collapse" id="collapseMen" data-bs-parent="#HeaderAccordion">
+						<div class="d-flex justify-content-center my-5">
+							<div class="flex-column mx-5 px-5">
+								<h5 class="text-white">SANDALS</h5>
+								<ul class="nav flex-column">
+									<li>
+										<a class="text-white nav-link p-0" href="{% url 'store:store' %}">One-strap sandals</a>
+									</li>
+									<li>
+										<a class="text-white nav-link p-0" href="#">Two-strap sandals</a>
+									</li>
+									<li>
+										<a class="text-white nav-link p-0" href="#">Ankle-strap sandals</a>
+									</li>
+									<li>
+										<a class="text-white nav-link p-0" href="#">Clogs</a>
+									</li>
+								</ul>
+							</div>
+							<div class="flex-column mx-5 px-5">
+								<h5 class="text-white">SHOES</h5>
+								<ul class="nav flex-column">
+									<li>
+										<a class="text-white nav-link p-0" href="#">Sneakers</a>
+									</li>
+									<li>
+										<a class="text-white nav-link p-0" href="#">Boots</a>
+									</li>
+								</ul>
+							</div>
+							<div class="d-flex flex-column mx-5 px-5">
+								<a class="container-fluid position-relative mb-2" href="#">
+									<img src="/../../../media/category_pics/category-sandals-dim.png" class="img-fluid" style="height: 4rem" />
+									<p class="text-white position-absolute top-50 start-50 translate-middle">COZY SANDALS</p>
+								</a>
+								<a class="container-fluid position-relative" href="#">
+									<img src="/../../../media/category_pics/category-shoes-dim.png" class="img-fluid" style="height: 4rem" />
+									<p class="text-white position-absolute top-50 start-50 translate-middle">NIFTY SHOES</p>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-                                <!-- info -->
-                                <div class="d-flex flex-column align-items-start justify-content-between">
-                                    <!-- name-with-link -->
-                                    <a href="{% url "store:product-detail" item.product_slug %}" class="text-dark text-decoration-none m-0 mt-2 p-0"><strong>{{ item.product_name|title }}</strong></a>
-                                    <!-- color -->
-                                    <p class='m-0 p-0'>Color : {{ item.product_color }}</p>
-                                    <!-- size -->
-                                    <p class='m-0 p-0'>Size : {{ item.product_size }}</p>
-                                    <!-- price -->
-                                    <p class="text-end m-0 mb-2"><strong>${{ item.product_price }}</strong></p>
-                                </div>
-                                    
-                                <!-- delete-button-->
-                                <button data-product-id="{{ item.product_id }}" data-product-size="{{ item.product_size }}" data-product-color-id="{{ item.product_color_id }}" href="#" class="cart-delete-btn btn-close m-0 mt-2 me-3" aria-label="Close"></button>
+		<!-- messages -->
+		<div class="container-fluid">
+			{% if messages %} {% for message in messages %}
+			<div class="alert alert-success alert-dismissible my-2" role="alert">
+				<div class="text-center">{{ message }}</div>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			{% endfor %} {% endif %}
+		</div>
 
-                            </div>
-                            {% endfor %}
-                        {% endif %}
-                    </div>
-                </div>
+		<!-- main -->
+		<main role="main" class="container-fluid p-0">
+			<!-- cart-offcanvas -->
+			<div class="offcanvas offcanvas-end border border-dark" tabindex="-1" id="offcanvasCart" data-bs-scroll="true" aria-labelledby="offcanvasCartLabel">
+				<!-- offcanvas-header -->
+				<div class="d-flex flex-column offcanvas-header p-0 border-bottom border-dark">
+					<div class="container-fluid">
+						<h4 class="text-dark m-2 ms-3 p-0" id="offcanvasCartLabel">CART</h4>
+					</div>
+				</div>
 
-                <!-- offcanvas-footer -->
-                <div id="offcanvas-cart-footer" class="container-fluid p-0">
-                  <!-- summary -->
-                  <div id="offcanvas-cart-summary" class="container-fluid">
-                    <h5 class="m-0 ms-3 mt-2 p-0">SUMMARY</h5>
-                    <div class="d-flex flex-row justify-content-between">
-                      <p class="m-0 ms-3 mt-3 p-0">Items</p>
-                      <p id="offcanvas-cart-totalqty" class="m-0 me-3 mt-3 p-0">{{ cart|length }}</p>
-                    </div>
-                    <div class="d-flex flex-row justify-content-between">
-                      <p class="m-0 ms-3 mt-2 mb-2 p-0">Total Price</p>
-                      <p id="offcanvas-cart-total-price" class="m-0 me-3 mt-2 mb-2 p-0">${{ cart.total_price }}</p>
-                    </div>
-                  </div>
-                  
-                  <!-- button -->
-                  <div class="d-grid gap-0 p-0 m-0">
-                    <a role="button" class="btn btn-bd-dark m-0 py-2" href="{% url 'cart:summary' %}">SHOW CART</a>
-                  </div>
-                </div>
-            </div>
+				<!-- offcanvas-cart-items -->
+				<div class="offcanvas-body border-bottom border-dark p-0">
+					<div id="cart-items" class="d-flex flex-column">
+						{% if cart %} {% for item in cart %}
+						<!-- product -->
+						<div id="offcanvas-cart-product-{{ item.product_variant_id }}" class="d-flex flex-row align-items-top justify-content-between py-3 border-bottom border-dark">
+							<!-- image -->
+							<img src="{{ item.product_image.url }}" class="img-fluid m-1 ms-4" style="height: 8rem" />
 
-            <!-- content -->
-            {% block content %}{% endblock %}
-        </main>
-        
-        <!-- footers -->
-        <footer class="d-flex justify-content-center bg-black">
-            <div class="d-flex flex-column">
-                <p class="text-white mt-5 fs-4">JOIN OUR NEWSLETTER</p>
-                <p class="text-white">Sing up now and get a 10% off for your next purchase</p>
-                <input type="email" class="form-control form-control-footer my-1" id="join-email-input" placeholder="Your email address">
-                <small class="mb-5 mt-1">Note: You can opt-out at any time. See our Privacy Policy and Terms.</small>
-            </div>
-        </footer>
+							<!-- info -->
+							<div class="d-flex flex-column align-items-start justify-content-between">
+								<!-- name-with-link -->
+								<a href="{% url "store:product-detail" item.product_slug %}" class="text-dark text-decoration-none m-0 mt-2 p-0 fw-bold">{{ item.product_name|title }}</a>
+								<!-- color -->
+								<p class="m-0 p-0">Color : {{ item.product_color }}</p>
+								<!-- size -->
+								<p class="m-0 p-0">Size : {{ item.product_size }}</p>
+								<!-- price -->
+								<p class="text-end m-0 mb-2"><strong>${{ item.product_price }}</strong></p>
+							</div>
 
-        <footer class="d-flex flex-column justify-content-center bg-black border-top border-3 border-light">
-            <div class="d-flex flex-row justify-content-center mt-5 pt-3">
-                <div class="flex-column px-5">
-                    <h5 class="text-white">Find a Store</h5>
-                    <h5 class="text-white">Shop Gift Cards</h5>
-                    <h5 class="text-white">Track Order</h5>
-                </div>
-                <div class="flex-column px-5">
-                    <h5 class="text-white ">GET HELP</h5>
-                    <ul class="nav flex-column">
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">Contact Us</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">FAQs</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">Size Guides</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">Shipping & Delivery</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">Returns</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">My Account</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">Payment</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link p-0" href="#">Feedback</a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="flex-column px-5">
-                    <h5 class="text-white">COMPANY</h5>
-                    <ul class="nav flex-column">
-                        <li>
-                            <a class="text-white nav-link fs-6 p-0" href="#">Our Stores</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link fs-6 p-0" href="#">Our Story</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link fs-6 p-0" href="#">Our Materials</a>
-                        </li>
-                        <li>
-                            <a class="text-white nav-link fs-6 p-0" href="#">Sustainability</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="flex-column px-5">
-                    <h5 class="text-white">PAYMENT OPTIONS</h5>
-                </div>
-            </div>
-            <small class="text-center my-5">© 2023 Niftyshoes, Inc. All Rights Reserved. Terms, Privacy & Accessibility</small>
-        </footer>
+							<!-- delete-button-->
+							<button
+								data-product-id="{{ item.product_id }}"
+								data-product-size="{{ item.product_size }}"
+								data-product-color-id="{{ item.product_color_id }}"
+								href="#"
+								class="cart-delete-btn btn-close m-0 mt-2 me-3"
+								aria-label="Close"
+							></button>
+						</div>
+						{% endfor %} {% endif %}
+					</div>
+				</div>
 
-        <!-- Popper, Bootstrap JS-->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
-        
-        <!-- DELETE FROM CART -->
-        <script>
-          $(document).on('click', '.cart-delete-btn', function (e) {
-            e.preventDefault();
-            const product_id = this.dataset.productId;
-            const product_size = this.dataset.productSize;
-            const product_color_id = this.dataset.productColorId;
-            $.ajax({
-              type: 'POST',
-              url: '{% url "cart:modify" %}',
-              data: {
-                product_id: product_id,
-                product_size: product_size,
-                product_color_id: product_color_id,
-                csrfmiddlewaretoken: "{{csrf_token}}",
-                action: 'delete'
-              },
-              success: function (json) {
-                const product_variant_id = json.product_variant_id;
-                document.getElementById("offcanvas-cart-product-" + product_variant_id).remove();
-                document.getElementById('offcanvas-cart-total-price').textContent = '$'+json.totalprice;
-                document.getElementById('offcanvas-cart-totalqty').textContent = json.totalqty;
-                document.getElementById('cart-totalqty-badge').textContent = json.totalqty;
-              },
-              error: function (xhr, errmsg, err) {}
-            });
-          });
-        </script>
+				<!-- offcanvas-footer -->
+				<div id="offcanvas-cart-footer" class="container-fluid p-0">
+					<!-- summary -->
+					<div id="offcanvas-cart-summary" class="container-fluid">
+						<h5 class="m-0 ms-3 mt-2 p-0">SUMMARY</h5>
+						<div class="d-flex flex-row justify-content-between">
+							<p class="m-0 ms-3 mt-3 p-0">Items</p>
+							<p id="offcanvas-cart-totalqty" class="m-0 me-3 mt-3 p-0">{{ cart|length }}</p>
+						</div>
+						<div class="d-flex flex-row justify-content-between">
+							<p class="m-0 ms-3 mt-2 mb-2 p-0">Total Price</p>
+							<p id="offcanvas-cart-total-price" class="m-0 me-3 mt-2 mb-2 p-0">${{ cart.total_price }}</p>
+						</div>
+					</div>
 
-        <!-- SEARCH -->
-        <script>
-            $('#searchInput').keydown(function(e) {
-                if (event.key === 'Enter') {
-                    const searchQuery = $(this).val().trim();
-                    const url = new URL(window.location.href);
-                    const urlSearchParams = new URLSearchParams(url.search);
-                    urlSearchParams.set('search', searchQuery);
-                    const customUrl = `${url.origin}${url.pathname}?${urlSearchParams}`;
-                    window.location.href = customUrl;
-                }
-            });
-        </script>
-    </body>
+					<!-- button -->
+					<div class="d-grid gap-0 p-0 m-0">
+						<a role="button" class="btn btn-bd-dark m-0 py-2" href="{% url 'cart:summary' %}">SHOW CART</a>
+					</div>
+				</div>
+			</div>
+
+			<!-- content -->
+			{% block content %}{% endblock %}
+		</main>
+
+		<!-- footers -->
+		<footer class="d-flex justify-content-center bg-black">
+			<div class="d-flex flex-column">
+				<p class="text-white mt-5 fs-4">JOIN OUR NEWSLETTER</p>
+				<p class="text-white">Sing up now and get a 10% off for your next purchase</p>
+				<input type="email" class="form-control form-control-footer my-1" id="join-email-input" placeholder="Your email address" />
+				<small class="mb-5 mt-1">Note: You can opt-out at any time. See our Privacy Policy and Terms.</small>
+			</div>
+		</footer>
+
+		<footer class="d-flex flex-column justify-content-center bg-black border-top border-3 border-light">
+			<div class="d-flex flex-row justify-content-center mt-5 pt-3">
+				<div class="flex-column px-5">
+					<h5 class="text-white">Find a Store</h5>
+					<h5 class="text-white">Shop Gift Cards</h5>
+					<h5 class="text-white">Track Order</h5>
+				</div>
+				<div class="flex-column px-5">
+					<h5 class="text-white">GET HELP</h5>
+					<ul class="nav flex-column">
+						<li>
+							<a class="text-white nav-link p-0" href="#">Contact Us</a>
+						</li>
+						<li>
+							<a class="text-white nav-link p-0" href="#">FAQs</a>
+						</li>
+						<li>
+							<a class="text-white nav-link p-0" href="#">Size Guides</a>
+						</li>
+						<li>
+							<a class="text-white nav-link p-0" href="#">Shipping & Delivery</a>
+						</li>
+						<li>
+							<a class="text-white nav-link p-0" href="#">Returns</a>
+						</li>
+						<li>
+							<a class="text-white nav-link p-0" href="#">My Account</a>
+						</li>
+						<li>
+							<a class="text-white nav-link p-0" href="#">Payment</a>
+						</li>
+						<li>
+							<a class="text-white nav-link p-0" href="#">Feedback</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="flex-column px-5">
+					<h5 class="text-white">COMPANY</h5>
+					<ul class="nav flex-column">
+						<li>
+							<a class="text-white nav-link fs-6 p-0" href="#">Our Stores</a>
+						</li>
+						<li>
+							<a class="text-white nav-link fs-6 p-0" href="#">Our Story</a>
+						</li>
+						<li>
+							<a class="text-white nav-link fs-6 p-0" href="#">Our Materials</a>
+						</li>
+						<li>
+							<a class="text-white nav-link fs-6 p-0" href="#">Sustainability</a>
+						</li>
+					</ul>
+				</div>
+				<div class="flex-column px-5">
+					<h5 class="text-white">PAYMENT OPTIONS</h5>
+				</div>
+			</div>
+			<small class="text-center my-5">© 2023 Niftyshoes, Inc. All Rights Reserved. Terms, Privacy & Accessibility</small>
+		</footer>
+
+		<!-- Popper, Bootstrap JS-->
+		<script
+			src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+			integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+			integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+			crossorigin="anonymous"
+		></script>
+
+		<!-- DELETE FROM CART -->
+		<script>
+			$(document).on("click", ".cart-delete-btn", function (e) {
+				e.preventDefault();
+				const product_id = this.dataset.productId;
+				const product_size = this.dataset.productSize;
+				const product_color_id = this.dataset.productColorId;
+				$.ajax({
+					type: "POST",
+					url: '{% url "cart:modify" %}',
+					data: {
+						product_id: product_id,
+						product_size: product_size,
+						product_color_id: product_color_id,
+						csrfmiddlewaretoken: "{{csrf_token}}",
+						action: "delete",
+					},
+					success: function (json) {
+						const product_variant_id = json.product_variant_id;
+						document.getElementById("offcanvas-cart-product-" + product_variant_id).remove();
+						document.getElementById("offcanvas-cart-total-price").textContent = "$" + json.totalprice;
+						document.getElementById("offcanvas-cart-totalqty").textContent = json.totalqty;
+						document.getElementById("cart-totalqty-badge").textContent = json.totalqty;
+					},
+					error: function (xhr, errmsg, err) {},
+				});
+			});
+		</script>
+
+		<!-- SEARCH -->
+		<script>
+			$("#searchInput").keydown(function (e) {
+				if (event.key === "Enter") {
+					const searchQuery = $(this).val().trim();
+					const url = new URL(window.location.href);
+					const urlSearchParams = new URLSearchParams(url.search);
+					urlSearchParams.set("search", searchQuery);
+					const customUrl = `${url.origin}${url.pathname}?${urlSearchParams}`;
+					window.location.href = customUrl;
+				}
+			});
+		</script>
+	</body>
 </html>
-

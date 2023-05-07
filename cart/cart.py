@@ -7,7 +7,7 @@ class Cart:
     def __init__(self, request):
         self.session_cart_name = 'cart'
         self.session = request.session
-        
+
         # Get cart data or create new cart
         if self.session_cart_name not in self.session:
             self.cart = self.session[self.session_cart_name] = {}
@@ -24,7 +24,7 @@ class Cart:
         product_price = str(product_variant.product.price)
         product_name = str(product_variant.product.name)
         product_slug = str(product_variant.product.slug)
-        
+
         if product_variation_id not in self.cart:
             self.cart[product_variation_id] = {
                 'product_qty': product_qty,
@@ -34,7 +34,7 @@ class Cart:
             }
             self.save()
             return
-        
+
         self.cart[product_variation_id]['product_qty'] += product_qty
         self.save()
 
@@ -47,7 +47,7 @@ class Cart:
 
     def delete(self, product_variant: ProductVariant):
         product_id = str(product_variant.id)
-        
+
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()
@@ -68,7 +68,7 @@ class Cart:
         product_variant_ids = self.cart.keys()
         products = ProductVariant.objects.filter(id__in=product_variant_ids)
         cart = self.cart.copy()
-        
+
         for product_variant in products:
             cart['product_qty'] = self.cart[str(product_variant.id)]['product_qty']
             cart['product_price'] = str(product_variant.product.price)
@@ -85,12 +85,12 @@ class Cart:
             cart['product_availability'] = False
             if product_variant.available_units > 0:
                 cart['product_availability'] = True
-            
-            yield cart        
+
+            yield cart
 
     def __len__(self):
         return sum(item['product_qty'] for item in self.cart.values())
-    
+
     def clear(self):
         del self.session[self.session_cart_name]
         self.save()

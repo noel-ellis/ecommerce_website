@@ -8,6 +8,7 @@ from store.models import ProductVariant
 def summary(request):
     return render(request, 'wishlist/summary.html')
 
+
 def modify(request):
     wishlist = Wishlist(request)
     product_id = int(request.POST.get('product_id'))

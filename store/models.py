@@ -11,13 +11,13 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def get_absolute_url(self):
         return reverse("store:categories")
-    
+
     class Meta:
         verbose_name_plural = 'Categories'
-    
+
 
 class Color(models.Model):
     name = models.CharField(max_length=25, unique=True)
@@ -54,7 +54,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 class ProductVariant(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -68,7 +68,6 @@ class ProductVariant(models.Model):
 
     def __str__(self):
         return f'{self.product.name}; {self.color}, {self.size}'
-    
+
     class Meta:
         verbose_name_plural = 'Product Variants'
-

@@ -15,7 +15,8 @@ def modify(request):
     product = get_object_or_404(Product, id=product_id)
     product_size = request.POST.get('product_size')
     product_color_id = request.POST.get('product_color_id')
-    selected_product_variant = ProductVariant.objects.get(product=product, size=product_size, color_id=product_color_id)
+    selected_product_variant = ProductVariant.objects.get(
+        product=product, size=product_size, color_id=product_color_id)
 
     if request.POST.get('action') == 'add':
         product_qty = int(request.POST.get('product_qty'))
@@ -34,7 +35,7 @@ def modify(request):
         }
         response = JsonResponse(context)
         return response
-    
+
     if request.POST.get('action') == 'delete':
         cart.delete(product_variant=selected_product_variant)
 
@@ -51,13 +52,10 @@ def modify(request):
     if request.POST.get('action') == 'update':
         product_qty = int(request.POST.get('product_qty'))
         cart.update_qty(product_variant=selected_product_variant, product_qty=product_qty)
-        
+
         subtotal_price = product.price*product_qty
         total_price = cart.count_total_price()
         cart_qty = cart.__len__()
-        response = JsonResponse({'qty': product_qty, 'totalqty': cart_qty, 'totalprice': total_price, 'subtotalprice': subtotal_price})
+        response = JsonResponse({'qty': product_qty, 'totalqty': cart_qty,
+                                'totalprice': total_price, 'subtotalprice': subtotal_price})
         return response
-        
-    
-
-    

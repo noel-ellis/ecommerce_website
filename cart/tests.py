@@ -31,8 +31,9 @@ class TestCartEdit(TestCase):
         self.username = 'admin'
         self.password = 'admin123'
         self.user = User.objects.create_superuser(username=self.username, password=self.password)
-        
-        self.collection = Collection.objects.create(name='testcollection', slug='testcollection', description='description', season='SP')
+
+        self.collection = Collection.objects.create(
+            name='testcollection', slug='testcollection', description='description', season='SP')
         self.product = Product.objects.create(
             name='testproduct',
             slug='testproduct',
@@ -94,8 +95,9 @@ class TestCartFunctions(TestCase):
         self.username = 'admin'
         self.password = 'admin123'
         self.user = User.objects.create_superuser(username=self.username, password=self.password)
-        
-        self.collection = Collection.objects.create(name='testcollection', slug='testcollection', description='description', season='SP')
+
+        self.collection = Collection.objects.create(
+            name='testcollection', slug='testcollection', description='description', season='SP')
         self.product = Product.objects.create(
             name='testproduct',
             slug='testproduct',
@@ -106,7 +108,7 @@ class TestCartFunctions(TestCase):
             sex='M',
             size='43'
         )
-    
+
     @skip('not ready yet')
     def test_cart_save(self):
         request = HttpRequest()
@@ -117,4 +119,3 @@ class TestCartFunctions(TestCase):
         product = Product.objects.first()
         cart.add(product=product, product_qty=1)
         self.assertEqual(cart.total, 1)
-        
