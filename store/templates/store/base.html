@@ -123,7 +123,9 @@
 				<div class="accordion-item bg-black border-0">
 					{% if not search_query %}
 					<div class="accordion-collapse collapse" id="collapseSearchBar" data-bs-parent="#HeaderAccordion">
-						{% else %} <div class="accordion-collapse collapse {% if search_query != "" %}show{% endif %}" id="collapseSearchBar" data-bs-parent="#HeaderAccordion"> {% endif %}
+					{% else %} 
+					<div class="accordion-collapse collapse {% if search_query != "" %}show{% endif %}" id="collapseSearchBar" data-bs-parent="#HeaderAccordion"> 
+					{% endif %}
 						<div class="d-flex justify-content-center">
 							{% if not search_query %}
 							<input class="form-control w-75 my-2" id="searchInput" placeholder="Search" maxlength="64" type="search" />
