@@ -37,35 +37,20 @@ class ProductListView(View):
         return search_query
 
     def apply_filters(self, request):
-
         # catching filters
-        categories_ids = request.GET.get("categories", "").split(",")
-        sizes_ids = request.GET.get("sizes", "").split(",")
-        colors_ids = request.GET.get("colors", "").split(",")
-        materials_ids = request.GET.get("materials", "").split(",")
-        price_cap = request.GET.get("pricecap", "1000")
-        select_new = request.GET.get("new", False)
-        select_on_sale = request.GET.get("sale", False)
-        select_in_stock = request.GET.get("instock", False)
+        filters = {
+            'product__category__id__in': request.GET.get('categories', '').split(','),
+            'size__in': request.GET.get('sizes', '').split(','),
+            'color__id__in': request.GET.get('colors', '').split(','),
+            'product__material__id__in': request.GET.get('materials', '').split(','),
+            'product__price__lte': request.GET.get('pricecap', '1000'),
+            'new': True if request.GET.get('new', False) else None,
+            'available_units__gt': 0 if request.GET.get('instock', False) else None,
+            'sale': True if request.GET.get('sale', False) else None,
+        }
 
         # applying available filters
-        self.db_query = self.db_query.filter(product__price__lte=price_cap)
-
-        if categories_ids != ['']:
-            self.db_query = self.db_query.filter(product__category__id__in=categories_ids)
-        if sizes_ids != ['']:
-            self.db_query = self.db_query.filter(size__in=sizes_ids)
-        if colors_ids != ['']:
-            self.db_query = self.db_query.filter(color__id__in=colors_ids)
-        if materials_ids != ['']:
-            self.db_query = self.db_query.filter(product__material__id__in=materials_ids)
-
-        if select_new:
-            self.db_query = self.db_query.filter(new=True)
-        if select_in_stock:
-            self.db_query = self.db_query.filter(available_units__gt=0)
-        if select_on_sale:
-            self.db_query = self.db_query.filter(sale=True)
+        self.db_query = self.db_query.filter(**{k: v for k, v in filters.items() if (v and v != [''])})
 
     def add_wishlist_data(self, request):
         wishlist = Wishlist(request)
