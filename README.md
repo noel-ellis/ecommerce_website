@@ -1,27 +1,27 @@
-### Project Overview
+# Project Overview
 
-### Features (showcase)
+# Features (showcase)
 
-### Technologies Used
+# Technologies Used
 
-### Setup
+# Setup
 
-# Installation
+## Installation
 
-# Configuration
+## Configuration
 
-# Deployment
+## Deployment
 
-### Testing
+# Testing
 
-### Code Structure
+# Code Structure
 
-### Troubleshooting
+# Troubleshooting
 
-### Future Improvements
+# Future Improvements
 
-### Acknowledgements
+# Acknowledgements
 
-### License
+# License
 
-### Contact
+# Contact
