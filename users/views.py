@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth import login, logout
+from django.views import View
 
 from .forms import UserSignUpForm, UserUpdateForm, DeliveryInfoForm
 from .models import UserBase, DeliveryInfo
@@ -14,11 +15,15 @@ from orders.models import Order
 from store.models import Product
 
 
-def signup(request):
-    if request.user.is_authenticated:
-        return redirect('users:settings')
+class UserSignup(View):
 
-    if request.method == "POST":
+    def redirect_authenticated_users(self, request):
+        if request.user.is_authenticated:
+            return redirect('users:settings')
+
+    def post(self, request):
+        self.redirect_authenticated_users(request)
+
         form = UserSignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
@@ -41,8 +46,11 @@ def signup(request):
             return redirect('users:login')
         return render(request, 'users/signup.html', {'form': form})
 
-    form = UserSignUpForm()
-    return render(request, 'users/signup.html', {'form': form})
+    def get(self, request):
+        self.redirect_authenticated_users(request)
+
+        form = UserSignUpForm()
+        return render(request, 'users/signup.html', {'form': form})
 
 
 def activate(request, uidb64, token):
