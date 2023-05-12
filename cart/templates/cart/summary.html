@@ -41,7 +41,9 @@
 
         <!-- item card -->
         {% for item in cart %}
-        <div class="container-fluid d-flex flex-column p-0">
+        <div
+          class="container-fluid d-flex flex-column p-0"
+          id="cart-summary-item-{{ item.product_variant_id }}">
           <div class="container-fluid d-flex flex-row p-0 px-5">
             <!-- image -->
             <div class="col-2">
@@ -114,11 +116,13 @@
               <p>${{ item.product_subtotal }}</p>
             </div>
 
-            <!-- close button -->
             <div class="col-1 d-flex align-items-start justify-content-center">
               <button
                 type="button"
-                class="mt-4 cart-delete-btn btn-close"></button>
+                class="mt-4 cart-delete-btn btn-close"
+                data-product-id="{{ item.product_id }}"
+                data-product-size="{{ item.product_size }}"
+                data-product-color-id="{{ item.product_color_id }}"></button>
             </div>
           </div>
           <hr class="m-0 my-2 p-0 border-dark" />

@@ -417,6 +417,7 @@
 						document.getElementById("offcanvas-cart-product-" + product_variant_id).remove();
 						document.getElementById("offcanvas-cart-total-price").textContent = "$" + json.totalprice;
 						document.getElementById("offcanvas-cart-totalqty").textContent = json.totalqty;
+						document.getElementById("cart-summary-item-" + product_variant_id).remove();
 						document.getElementById("cart-totalqty-badge").textContent = json.totalqty;
 					},
 					error: function (xhr, errmsg, err) {},
