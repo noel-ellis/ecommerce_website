@@ -16,12 +16,6 @@
 
 # Code Structure
 
-# Troubleshooting
-
 # Future Improvements
 
 # Acknowledgements
-
-# License
-
-# Contact
