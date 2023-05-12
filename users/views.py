@@ -86,21 +86,18 @@ def signout(request):
     return redirect('users:login')
 
 
-# TODO:
-# convert to a class-based view
-@login_required
-def edit_address(request, address_id):
-    user = request.user
-    address = DeliveryInfo.objects.filter(id=address_id).first()
-    if not address:
-        messages.error(request, "Address doesn't exist")
-        return redirect('users:settings')
+class EditAddress(LoginRequiredMixin, View):
+    def post(self, request, address_id):
+        user = request.user
+        address = DeliveryInfo.objects.filter(id=address_id).first()
+        if not address:
+            messages.error(request, "Address doesn't exist")
+            return redirect('users:settings')
 
-    if address.user != user:
-        messages.error(request, 'No permission')
-        return redirect('users:settings')
+        if address.user != user:
+            messages.error(request, 'No permission')
+            return redirect('users:settings')
 
-    if request.method == "POST":
         if "address_data" in request.POST:
             form = DeliveryInfoForm(
                 request.POST,
@@ -115,13 +112,13 @@ def edit_address(request, address_id):
             messages.error(request, 'Data is invalid')
             return redirect('users:settings')
 
-    address_form = DeliveryInfoForm(instance=address)
+        address_form = DeliveryInfoForm(instance=address)
 
-    context = {
-        'address_form': address_form
-    }
+        context = {
+            'address_form': address_form
+        }
 
-    return render(request, "users/edit_address.html", context)
+        return render(request, "users/edit_address.html", context)
 
 
 @login_required
