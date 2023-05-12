@@ -7,6 +7,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.auth import login, logout
 from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import UserSignUpForm, UserUpdateForm, DeliveryInfoForm
 from .models import UserBase, DeliveryInfo
@@ -141,11 +142,64 @@ def delete_address(request, address_id):
     return redirect('users:settings')
 
 
-# TODO:
-# convert to a class-based view
-@login_required
-def settings(request):
-    if request.method == "POST":
+class Settings(LoginRequiredMixin, View):
+    def get(self, request):
+        user_form = UserUpdateForm(instance=request.user)
+        address_form = DeliveryInfoForm()
+        address_info = DeliveryInfo.objects.filter(user=request.user.id).all()
+
+        order_quiery = Order.objects.filter(user=request.user.id)
+        order_history = {}
+
+        for order in order_quiery:
+            ordered_items_data = {}
+            total_price = 0
+
+            for ordered_item in order.ordered_items.all():
+                product_quiery = Product.objects.get(pk=ordered_item.product_id)
+                product_name = product_quiery.name
+                product_slug = product_quiery.slug
+
+                ordered_item_data = {
+                    'price': ordered_item.price,
+                    'quantity': ordered_item.quantity,
+                    'product_name': product_name,
+                    'product_slug': product_slug
+                }
+                ordered_items_data[ordered_item.product_id] = ordered_item_data
+
+                ordered_item_total = ordered_item.price*ordered_item.quantity
+                total_price += ordered_item_total
+
+            delivery_info_data = {
+                'country': order.delivery_info.country,
+                'state': order.delivery_info.state,
+                'zip': order.delivery_info.zip,
+                'address': order.delivery_info.address
+            }
+
+            order_data = {
+                'created_at': order.created_at,
+                'updated_at': order.updated_at,
+                'paid': order.paid,
+                'status': order.status,
+                'delivery_info': delivery_info_data,
+                'ordered_items': ordered_items_data,
+                'total_price': total_price
+            }
+
+            order_history[order.id] = order_data
+
+        context = {
+            'user_form': user_form,
+            'address_form': address_form,
+            'address_info': address_info,
+            'order_history': order_history
+        }
+
+        return render(request, "users/settings.html", context)
+
+    def post(self, request):
         if "profile_data" in request.POST:
             form = UserUpdateForm(
                 request.POST,
@@ -174,59 +228,3 @@ def settings(request):
 
             messages.error(request, 'Data is invalid')
             return redirect('users:settings')
-
-    user_form = UserUpdateForm(instance=request.user)
-    address_form = DeliveryInfoForm()
-    address_info = DeliveryInfo.objects.filter(user=request.user.id).all()
-
-    order_quiery = Order.objects.filter(user=request.user.id)
-    order_history = {}
-
-    for order in order_quiery:
-
-        ordered_items_data = {}
-        total_price = 0
-
-        for ordered_item in order.ordered_items.all():
-            product_quiery = Product.objects.get(pk=ordered_item.product_id)
-            product_name = product_quiery.name
-            product_slug = product_quiery.slug
-
-            ordered_item_data = {
-                'price': ordered_item.price,
-                'quantity': ordered_item.quantity,
-                'product_name': product_name,
-                'product_slug': product_slug
-            }
-            ordered_items_data[ordered_item.product_id] = ordered_item_data
-
-            ordered_item_total = ordered_item.price*ordered_item.quantity
-            total_price += ordered_item_total
-
-        delivery_info_data = {
-            'country': order.delivery_info.country,
-            'state': order.delivery_info.state,
-            'zip': order.delivery_info.zip,
-            'address': order.delivery_info.address
-        }
-
-        order_data = {
-            'created_at': order.created_at,
-            'updated_at': order.updated_at,
-            'paid': order.paid,
-            'status': order.status,
-            'delivery_info': delivery_info_data,
-            'ordered_items': ordered_items_data,
-            'total_price': total_price
-        }
-
-        order_history[order.id] = order_data
-
-    context = {
-        'user_form': user_form,
-        'address_form': address_form,
-        'address_info': address_info,
-        'order_history': order_history
-    }
-
-    return render(request, "users/settings.html", context)

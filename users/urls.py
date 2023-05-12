@@ -7,7 +7,7 @@ from .forms import UserLoginForm, PwdResetForm
 app_name = 'users'
 
 urlpatterns = [
-    path('settings/', views.settings, name='settings'),
+    path('settings/', views.Settings.as_view(), name='settings'),
     path('address/<slug:address_id>/edit', views.edit_address, name='edit_address'),
     path('address/<slug:address_id>/delete', views.delete_address, name='delete_address'),
     path('signup/', views.UserSignup.as_view(), name='signup'),
