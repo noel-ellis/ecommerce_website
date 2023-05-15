@@ -100,14 +100,19 @@
                 <button
                   type="button"
                   href=""
-                  class="btn btn-qty-decrease"></button>
-                <p value="{{ item.product_qty }}" class="mb-2 p-0">
+                  class="btn btn-qty-decrease"
+                  data-item-id="{{ item.product_variant_id }}"></button>
+                <p
+                  value="{{ item.product_qty }}"
+                  class="mb-2 p-0"
+                  id="qty-{{ item.product_variant_id}}">
                   {{ item.product_qty }}
                 </p>
                 <button
                   type="button"
                   href=""
-                  class="btn btn-qty-increase"></button>
+                  class="btn btn-qty-increase"
+                  data-item-id="{{ item.product_variant_id }}"></button>
               </div>
             </div>
 
@@ -116,6 +121,7 @@
               <p>${{ item.product_subtotal }}</p>
             </div>
 
+            <!-- delete btn -->
             <div class="col-1 d-flex align-items-start justify-content-center">
               <button
                 type="button"
@@ -176,4 +182,25 @@
     </div>
   </div>
 </div>
+
+<script>
+  $(document).ready(function () {
+    $(".btn-qty-increase").on("click", function () {
+      let productQtyElement = "#qty-" + $(this).data("itemId");
+      let currentQty = parseInt($(productQtyElement).attr("value"));
+      $(productQtyElement).text(currentQty + 1);
+      $(productQtyElement).attr("value", currentQty + 1);
+    });
+
+    $(".btn-qty-decrease").on("click", function () {
+      let productQtyElement = "#qty-" + $(this).data("itemId");
+      let currentQty = parseInt($(productQtyElement).attr("value"));
+
+      if (currentQty > 1) {
+        $(productQtyElement).text(currentQty - 1);
+        $(productQtyElement).attr("value", currentQty - 1);
+      }
+    });
+  });
+</script>
 {% endblock content%}
