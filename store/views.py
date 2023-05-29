@@ -50,7 +50,7 @@ class ProductListView(View):
         }
 
         # applying available filters
-        self.db_query = self.db_query.filter(**{k: v for k, v in filters.items() if (v and v != [''])})
+        self.db_query = self.db_query.filter(**{k: v for k, v in filters.items() if (v and v != ['']) or (v == 0)})
 
     def add_wishlist_data(self, request):
         wishlist = Wishlist(request)
