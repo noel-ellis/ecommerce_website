@@ -26,17 +26,17 @@ class TestProductListView(TestCase):
             description='testdescription'
         )
         cls.product_a = Product.objects.create(
-            name='product_a',
-            slug='product_a',
-            description='product_a description',
+            name='example one',
+            slug='example-one',
+            description='example-one description',
             price=129.99,
             sex='Women',
             material=cls.material_a,
             category=cls.category_a
         )
         cls.product_b = Product.objects.create(
-            name='product_b',
-            slug='product_b',
+            name='product two',
+            slug='product-two',
             description='product_b description',
             price=399.99,
             sex='Men',
@@ -169,7 +169,10 @@ class TestProductListView(TestCase):
         self.assertEqual(len(response.context['page_obj'].object_list), 2)
 
     def test_search(self):
-        pass
+        response = self.c.get('/store?search=example')
+        self.assertEqual(len(response.context['page_obj'].object_list), 2)
+        response = self.c.get('/store?search=loremipsum')
+        self.assertEqual(len(response.context['page_obj'].object_list), 0)
 
 
 class TestUrls(TestCase):
