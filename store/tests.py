@@ -175,6 +175,121 @@ class TestProductListView(TestCase):
         self.assertEqual(len(response.context['page_obj'].object_list), 0)
 
 
+class TestProductDetailsView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.material_a = Material.objects.create(
+            name='leather'
+        )
+        cls.material_b = Material.objects.create(
+            name='canvas'
+        )
+        cls.category_a = Category.objects.create(
+            name='shoes',
+            slug='shoes',
+            description='testdescription'
+        )
+        cls.category_b = Category.objects.create(
+            name='boots',
+            slug='boots',
+            description='testdescription'
+        )
+        cls.product_a = Product.objects.create(
+            name='example one',
+            slug='example-one',
+            description='example-one description',
+            price=129.99,
+            sex='Women',
+            material=cls.material_a,
+            category=cls.category_a
+        )
+        cls.product_b = Product.objects.create(
+            name='product two',
+            slug='product-two',
+            description='product_b description',
+            price=399.99,
+            sex='Men',
+            material=cls.material_b,
+            category=cls.category_b
+        )
+        cls.color_a = Color.objects.create(
+            name='black',
+            code='000000'
+        )
+        cls.color_b = Color.objects.create(
+            name='white',
+            code='ffffff'
+        )
+        cls.product_variant_a = ProductVariant.objects.create(
+            product=cls.product_a,
+            size=39,
+            color=cls.color_a,
+            available_units=1200,
+            sale=True,
+            new=True,
+            promo=True
+        )
+        cls.product_variant_b = ProductVariant.objects.create(
+            product=cls.product_a,
+            size=41,
+            color=cls.color_b,
+            available_units=1200,
+            sale=False,
+            new=False,
+            promo=False
+        )
+        cls.product_variant_c = ProductVariant.objects.create(
+            product=cls.product_a,
+            size=42,
+            color=cls.color_b,
+            available_units=0,
+            sale=True,
+            new=False,
+            promo=False
+        )
+        cls.product_variant_d = ProductVariant.objects.create(
+            product=cls.product_a,
+            size=39,
+            color=cls.color_b,
+            available_units=1200,
+            sale=True,
+            new=True,
+            promo=True
+        )
+
+    def setUp(self):
+        self.c = Client()
+
+    def test_product(self):
+        response = self.c.get('/store/example-one')
+        self.assertEqual(response.context['product'], self.product_a)
+
+    def test_images(self):
+        response = self.c.get('/store/example-one')
+        self.assertEqual(len(response.context['images']), 3)
+        self.assertEqual(response.context['images'][0], '/media/product_pics/default_item.png')
+        self.assertEqual(response.context['images'][1], '/media/product_pics/default_item.png')
+        self.assertEqual(response.context['images'][2], '/media/product_pics/default_item.png')
+
+    def test_product_variants_data(self):
+        response = self.c.get('/store/example-one')
+        self.assertEqual(len(response.context['product_variants_data']), 2)
+        self.assertIn('39', response.context['product_variants_data'])
+        self.assertIn('41', response.context['product_variants_data'])
+        self.assertEqual(len(response.context['product_variants_data']['39']), 2)
+        self.assertEqual(response.context['product_variants_data']['39']
+                         [0]['color_id'], self.product_variant_a.color.id)
+        self.assertEqual(response.context['product_variants_data']['39']
+                         [1]['color_id'], self.product_variant_d.color.id)
+        self.assertEqual(response.context['product_variants_data']['41']
+                         [0]['color_id'], self.product_variant_b.color.id)
+
+    def test_promo(self):
+        response = self.c.get('/store/example-one')
+        print(f"\nRESPONSE.CONTEXT:\n{response.context['promo']}\n")
+        self.assertEqual(len(response.context['promo']), 2)
+
+
 class TestUrls(TestCase):
     def setUp(self):
         self.c = Client()
