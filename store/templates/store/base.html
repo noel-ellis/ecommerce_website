@@ -433,7 +433,9 @@
 					const url = new URL(window.location.href);
 					const urlSearchParams = new URLSearchParams(url.search);
 					urlSearchParams.set("search", searchQuery);
-					const customUrl = `${url.origin}${url.pathname}?${urlSearchParams}`;
+          console.log(url.origin)
+          console.log(url.pathname)
+					const customUrl = `${url.origin}/store?${urlSearchParams}`;
 					window.location.href = customUrl;
 				}
 			});
