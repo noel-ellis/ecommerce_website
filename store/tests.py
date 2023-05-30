@@ -6,6 +6,135 @@ from .models import Material, Category, Product, Color, ProductVariant
 from ecommerce_website.choices import SIZES_LIST as SIZES
 
 
+class TestUrls(TestCase):
+
+    def setUp(self):
+        self.c = Client()
+        self.material = Material.objects.create(
+            name='leather'
+        )
+        self.category = Category.objects.create(
+            name='shoes',
+            slug='shoes',
+            description='testdescription'
+        )
+        self.product = Product.objects.create(
+            name='product_a',
+            slug='product_a',
+            description='product_a description',
+            price=129.99,
+            sex='Women',
+            material=self.material,
+            category=self.category
+        )
+
+    def test_main(self):
+        response = self.c.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_product_list(self):
+        response = self.c.get('/store')
+        self.assertEqual(response.status_code, 200)
+
+    def test_product_details(self):
+        response = self.c.get('/store/product_a')
+        self.assertEqual(response.status_code, 200)
+
+
+class TestMainView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.material_a = Material.objects.create(
+            name='leather'
+        )
+        cls.material_b = Material.objects.create(
+            name='canvas'
+        )
+        cls.category_a = Category.objects.create(
+            name='shoes',
+            slug='shoes',
+            description='testdescription'
+        )
+        cls.category_b = Category.objects.create(
+            name='boots',
+            slug='boots',
+            description='testdescription'
+        )
+        cls.product_a = Product.objects.create(
+            name='example one',
+            slug='example-one',
+            description='example-one description',
+            price=129.99,
+            sex='Women',
+            material=cls.material_a,
+            category=cls.category_a
+        )
+        cls.product_b = Product.objects.create(
+            name='product two',
+            slug='product-two',
+            description='product_b description',
+            price=399.99,
+            sex='Men',
+            material=cls.material_b,
+            category=cls.category_b
+        )
+        cls.color_a = Color.objects.create(
+            name='black',
+            code='000000'
+        )
+        cls.color_b = Color.objects.create(
+            name='white',
+            code='ffffff'
+        )
+        cls.product_variant_a = ProductVariant.objects.create(
+            product=cls.product_a,
+            size=39,
+            color=cls.color_a,
+            available_units=1200,
+            sale=True,
+            new=True,
+            promo=True
+        )
+        cls.product_variant_b = ProductVariant.objects.create(
+            product=cls.product_a,
+            size=41,
+            color=cls.color_b,
+            available_units=1200,
+            sale=False,
+            new=True,
+            promo=False
+        )
+        cls.product_variant_c = ProductVariant.objects.create(
+            product=cls.product_a,
+            size=42,
+            color=cls.color_b,
+            available_units=0,
+            sale=True,
+            new=True,
+            promo=False
+        )
+        cls.product_variant_d = ProductVariant.objects.create(
+            product=cls.product_a,
+            size=39,
+            color=cls.color_b,
+            available_units=1200,
+            sale=True,
+            new=False,
+            promo=True
+        )
+
+    def setUp(self):
+        self.c = Client()
+
+    def test_promo(self):
+        response = self.c.get('/')
+        self.assertEqual(len(response.context['promo']), 2)
+
+    def test_new(self):
+        response = self.c.get('/')
+        self.assertEqual(len(response.context['new']), 3)
+
+
 class TestProductListView(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -106,12 +235,11 @@ class TestProductListView(TestCase):
         self.assertEqual(response.context['page_obj'].object_list[0]['size'], str(self.product_variant_a.size))
         self.assertEqual(response.context['page_obj'].object_list[0]['in_wishlist'], False)
 
-    def test_filters(self):
-        # category
-        response = self.c.get('/store?categories=1')
+    def test_filters_category(self):
+        response = self.c.get(f'/store?categories={self.category_a.id}')
         self.assertEqual(len(response.context['page_obj'].object_list), 2)
 
-        # size
+    def test_filters_size(self):
         response = self.c.get('/store?sizes=39')
         self.assertEqual(len(response.context['page_obj'].object_list), 1)
         self.assertEqual(response.context['page_obj'].object_list[0]['size'], '39')
@@ -130,25 +258,25 @@ class TestProductListView(TestCase):
         self.assertEqual(response.context['page_obj'].object_list[1]['size'], '41')
         self.assertEqual(response.context['page_obj'].object_list[2]['size'], '42')
 
-        # color
-        response = self.c.get('/store?colors=2')
+    def test_filters_color(self):
+        response = self.c.get(f'/store?colors={self.color_b.id}')
         self.assertEqual(len(response.context['page_obj'].object_list), 2)
-        self.assertEqual(response.context['page_obj'].object_list[0]['color__id'], 2)
-        self.assertEqual(response.context['page_obj'].object_list[1]['color__id'], 2)
-        response = self.c.get('/store?colors=1')
+        self.assertEqual(response.context['page_obj'].object_list[0]['color__id'], self.color_b.id)
+        self.assertEqual(response.context['page_obj'].object_list[1]['color__id'], self.color_b.id)
+        response = self.c.get(f'/store?colors={self.color_a.id}')
         self.assertEqual(len(response.context['page_obj'].object_list), 1)
-        self.assertEqual(response.context['page_obj'].object_list[0]['color__id'], 1)
+        self.assertEqual(response.context['page_obj'].object_list[0]['color__id'], self.color_a.id)
 
-        # material
-        response = self.c.get('/store?materials=2')
+    def test_filters_material(self):
+        response = self.c.get(f'/store?materials={self.material_b.id}')
         self.assertEqual(len(response.context['page_obj'].object_list), 1)
         self.assertEqual(response.context['page_obj'].object_list[0]['product__material__name'], 'canvas')
-        response = self.c.get('/store?materials=1')
+        response = self.c.get(f'/store?materials={self.material_a.id}')
         self.assertEqual(len(response.context['page_obj'].object_list), 2)
         self.assertEqual(response.context['page_obj'].object_list[0]['product__material__name'], 'leather')
         self.assertEqual(response.context['page_obj'].object_list[1]['product__material__name'], 'leather')
 
-        # price cap
+    def test_filters_pricecap(self):
         response = self.c.get('/store?pricecap=300')
         self.assertEqual(len(response.context['page_obj'].object_list), 2)
         response = self.c.get('/store?pricecap=400')
@@ -156,15 +284,15 @@ class TestProductListView(TestCase):
         response = self.c.get('/store?pricecap=100')
         self.assertEqual(len(response.context['page_obj'].object_list), 0)
 
-        # new
+    def test_filters_new(self):
         response = self.c.get('/store?new=true')
         self.assertEqual(len(response.context['page_obj'].object_list), 1)
 
-        # sale
+    def test_filters_sale(self):
         response = self.c.get('/store?sale=true')
         self.assertEqual(len(response.context['page_obj'].object_list), 2)
 
-        # in stock
+    def test_filters_instock(self):
         response = self.c.get('/store?instock=true')
         self.assertEqual(len(response.context['page_obj'].object_list), 2)
 
@@ -286,39 +414,4 @@ class TestProductDetailsView(TestCase):
 
     def test_promo(self):
         response = self.c.get('/store/example-one')
-        print(f"\nRESPONSE.CONTEXT:\n{response.context['promo']}\n")
         self.assertEqual(len(response.context['promo']), 2)
-
-
-class TestUrls(TestCase):
-    def setUp(self):
-        self.c = Client()
-        self.material = Material.objects.create(
-            name='leather'
-        )
-        self.category = Category.objects.create(
-            name='shoes',
-            slug='shoes',
-            description='testdescription'
-        )
-        self.product = Product.objects.create(
-            name='product_a',
-            slug='product_a',
-            description='product_a description',
-            price=129.99,
-            sex='Women',
-            material=self.material,
-            category=self.category
-        )
-
-    def test_homepage(self):
-        response = self.c.get('/')
-        self.assertEqual(response.status_code, 200)
-
-    def test_store(self):
-        response = self.c.get('/store')
-        self.assertEqual(response.status_code, 200)
-
-    def test_product_details(self):
-        response = self.c.get('/store/product_a')
-        self.assertEqual(response.status_code, 200)
