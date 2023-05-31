@@ -6,7 +6,7 @@ from django.urls import reverse
 from store.models import Material, Category, Product, Color, ProductVariant
 
 
-class TestModifyCart(TestCase):
+class TestModifyCartView(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.material_a = Material.objects.create(
@@ -139,4 +139,39 @@ class TestModifyCart(TestCase):
         product_id = self.product_variant_c.product.id,
         response = self.c.post(reverse('cart:modify'), {
                                'action': 'add', 'product_id': product_id, 'product_size': size, 'product_color_id': color_id, 'product_qty': qty})
+        self.assertEqual(response.status_code, 404)
+
+    def test_delete_valid(self):
+        qty = 3, 1
+        size = self.product_variant_a.size, self.product_variant_d.size
+        color_id = self.product_variant_a.color.id, self.product_variant_d.color.id
+        product_id = self.product_variant_a.product.id, self.product_variant_d.product.id
+
+        # add first item
+        response = self.c.post(reverse('cart:modify'), {
+                               'action': 'add', 'product_id': product_id[0], 'product_size': size[0], 'product_color_id': color_id[0], 'product_qty': qty[0]})
+        self.assertEqual(response.status_code, 200)
+
+        # add second item
+        response = self.c.post(reverse('cart:modify'), {
+                               'action': 'add', 'product_id': product_id[1], 'product_size': size[1], 'product_color_id': color_id[1], 'product_qty': qty[1]})
+        self.assertEqual(response.status_code, 200)
+
+        # delete first item
+        response = self.c.post(reverse('cart:modify'), {
+                               'action': 'delete', 'product_id': product_id[0], 'product_size': size[0], 'product_color_id': color_id[0]})
+        self.assertEqual(response.status_code, 200)
+        context_data = json.loads(response.content)
+        self.assertEqual(context_data['product_variant_id'], self.product_variant_a.id)
+        self.assertEqual(context_data['totalqty'], qty[1])
+        self.assertEqual(context_data['totalprice'], str(self.product_b.price*qty[1]))
+
+    # the view allows requests for deleting items that exist in the database, but aren't in the cart.
+    def test_delete_invalid_product(self):
+        size = self.product_variant_a.size
+        color_id = self.product_variant_c.color.id
+        product_id = self.product_variant_a.product.id
+
+        response = self.c.post(reverse('cart:modify'), {
+                               'action': 'delete', 'product_id': product_id, 'product_size': size, 'product_color_id': color_id})
         self.assertEqual(response.status_code, 404)
