@@ -214,3 +214,13 @@ class TestModifyCartView(TestCase):
         response = self.c.post(reverse('cart:modify'), {
                                'action': 'update', 'product_id': product_id, 'product_size': size, 'product_color_id': color_id, 'product_qty': qty})
         self.assertEqual(response.status_code, 404)
+
+    def test_update_invalid_qty(self):
+        qty = 1201
+        size = self.product_variant_a.size
+        color_id = self.product_variant_a.color.id
+        product_id = self.product_variant_a.product.id
+
+        response = self.c.post(reverse('cart:modify'), {
+                               'action': 'update', 'product_id': product_id, 'product_size': size, 'product_color_id': color_id, 'product_qty': qty})
+        self.assertEqual(response.status_code, 404)
