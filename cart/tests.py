@@ -105,7 +105,7 @@ class TestModifyCartView(TestCase):
         self.assertEqual(context_data['qty'], qty[0])
         self.assertEqual(context_data['product_variant_id'], self.product_variant_a.id)
         self.assertEqual(context_data['totalqty'], qty[0])
-        self.assertEqual(context_data['totalprice'], str(self.product_a.price*qty[0]))
+        self.assertEqual(context_data['totalprice'], f"{(self.product_a.price*qty[0]):.2f}")
         self.assertEqual(context_data['img_url'], self.product_variant_a.image.url)
         self.assertEqual(context_data['size'], str(size[0]))
         self.assertEqual(context_data['color_name'], self.product_variant_a.color.name)
@@ -118,7 +118,8 @@ class TestModifyCartView(TestCase):
         self.assertEqual(context_data['qty'], qty[1])
         self.assertEqual(context_data['product_variant_id'], self.product_variant_d.id)
         self.assertEqual(context_data['totalqty'], qty[0]+qty[1])
-        self.assertEqual(context_data['totalprice'], str(self.product_a.price*qty[0] + self.product_b.price*qty[1]))
+        self.assertEqual(context_data['totalprice'],
+                         f"{(self.product_a.price*qty[0] + self.product_b.price*qty[1]):.2f}")
         self.assertEqual(context_data['img_url'], self.product_variant_d.image.url)
         self.assertEqual(context_data['size'], str(size[1]))
         self.assertEqual(context_data['color_name'], self.product_variant_d.color.name)
@@ -164,9 +165,9 @@ class TestModifyCartView(TestCase):
         context_data = json.loads(response.content)
         self.assertEqual(context_data['product_variant_id'], self.product_variant_a.id)
         self.assertEqual(context_data['totalqty'], qty[1])
-        self.assertEqual(context_data['totalprice'], str(self.product_b.price*qty[1]))
+        self.assertEqual(context_data['totalprice'], f"{(self.product_b.price*qty[1]):.2f}")
 
-    # the view allows requests for deleting items that exist in the database, but aren't in the cart.
+    # the view allows requests for deleting items that exist in the database, but aren't in the cart. Request gets ignored.
     def test_delete_invalid_product(self):
         size = self.product_variant_a.size
         color_id = self.product_variant_c.color.id
@@ -174,4 +175,42 @@ class TestModifyCartView(TestCase):
 
         response = self.c.post(reverse('cart:modify'), {
                                'action': 'delete', 'product_id': product_id, 'product_size': size, 'product_color_id': color_id})
+        self.assertEqual(response.status_code, 404)
+
+    def test_update_valid(self):
+        qty = 3, 1, 20
+        size = self.product_variant_a.size, self.product_variant_d.size
+        color_id = self.product_variant_a.color.id, self.product_variant_d.color.id
+        product_id = self.product_variant_a.product.id, self.product_variant_d.product.id
+
+        # add first item
+        response = self.c.post(reverse('cart:modify'), {
+                               'action': 'add', 'product_id': product_id[0], 'product_size': size[0], 'product_color_id': color_id[0], 'product_qty': qty[0]})
+        self.assertEqual(response.status_code, 200)
+
+        # add second item
+        response = self.c.post(reverse('cart:modify'), {
+                               'action': 'add', 'product_id': product_id[1], 'product_size': size[1], 'product_color_id': color_id[1], 'product_qty': qty[1]})
+        self.assertEqual(response.status_code, 200)
+
+        # update second item
+        response = self.c.post(reverse('cart:modify'), {
+                               'action': 'update', 'product_id': product_id[1], 'product_size': size[1], 'product_color_id': color_id[1], 'product_qty': qty[2]})
+        self.assertEqual(response.status_code, 200)
+        context_data = json.loads(response.content)
+        self.assertEqual(context_data['qty'], qty[2])
+        self.assertEqual(context_data['totalqty'], qty[0]+qty[2])
+        self.assertEqual(
+            context_data['totalprice'], f"{(self.product_variant_a.product.price*qty[0] + self.product_variant_d.product.price*qty[2]):.2f}")
+        self.assertEqual(context_data['subtotalprice'], f"{(self.product_variant_d.product.price*qty[2]):.2f}")
+
+    # the view allows requests for updating items that exist in the database, but aren't in the cart. Request gets ignored.
+    def test_update_invalid_product(self):
+        qty = 3
+        size = self.product_variant_a.size
+        color_id = self.product_variant_b.color.id
+        product_id = self.product_variant_a.product.id
+
+        response = self.c.post(reverse('cart:modify'), {
+                               'action': 'update', 'product_id': product_id, 'product_size': size, 'product_color_id': color_id, 'product_qty': qty})
         self.assertEqual(response.status_code, 404)

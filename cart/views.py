@@ -78,6 +78,8 @@ class ModifyCart(View):
         cart = Cart(request)
         selected_product_variant = self.get_product_variant(request)
         product_qty = int(request.POST.get('product_qty'))
+        if selected_product_variant.available_units < product_qty:
+            raise Http404
         cart.update_qty(product_variant=selected_product_variant, product_qty=product_qty)
 
         subtotal_price = self.count_subtotal_price(request)
