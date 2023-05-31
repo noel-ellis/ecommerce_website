@@ -1,4 +1,4 @@
-from store.models import Product, ProductVariant
+from store.models import ProductVariant
 
 from decimal import Decimal
 

@@ -26,8 +26,9 @@ class ModifyCart(View):
         product = get_object_or_404(Product, id=product_id)
         product_size = request.POST.get('product_size')
         product_color_id = request.POST.get('product_color_id')
-        selected_product_variant = ProductVariant.objects.get(
-            product=product, size=product_size, color_id=product_color_id)
+        qty = request.POST.get('product_qty')
+        selected_product_variant = get_object_or_404(ProductVariant,
+                                                     product=product, size=product_size, color_id=product_color_id, available_units__gte=qty)
         return selected_product_variant
 
     def count_subtotal_price(self, request):
