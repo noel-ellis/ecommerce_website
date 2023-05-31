@@ -123,7 +123,7 @@ class TestModifyCart(TestCase):
         self.assertEqual(context_data['size'], str(size[1]))
         self.assertEqual(context_data['color_name'], self.product_variant_d.color.name)
 
-    def test_add_invalid_404(self):
+    def test_add_invalid_product(self):
         qty = 4
         size = self.product_variant_c.size
         color_id = self.product_variant_a.color.id
