@@ -328,32 +328,110 @@
 
       <!-- navbar-offcanvas -->
       <div class="offcanvas offcanvas-start border border-dark" tabindex="-1" id="offcanvasNavbar" data-bs-scroll="true" aria-labelledby="offcanvasNavbarLabel">
-				<!-- offcanvas-header -->
-				<div class="d-flex flex-column offcanvas-header p-0 border-bottom border-dark">
-					<div class="container-fluid">
-						<h4 class="text-dark m-2 ms-3 p-0" id="offcanvasCartLabel">NAVBAR</h4>
-					</div>
-				</div>
-
-				<!-- offcanvas-cart-items -->
+				<!-- offcanvas-body -->
 				<div class="offcanvas-body border-bottom border-dark p-0">
 					<div id="cart-items" class="d-flex flex-column">
-						<p>women</p>
-            <p>men</p>
-            <p>sale</p>
+						<!-- accordion -->
+              <div class="d-flex flex-row p-0 m-0">
+                <div class="accordion custom-accordion accordion-flush container-fluid p-0" id="accordionStore">
+                  <!-- women -->
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="accordionstore-header-women">
+                      <button class="accordion-button fs-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionstore-body-women" aria-expanded="false" aria-controls="accordionstore-body-women">
+                        WOMEN
+                      </button>
+                    </h2>
+                    <div id="accordionstore-body-women" class="accordion-collapse collapse" aria-labelledby="accordionstore-body-women">
+                      <div class="accordion-body">
+                        <div class="mb-4">
+                          <h5 class="text-black">SANDALS</h5>
+                          <ul class="nav flex-column">
+                            <li>
+                              <a class="text-black nav-link p-0" href="{% url 'store:store' %}">One-strap sandals</a>
+                            </li>
+                            <li>
+                              <a class="text-black nav-link p-0" href="#">Two-strap sandals</a>
+                            </li>
+                            <li>
+                              <a class="text-black nav-link p-0" href="#">Ankle-strap sandals</a>
+                            </li>
+                            <li>
+                              <a class="text-black nav-link p-0" href="#">Clogs</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="">
+                          <h5 class="text-black">SHOES</h5>
+                          <ul class="nav flex-column">
+                            <li>
+                              <a class="text-black nav-link p-0" href="#">Sneakers</a>
+                            </li>
+                            <li>
+                              <a class="text-black nav-link p-0" href="#">Boots</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- men -->
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="accordionstore-header-men">
+                      <button class="accordion-button fs-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionstore-body-men" aria-expanded="false" aria-controls="accordionstore-body-men">
+                        MEN
+                      </button>
+                    </h2>
+                    <div id="accordionstore-body-men" class="accordion-collapse collapse" aria-labelledby="accordionstore-body-men">
+                      <div class="accordion-body">
+                        <div class="mb-4">
+                          <h5 class="text-black">SANDALS</h5>
+                          <ul class="nav flex-column">
+                            <li>
+                              <a class="text-black nav-link p-0" href="{% url 'store:store' %}">One-strap sandals</a>
+                            </li>
+                            <li>
+                              <a class="text-black nav-link p-0" href="#">Two-strap sandals</a>
+                            </li>
+                            <li>
+                              <a class="text-black nav-link p-0" href="#">Ankle-strap sandals</a>
+                            </li>
+                            <li>
+                              <a class="text-black nav-link p-0" href="#">Clogs</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="">
+                          <h5 class="text-black">SHOES</h5>
+                          <ul class="nav flex-column">
+                            <li>
+                              <a class="text-black nav-link p-0" href="#">Sneakers</a>
+                            </li>
+                            <li>
+                              <a class="text-black nav-link p-0" href="#">Boots</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
 					</div>
 				</div>
 
 				<!-- offcanvas-footer -->
 				<div id="offcanvas-cart-footer" class="container-fluid p-0">
-					<!-- summary -->
+					<!-- account -->
 					<div id="offcanvas-cart-summary" class="container-fluid">
-						<h5 class="m-0 ms-3 mt-2 p-0">ACCOUNT</h5>
+            <h6 class="m-0 ms-3 mt-3 p-0">{{ user.email }}</h6>
+            <hr class="mb-0">
 						<div class="d-flex flex-row justify-content-between">
-							<p class="m-0 ms-3 mt-3 p-0">SETTINGS</p>
+							<a href="{% url 'users:settings' %}" class="dropdown-item m-0 ms-3 mt-2 px-2 py-1">SETTINGS</a>
 						</div>
 						<div class="d-flex flex-row justify-content-between">
-							<p class="m-0 ms-3 mt-2 mb-2 p-0">SIGN OUT</p>
+							<a href="{% url 'users:logout' %}" class="dropdown-item m-0 ms-3 mt-2 mb-2 px-2 py-1">SIGN OUT</a>
 						</div>
 					</div>
 				</div>
@@ -376,60 +454,60 @@
     <!-- footer-other -->
 		<footer class="d-flex flex-column justify-content-center bg-black border-top border-3 border-light">
 			<div class="d-flex flex-row justify-content-center mt-5 pt-3">
-				<div class="flex-column px-1 px-lg-5">
-					<h5 class="text-white">Find a Store</h5>
-					<h5 class="text-white">Shop Gift Cards</h5>
-					<h5 class="text-white">Track Order</h5>
+				<div class="flex-column mx-4">
+					<p class="text-white fs-6 fs-lg-5 fw-semibold">Find a Store</p>
+					<p class="text-white fs-6 fs-lg-5 fw-semibold">Shop Gift Cards</p>
+					<p class="text-white fs-6 fs-lg-5 fw-semibold">Track Order</p>
 				</div>
-				<div class="flex-column px-1 px-lg-5">
-					<h5 class="text-white">GET HELP</h5>
+				<div class="flex-column mx-4">
+					<p class="text-white fs-6 fs-lg-5 fw-semibold">GET HELP</p>
 					<ul class="nav flex-column">
 						<li>
-							<a class="text-white nav-link p-0" href="#">Contact Us</a>
+							<a class="text-white nav-link p-0 fs-6 fw-lighter" href="#">Contact Us</a>
 						</li>
 						<li>
-							<a class="text-white nav-link p-0" href="#">FAQs</a>
+							<a class="text-white nav-link p-0 fs-6 fw-lighter" href="#">FAQs</a>
 						</li>
 						<li>
-							<a class="text-white nav-link p-0" href="#">Size Guides</a>
+							<a class="text-white nav-link p-0 fs-6 fw-lighter" href="#">Size Guides</a>
 						</li>
 						<li>
-							<a class="text-white nav-link p-0" href="#">Shipping & Delivery</a>
+							<a class="text-white nav-link p-0 fs-6 fw-lighter" href="#">Shipping & Delivery</a>
 						</li>
 						<li>
-							<a class="text-white nav-link p-0" href="#">Returns</a>
+							<a class="text-white nav-link p-0 fs-6 fw-lighter" href="#">Returns</a>
 						</li>
 						<li>
-							<a class="text-white nav-link p-0" href="#">My Account</a>
+							<a class="text-white nav-link p-0 fs-6 fw-lighter" href="#">My Account</a>
 						</li>
 						<li>
-							<a class="text-white nav-link p-0" href="#">Payment</a>
+							<a class="text-white nav-link p-0 h-6" href="#">Payment</a>
 						</li>
 						<li>
-							<a class="text-white nav-link p-0" href="#">Feedback</a>
+							<a class="text-white nav-link p-0 h-6" href="#">Feedback</a>
 						</li>
 					</ul>
 				</div>
 
-				<div class="flex-column px-1 px-lg-5">
-					<h5 class="text-white">COMPANY</h5>
+				<div class="flex-column mx-4">
+					<p class="text-white fs-6 fs-lg-5 fw-semibold">COMPANY</p>
 					<ul class="nav flex-column">
 						<li>
-							<a class="text-white nav-link fs-6 p-0" href="#">Our Stores</a>
+							<a class="text-white nav-link p-0 fs-6 fw-lighter" href="#">Our Stores</a>
 						</li>
 						<li>
-							<a class="text-white nav-link fs-6 p-0" href="#">Our Story</a>
+							<a class="text-white nav-link p-0 fs-6 fw-lighter" href="#">Our Story</a>
 						</li>
 						<li>
-							<a class="text-white nav-link fs-6 p-0" href="#">Our Materials</a>
+							<a class="text-white nav-link p-0 fs-6 fw-lighter" href="#">Our Materials</a>
 						</li>
 						<li>
-							<a class="text-white nav-link fs-6 p-0" href="#">Sustainability</a>
+							<a class="text-white nav-link p-0 fs-6 fw-lighter" href="#">Sustainability</a>
 						</li>
 					</ul>
 				</div>
-				<div class="flex-column px-1 px-lg-5">
-					<h5 class="text-white">PAYMENT OPTIONS</h5>
+				<div class="d-none d-md-flex flex-column mx-4">
+					<p class="text-white fs-6 fs-lg-5 fw-semibold">PAYMENT OPTIONS</p>
 				</div>
 			</div>
 			<small class="text-center my-5">© 2023 Niftyshoes, Inc. All Rights Reserved. Terms, Privacy & Accessibility</small>
