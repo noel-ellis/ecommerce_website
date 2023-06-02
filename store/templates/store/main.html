@@ -5,7 +5,7 @@
   <div class="p-0 m-0 container-fluid position-relative">
     <img src="/../../../media/headline_images/headline_1.png" class="img-fluid">
     <div class="d-flex flex-column justify-content-center position-absolute top-50 start-50 translate-middle">
-      <h1 class="text-light display-3">NEW COLLECTION</h1>
+      <h1 class="text-light display-3 text-nowrap">NEW COLLECTION</h1>
       <div class="d-flex container-fluid justify-content-center">
         <a href="{% url 'store:store' %}" class="mt-5 btn btn-bd-dark text-center text-nowrap">SHOP NOW</a>
       </div>
@@ -13,11 +13,12 @@
   </div>
 
   <!-- PROMO -->
-  <div class="p-0 m-0 mt-5 pt-4 container-fluid position-relative">
-    <p class="my-5 py-5 fs-4 text-center">NIFTY SHOES FOR EVERY DAY</p>
+  <div class="p-0 m-0 mt-3 mt-lg-5 pt-lg-4 container-fluid position-relative">
+    <p class="my-4 my-lg-5 py-4 py-lg-5 fs-4 text-center">NIFTY SHOES FOR EVERY DAY</p>
     <!-- cards -->
     {% if promo %}
-    <div class="row row-cols-xxl-4 d-flex justify-content-center mb-5 pb-5">
+    <!-- columns (lg) -->
+    <div class="d-none d-lg-flex w-100 row row-cols-3 justify-content-center mb-5 pb-5">
       {% for product in promo %}
       <div class="col d-flex justify-content-center position-relative" style="width: 15rem;">
         <div class="card p-0 m-0">
@@ -32,6 +33,30 @@
       </div>
       {% endfor %}
     </div>
+    <!-- carousel -->
+    <div id="carouselExampleDark" class="carousel carousel-dark slide d-lg-none" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for product in promo %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="10000">
+          <img src="{{ product.image.url }}" class="d-block w-100 p-5" alt="...">
+          <div class="carousel-caption border border-dark" style='background-color: rgb(255, 255, 255);'>
+            <h5>{{ product.product.name }}</h5>
+            <p>{{ product.product.material.name }}</p>
+            <p>${{ product.product.price }}</p>
+            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.product.slug %}"></a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
     {% endif %}
   </div>
 
@@ -39,8 +64,9 @@
   <div class="p-0 m-0 container-fluid position-relative">
     <img src="/../../../media/headline_images/headline_2.png" class="img-fluid">
     <div class="d-flex flex-column justify-content-center position-absolute top-50 start-50 translate-middle">
-      <h4 class="text-light text-center mb-4">SANDALS WITH A SOFT FOOTBED</h4>
-      <p class="text-light text-center">
+      <h4 class="text-light text-center mb-4 d-none d-lg-block">SANDALS WITH A SOFT FOOTBED</h4>
+      <h4 class="text-light text-center mb-4 fs-6 d-lg-none">SANDALS WITH A SOFT FOOTBED</h4>
+      <p class="text-light text-center d-none d-lg-flex">
         It’s time to get comfortable – with our super comfy sandals with<br>
         a soft footbed. All sandals with a soft footbed have an integrated<br>latex foam layer which makes them even more comfortable.<br>
         Here, you can discover the new models in beautiful colours<br>
@@ -54,10 +80,11 @@
 
   <!-- NEW -->
   <div class="p-0 m-0 mt-5 pt-4 container-fluid position-relative">
-    <p class="my-5 py-5 fs-4 text-center">NEW ARRIVALS</p>
+    <p class="my-4 my-lg-5 py-4 py-lg-5 fs-4 text-center">NEW ARRIVALS</p>
     <!-- cards -->
     {% if new %}
-    <div class="row row-cols-xxl-4 d-flex justify-content-center mb-5 pb-5">
+    <!-- columns-lg -->
+    <div class="d-none d-lg-flex row row-cols-lg-3 w-100 d-flex justify-content-center mb-5 pb-5">
       {% for product in new %}
       <div class="col d-flex justify-content-center position-relative" style="width: 15rem;">
         <div class="card p-0 m-0">
@@ -72,6 +99,31 @@
       </div>
       {% endfor %}
     </div>
+
+    <!-- carousel -->
+    <div id="carouselExampleDark" class="carousel carousel-dark slide d-lg-none" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        {% for product in new %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="10000">
+          <img src="{{ product.image.url }}" class="d-block w-100 p-5" alt="...">
+          <div class="carousel-caption border border-dark" style='background-color: rgb(255, 255, 255);'>
+            <h5>{{ product.product.name }}</h5>
+            <p>{{ product.product.material.name }}</p>
+            <p>${{ product.product.price }}</p>
+            <a class="m-0 p-0 stretched-link" href="{% url "store:product-detail" product.product.slug %}"></a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
     {% endif %}
   </div>
 
@@ -79,10 +131,11 @@
   <div class="p-0 m-0 container-fluid position-relative">
     <img src="/../../../media/headline_images/headline_3.png" class="img-fluid">
     <div class="d-flex flex-column justify-content-center position-absolute top-50 start-50 translate-middle">
-      <h1 class="text-light text-center display-5 text-nowrap">Are you comfortable in your shoes?</h1>
-      <p class="text-light text-center fs-4">Meet our classics and wear your way</p>
+      <h1 class="d-none d-lg-block text-light text-center display-5 text-nowrap">Are you comfortable in your shoes?</h1>
+      <p class="d-lg-none text-light text-center fs-5 text-nowrap">Are you comfortable in your shoes?</p>
+      <p class="d-none d-lg-block text-light text-center fs-4">Meet our classics and wear your way</p>
       <div class="d-flex container-fluid justify-content-center">
-        <button type="button" class="mt-4 btn btn-bd-dark text-center text-nowrap">SHOP NOW</button>
+        <button type="button" class="mt-2 mt-lg-4 btn btn-bd-dark text-center text-nowrap">SHOP NOW</button>
       </div>
     </div>
   </div>
