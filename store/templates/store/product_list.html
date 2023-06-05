@@ -1,7 +1,7 @@
 {% extends "store/base.html" %}
 {% block content %}
 <div class="container-fluid p-0 pb-5">
-  <div class="d-flex justify-content-center container-fluid col-10 p-0">
+  <div class="d-flex justify-content-center container-fluid col-lg-10 p-0 px-2 px-lg-0">
     <div class="d-flex flex-column container-fluid p-0">
 
       <!-- breadcrumb -->
@@ -19,7 +19,7 @@
         <div class="d-flex flex-row">
 
           <!-- filtering tools -->
-          <div class="col-3">
+          <div class="col-4 col-lg-3">
             <div class="d-flex flex-column">
 
               <!-- header -->
@@ -182,12 +182,12 @@
           </div>
 
           <!-- products -->
-          <div class="col-9 ps-1">
+          <div class="col-8 col-lg-9 ps-1">
             <div class="d-flex flex-column">
 
               <!-- product list -->
               <div class="container p-3">
-                <div class="row row-cols-3 gx-4 gy-3">
+                <div class="row row-cols-1 row-cols-lg-3 gx-4 gy-3">
                   {% for product in page_obj %}
                     <div class="col">
                       <div class="card h-100">
