@@ -292,6 +292,8 @@
       success: function (json) {
         ELEMENT.removeClass('wishlist-btn-add');
         ELEMENT.addClass('wishlist-btn-delete');
+        const WL_BADGE = document.getElementById('wishlist-totalqty-badge');
+        WL_BADGE.textContent = json.wishlist_qty;
       },
       error: function (xhr, errmsg, err) {}
     });
@@ -319,6 +321,8 @@
       success: function (json) {
         ELEMENT.removeClass('wishlist-btn-delete');
         ELEMENT.addClass('wishlist-btn-add');
+        const WL_BADGE = document.getElementById('wishlist-totalqty-badge');
+        WL_BADGE.textContent = json.wishlist_qty;
       },
       error: function (xhr, errmsg, err) {}
     });
