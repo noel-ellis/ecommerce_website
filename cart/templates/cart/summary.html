@@ -1,11 +1,11 @@
 {% extends "store/base.html" %} {% block content %}
 <div class="container-fluid p-0 pb-5">
-  <div class="d-flex justify-content-center container-fluid col-10 p-0">
+  <div class="d-flex justify-content-center container-fluid col-12 col-lg-10 p-0 px-2 px-lg-0">
     <div class="d-flex flex-column container-fluid p-0">
       <!-- header+divider -->
       <div class="container-fluid d-flex flex-row justify-content-start p-0">
-        <div class="col-4 mt-4">
-          <p class="text-center fs-3 p-0">SHOPPING CART</p>
+        <div class="col-5 col-lg-4 mt-4">
+          <p class="text-center fs-3 p-0 text-nowrap">SHOPPING CART</p>
         </div>
         <div class="container-fluid p-0 mt-4 ms-2 d-flex align-items-center">
           {% if cart|length == 1 %}
@@ -17,13 +17,13 @@
           {% endif %}
         </div>
       </div>
-      <hr class="mt-3 mb-0 border-dark" style="opacity: 1" />
+      <hr class="mt-3 mb-3 mb-lg-0 border-dark" style="opacity: 1" />
 
       <!-- cart table -->
       {% if cart|length > 0 %}
       <div class="container-fluid d-flex flex-column align-items-center p-0">
         <!-- table header -->
-        <div class="container-fluid d-flex flex-row m-0 mt-2 p-0 px-5">
+        <div class="d-none container-fluid d-lg-flex flex-row m-0 mt-2 p-0 px-5">
           <div class="col-2">
             <p class="m-0 p-0 text-center fs-5">ITEM</p>
           </div>
@@ -44,14 +44,14 @@
         <div
           class="container-fluid d-flex flex-column p-0"
           id="cart-summary-item-{{ item.product_variant_id }}">
-          <div class="container-fluid d-flex flex-row p-0 px-5">
+          <div class="container-fluid d-flex flex-row p-0 px-3 px-lg-5">
             <!-- image -->
             <div class="col-2">
               <img src="{{ item.product_image.url }}" class="img-fluid" />
             </div>
 
             <!-- info -->
-            <div class="col-3 d-flex align-items-center justify-content-center">
+            <div class="col-5 col-lg-3 d-flex align-items-center justify-content-center">
               <div class="container-fluid d-flex flex-column mx-5 p-0">
                 <p class="m-0 p-0"><strong>{{ item.product_name }}</strong></p>
                 <p class="m-0 mt-2 p-0">Color: {{ item.product_color }}</p>
@@ -89,13 +89,13 @@
             </div>
 
             <!-- unit price -->
-            <div class="col-2 d-flex align-items-center justify-content-center">
+            <div class="d-none col-2 d-lg-flex align-items-center justify-content-center">
               <p>${{ item.product_price }}</p>
             </div>
 
             <!-- quantity -->
             <div
-              class="col-2 d-flex flex-column align-items-center justify-content-center">
+              class="col-1 d-flex flex-column align-items-center justify-content-center">
               <div
                 class="d-flex flex-row align-items-center justify-content-center p-0 {% comment "for qty buttons" %}border border-dark{% endcomment %}">
                 {% comment "qty decrease button" %}
@@ -123,7 +123,7 @@
             </div>
 
             <!-- total price -->
-            <div class="col-2 d-flex align-items-center justify-content-center">
+            <div class="col-3 col-lg-2 d-flex align-items-center justify-content-center">
               <p>${{ item.product_subtotal }}</p>
             </div>
 
@@ -144,7 +144,7 @@
 
       <!-- payment summary -->
       <div class="container-fluid d-flex flex-column p-0">
-        <div class="col-5 d-flex flex-column mx-5 px-5 py-3">
+        <div class="col-11 col-lg-5 d-flex flex-column mx-5 px-5 py-3">
           <p class="m-0 mb-2 p-0 fs-5"><strong>SUMMARY</strong></p>
 
           <!-- quantity -->

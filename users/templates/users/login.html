@@ -1,28 +1,31 @@
-{% extends "store/base.html" %}
-{% load crispy_forms_tags %}
-{% block content %}
+{% extends "store/base.html" %} {% load crispy_forms_tags %} {% block content %}
 <div class="container-fluid p-0 pb-5">
-  <div class="d-flex justify-content-center container-fluid col-5 p-0">
+  <div class="d-flex justify-content-center container-fluid col-8 col-lg-5 p-0">
     <div class="d-flex flex-column container-fluid p-0">
-      
       <!-- header+divider -->
       <p class="text-start fs-3 p-0 mt-5">RETURNING CUSTOMER</p>
-      <hr class="my-1 border-dark">
+      <hr class="my-1 border-dark" />
 
       <!-- form -->
       <form method="POST">
         {% csrf_token %}
         <fieldset class="form-group my-2">
-          {{ form.username }}
-          {{ form.password }}
+          {{ form.username }} {{ form.password }}
         </fieldset>
         <div class="d-flex flex-column">
-          <small class="mx-3 mt-2"><a class="text-muted" href="{% url 'users:signup' %}">Don't have an account?</a></small>
-          <small class="mx-3 my-2"><a class="text-muted" href="{% url 'users:password_reset' %}">Forgot your password?</a></small>
+          <small class="mx-3 mt-2"
+            ><a class="text-muted" href="{% url 'users:signup' %}"
+              >Don't have an account?</a
+            ></small
+          >
+          <small class="mx-3 my-2"
+            ><a class="text-muted" href="{% url 'users:password_reset' %}"
+              >Forgot your password?</a
+            ></small
+          >
           <button class="btn btn-bd-dark my-3" type="submit">LOG IN</button>
         </div>
       </form>
-
     </div>
   </div>
 </div>

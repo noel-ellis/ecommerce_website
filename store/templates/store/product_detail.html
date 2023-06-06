@@ -176,12 +176,13 @@
       input.setAttribute("autocomplete", "off");
       input.dataset.colorId=colorId;
 
-      var label = document.createElement('label');
+      let label = document.createElement('label');
       label.setAttribute("class", "btn btn-colors-checkbox");
       label.setAttribute("for", "btn-radio-color-" + colorId);
       label.setAttribute("style", "--bs-btn-bg: #" + colorCode + ";" + " --bs-btn-active-bg: #" + colorCode + ";");
       if (colorName == "White") {
-        label.style +=  " --bs-btn-border-color: #d3d3d3;";
+        label.setAttribute("style", " --bs-btn-border-color: #d3d3d3;");
+        console.log('WHITE COLOR')
       };
 
       colorsElement.append(input);
