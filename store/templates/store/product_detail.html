@@ -5,9 +5,19 @@
   <div class="d-flex justify-content-center container-fluid col-10 p-0">
     <div class="d-flex flex-column container-fluid p-0">
       <!-- product -->
-      <div class="d-flex flex-row p-0">
+      <div class="d-flex flex-column flex-md-row p-0">
+        <!-- breadcrumb-md -->
+          <div class="d-block d-md-none container-fluid p-0 pt-2">
+            <div class="p-0 px-4" aria-label="breadcrumb">
+              <ol class="breadcrumb m-0">
+                <li class="breadcrumb-item active" aria-current="page">STORE/ {{ product.sex|upper }}/ {{ product.category|upper }}/ {{ product.name|upper }}</li>
+              </ol>
+            </div>
+            <hr class="my-1">
+          </div>
+
         <!-- images -->
-        <div class="col-6 px-5">
+        <div class="col-md-6 px-5">
           <div id="product_images" class="carousel carousel-dark slide carousel-fade" data-bs-ride="false">
             <div class="carousel-inner">
               {% for image_url in images %}
@@ -28,9 +38,9 @@
         </div>
 
         <!-- product info-->
-        <div class="col-6 p-0">
+        <div class="col-12 col-md-6 p-0">
           <!-- breadcrumb -->
-          <div class="container-fluid p-0 pt-2">
+          <div class="d-none d-md-block container-fluid p-0 pt-2">
             <div class="p-0 px-4" aria-label="breadcrumb">
               <ol class="breadcrumb m-0">
                 <li class="breadcrumb-item active" aria-current="page">STORE/ {{ product.sex|upper }}/ {{ product.category|upper }}/ {{ product.name|upper }}</li>
@@ -62,12 +72,10 @@
               <p class="m-0 p-0 fs-5">Size:</p>
             </div>
             <div class="p-2 px-4">
-              <div class="row row-cols-5 g-1">
+              <div class="row row-cols-3 row-cols-lg-5 g-1">
                 {% for size, product_variant_specs in product_variants_data.items %}
-                <div class="col">
                   <input type="radio" class="btn-check" name="size-options" id="btn-radio-size-{{ size }}" autocomplete="off">
-                  <label class="btn btn-custom-checkbox" name="btn-size" for="btn-radio-size-{{ size }}" style="--bs-btn-padding-x: 2.88rem; --bs-btn-padding-y: 0.7rem;" value="{{ size }}" data-product-variant-specs="{{product_variant_specs}}">{{ size }}</label>
-                </div>
+                  <label class="btn btn-custom-checkbox mx-1" name="btn-size" for="btn-radio-size-{{ size }}" style="--bs-btn-padding-x: 1.5rem; --bs-btn-padding-y: 0.7rem;" value="{{ size }}" data-product-variant-specs="{{product_variant_specs}}">{{ size }}</label>
                 {% endfor %}
               </div>
             </div>
@@ -119,7 +127,7 @@
 
           <!-- items -->
           <div class="p-0 py-5 d-flex flex-row justify-content-center border">
-            <div class="row row-cols-3 gx-4">
+            <div class="row row-cols-1 row-cols-lg-3 gx-4">
               {% for product_variant in promo %}
               <div class="col">
                 <div class="card h-100">
