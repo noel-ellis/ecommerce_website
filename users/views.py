@@ -87,6 +87,7 @@ def signout(request):
 
 
 class EditAddress(LoginRequiredMixin, View):
+
     def post(self, request, address_id):
         user = request.user
         address = DeliveryInfo.objects.filter(id=address_id).first()
@@ -110,6 +111,25 @@ class EditAddress(LoginRequiredMixin, View):
                 return redirect('users:settings')
 
             messages.error(request, 'Data is invalid')
+            return redirect('users:settings')
+
+        address_form = DeliveryInfoForm(instance=address)
+
+        context = {
+            'address_form': address_form
+        }
+
+        return render(request, "users/edit_address.html", context)
+
+    def get(self, request, address_id):
+        user = request.user
+        address = DeliveryInfo.objects.filter(id=address_id).first()
+        if not address:
+            messages.error(request, "Address doesn't exist")
+            return redirect('users:settings')
+
+        if address.user != user:
+            messages.error(request, 'No permission')
             return redirect('users:settings')
 
         address_form = DeliveryInfoForm(instance=address)
