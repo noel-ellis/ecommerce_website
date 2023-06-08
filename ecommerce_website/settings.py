@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     "wishlist.apps.WishlistConfig",
     "payment.apps.PaymentConfig",
     "orders.apps.OrdersConfig",
-    "crispy_forms",
     "stripe",
     "django.contrib.admin",
     "django.contrib.auth",
