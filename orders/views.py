@@ -22,11 +22,10 @@ def new_order(request):
                                              paid=False, status=status, order_key=order_key)
             ordered_item_ids = []
             cart = Cart(request)
-            products_in_cart = cart.cart
 
-            for id, data in products_in_cart.items():
+            for item in cart:
                 ordered_item = OrderedItem.objects.create(
-                    product_id=id, quantity=data['product_qty'], price=data['product_price'])
+                    product_id=item['product_id'], quantity=item['product_qty'], price=item['product_price'])
                 ordered_item.save()
                 ordered_item_ids.append(ordered_item.id)
 
