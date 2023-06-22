@@ -19,6 +19,13 @@ services:
         volumes:
             - pgdata:/var/lib/postgresql/data
 
+    stripe-cli:
+        image: stripe/stripe-cli
+        container_name: stripe-cli
+        environment:
+            - STRIPE_API_SECRET_KEY=${STRIPE_API_SECRET_KEY}
+        command: "listen --api-key ${STRIPE_API_SECRET_KEY} --forward-to django:8000/payment/webhook/"
+
 volumes:
     pgdata:
         
