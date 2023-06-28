@@ -8,25 +8,10 @@ services:
         ports:
             - "8000:8000"
         depends_on:
-            - pg_db
-    pg_db:
-        image: postgres
-        container_name: pg_db
-        environment:
-            - POSTGRES_DB=postgres
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
-        volumes:
-            - pgdata:/var/lib/postgresql/data
-
+            - stripe-cli
     stripe-cli:
         image: stripe/stripe-cli
         container_name: stripe-cli
         environment:
             - STRIPE_API_SECRET_KEY=${STRIPE_API_SECRET_KEY}
         command: "listen --api-key ${STRIPE_API_SECRET_KEY} --forward-to django:8000/payment/webhook/"
-
-volumes:
-    pgdata:
-        
-   
