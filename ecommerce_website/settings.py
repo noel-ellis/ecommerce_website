@@ -7,9 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = False
-
-# !!! CONFIGURE LATER
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://ecomm-qmai.onrender.com']
 
 INSTALLED_APPS = [
     "users.apps.UsersConfig",
