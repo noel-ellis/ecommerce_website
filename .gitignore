@@ -4,8 +4,6 @@
 *.pyc
 __pycache__
 db.sqlite3
-media
-ecommerce_visualized.png
 
 # Backup files # 
 *.bak 
@@ -137,6 +135,9 @@ GitHub.sublime-settings
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
+
+# Media
+src_library/
 
 # Other
 *.swp
