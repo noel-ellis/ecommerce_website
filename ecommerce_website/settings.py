@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import dj_database_url
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -63,14 +64,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "ecommerce_website.wsgi.application"
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DATABASE_NAME"),
-        'USER': os.getenv("DATABASE_USERNAME"),
-        'PASSWORD': os.getenv("DATABASE_PASSWORD"),
-        'HOST': os.getenv("DATABASE_HOSTNAME"),
-        'PORT': os.getenv("DATABASE_PORT"),
-    }
+    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
 
 AUTH_PASSWORD_VALIDATORS = [
