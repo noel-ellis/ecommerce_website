@@ -1,7 +1,7 @@
 databases:
   - name: ecomm-db
-    databaseName: ecomm-db
-    user: ecomm-db
+    databaseName: ecomm_db
+    user: ecomm_user
 
 services:
   - type: web
