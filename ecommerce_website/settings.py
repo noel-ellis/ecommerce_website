@@ -1,15 +1,10 @@
 import os
 from pathlib import Path
 
-import environ
-
-# reading .env file
-env = environ.Env()
-environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = False
 
@@ -67,12 +62,12 @@ WSGI_APPLICATION = "ecommerce_website.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'pg_db',
-        'PORT': 5432,
+        'ENGINE': os.environ.get("DATABASE_ENGINE"),
+        'NAME': os.environ.get("DATABASE_NAME"),
+        'USER': os.environ.get("DATABASE_USERNAME"),
+        'PASSWORD': os.environ.get("DATABASE_PASSWORD"),
+        'HOST': os.environ.get("DATABASE_HOSTNAME"),
+        'PORT': os.environ.get("DATABASE_PORT"),
     }
 }
 
@@ -114,11 +109,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env("APP_EMAIL")
-EMAIL_HOST_PASSWORD = env("APP_PASSWORD")
+EMAIL_HOST_USER = os.environ.get("APP_EMAIL")
+EMAIL_HOST_PASSWORD = os.environ.get("APP_PASSWORD")
 
-STRIPE_API_SECRET_KEY = env("STRIPE_API_SECRET_KEY")
-STRIPE_ENDPOINT_SECRET = env("STRIPE_ENDPOINT_SECRET")
+STRIPE_API_SECRET_KEY = os.environ.get("STRIPE_API_SECRET_KEY")
+STRIPE_ENDPOINT_SECRET = os.environ.get("STRIPE_ENDPOINT_SECRET")
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
