@@ -4,8 +4,7 @@
 *.pyc
 __pycache__
 db.sqlite3
-media
-ecommerce_visualized.png
+media/src_library/main/HEADLINE_TEMPLATE.ai
 
 # Backup files # 
 *.bak 
