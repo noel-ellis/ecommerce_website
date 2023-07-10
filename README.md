@@ -1,8 +1,4 @@
-# Project Overview
-
-# Features (showcase)
-
-# Technologies Used
+# Features
 
 # Installation
 
