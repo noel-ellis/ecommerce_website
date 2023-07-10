@@ -12,13 +12,13 @@
 4. run `cd ecommerce_website` to open the root directory of the project
 5. create .env file and fill it with:
    - required for the project to work at all; generate your own secure key:
-     - SECRET_KEY
+     - SECRET_KEY=<your secret key>
    - required for email confirmations to work; use your gmail credentials:
-     - APP_EMAIL
-     - APP_PASSWORD
+     - APP_EMAIL=<your email>
+     - APP_PASSWORD=<your password>
    - required for payments to work; use your stripe credentials:
-     - STRIPE_API_SECRET_KEY
-     - STRIPE_ENDPOINT_SECRET
+     - STRIPE_API_SECRET_KEY=<your stripe API key>
+     - STRIPE_ENDPOINT_SECRET=<your stripe endpoint secret>
 6. run `docker-compose up`
 
 # Testing
