@@ -14,13 +14,13 @@
 4. cd in the root directory of the project (where the manage.py file is)
 5. create .env file and fill it with:
    - required for the project to work:
-   * SECRET_KEY
+     - SECRET_KEY
    - required for email confirmations to work; use your gmail credentials:
-   * APP_EMAIL
-   * APP_PASSWORD
+     - APP_EMAIL
+     - APP_PASSWORD
    - required for payments to work; use your stripe credentials:
-   * STRIPE_API_SECRET_KEY
-   * STRIPE_ENDPOINT_SECRET
+     - STRIPE_API_SECRET_KEY
+     - STRIPE_ENDPOINT_SECRET
 6. run 'docker-compose up'
 
 # Testing
