@@ -140,3 +140,4 @@ GitHub.sublime-settings
 *.swp
 setup.cfg
 .DS_Store
+.prettierignore
