@@ -13,7 +13,7 @@
 3. run git clone https://github.com/noel-ellis/ecommerce_website
 4. cd in the root directory of the project (where the manage.py file is)
 5. create .env file and fill it with:
-   - required for the project to work:
+   - required for the project to work at all; generate your own secure key:
      - SECRET_KEY
    - required for email confirmations to work; use your gmail credentials:
      - APP_EMAIL
