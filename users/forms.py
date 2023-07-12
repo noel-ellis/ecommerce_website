@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm, SetPasswordForm
 from .models import UserBase, DeliveryInfo
 
 
@@ -104,6 +104,26 @@ class PwdResetForm(PasswordResetForm):
             'class': 'form-control',
             'type': 'email',
             'placeholder': 'Email'
+        }
+    ))
+
+    class Meta:
+        fields = ['email']
+
+
+class SetPwdForm(SetPasswordForm):
+    new_password1 = forms.CharField(label="Password", widget=forms.PasswordInput(
+        attrs={
+            'class': 'form-control mb-2',
+            'type': 'password',
+            'placeholder': 'Password'
+        }
+    ))
+    new_password2 = forms.CharField(label="Confirm password", widget=forms.PasswordInput(
+        attrs={
+            'class': 'form-control mb-2',
+            'type': 'password',
+            'placeholder': 'Confirm Password'
         }
     ))
 
