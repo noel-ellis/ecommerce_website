@@ -15,9 +15,15 @@
    - required for payments to work; use your stripe credentials:
      - STRIPE_API_SECRET_KEY=(your stripe API key)
      - STRIPE_ENDPOINT_SECRET=(your stripe endpoint)
-6. run `docker-compose up`
+
+## Running the App
+* use `docker-compose up -d` to run in the background
+* use `docker-compose down` to shut down the app
 
 # Testing
+1. while the app is running, run the command `docker exec -it django bash` which will open a console inside the django container
+2. in the console, run `python manage.py test`
+3. use control+D to exit the console
 
 # Code Structure
 
