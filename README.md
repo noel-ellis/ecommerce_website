@@ -25,6 +25,13 @@
 2. in the console, run `python manage.py test`
 3. use control+D to exit the console
 
+## Testing Stripe
+Stripe provides special card numbers for testing. Use:
+* `4242424242424242` for a successful payment
+* `4000000000009995` for a failed payment
+* `4000002500003155` to test authentification
+You can use absolutely any CVV and expiration date
+
 # Code Structure
 
 # Future Improvements
