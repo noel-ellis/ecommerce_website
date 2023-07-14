@@ -62,28 +62,6 @@
               <div class="container-fluid d-flex justify-content-center">
                 <div class="col-9">
 
-                  <!-- change email form -->
-                  <form method="POST" enctype="multipart/form-data" class="">
-                    {% csrf_token %}
-                    <fieldset class="form-group">
-                      <legend class="m-0 p-0">
-                        <p class="fs-4">EMAIL ADDRESS</p>
-                        <hr class="my-2">
-                        <p class="" style="font-size: 1rem;">You can change your account email address here. Your newsletter email will automatically be updated.</p>
-                      </legend>
-                      {% for field in email_form %}
-                        <div class="col-5">
-                          <hr class="mt-3 mb-0">
-                        </div>
-                        <p class='ms-3 my-2' style="font-size: 0.75rem;">{{ field.label|upper }}</p>
-                        {{ field }}
-                      {% endfor %}
-                        
-                    </fieldset>
-                    <button class="btn btn-bd-dark mt-3" type="submit" name="email_data" disabled>UPDATE</button>
-                    <hr class="my-2">
-                  </form>
-
                   <!-- change password form -->
                   <p class="fs-4">PASSWORD</p>
                   <hr class="my-2">
