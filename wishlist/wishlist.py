@@ -31,6 +31,7 @@ class Wishlist:
             del self.wishlist[product_id]
             self.save()
             return
+        return 404
 
     def contains(self, product_id: str):
         return product_id in self.ids

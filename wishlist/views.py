@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 
@@ -17,7 +17,8 @@ class ModifyWishlist(View):
         product_id = int(request.POST.get('product_id'))
         product_size = request.POST.get('product_size')
         product_color_id = request.POST.get('product_color_id')
-        product = get_object_or_404(ProductVariant, product__id=product_id, color=product_color_id, size=product_size)
+        product = get_object_or_404(
+            ProductVariant, product__id=product_id, color=product_color_id, size=product_size)
 
         if request.POST.get('action') == 'add':
             wishlist.add(product)
@@ -28,7 +29,8 @@ class ModifyWishlist(View):
             return response
 
         if request.POST.get('action') == 'delete':
-            wishlist.delete(product)
+            if wishlist.delete(product) == 404:
+                return HttpResponse(status=404)
             context = {
                 'wishlist_qty': len(wishlist)
             }

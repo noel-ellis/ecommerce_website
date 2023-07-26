@@ -223,17 +223,28 @@ class TestProductListView(TestCase):
         self.assertEqual(response.context['search_query'], '')
         self.assertEqual(response.context['page_obj'].number, 1)
 
-        self.assertEqual(response.context['page_obj'].object_list[0]['product__material__name'], self.material_a.name)
-        self.assertEqual(response.context['page_obj'].object_list[0]['product__name'], self.product_a.name)
-        self.assertEqual(response.context['page_obj'].object_list[0]['product__price'], Decimal('129.99'))
-        self.assertEqual(response.context['page_obj'].object_list[0]['product__slug'], self.product_a.slug)
-        self.assertEqual(response.context['page_obj'].object_list[0]['product__id'], self.product_a.id)
-        self.assertEqual(response.context['page_obj'].object_list[0]['color__name'], self.color_a.name)
-        self.assertEqual(response.context['page_obj'].object_list[0]['color__id'], self.color_a.id)
-        self.assertEqual(response.context['page_obj'].object_list[0]['image'], '/media/product_pics/default_item.png')
-        self.assertEqual(response.context['page_obj'].object_list[0]['id'], self.product_variant_a.id)
-        self.assertEqual(response.context['page_obj'].object_list[0]['size'], str(self.product_variant_a.size))
-        self.assertEqual(response.context['page_obj'].object_list[0]['in_wishlist'], False)
+        self.assertEqual(response.context['page_obj'].object_list[0]
+                         ['product__material__name'], self.material_a.name)
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['product__name'], self.product_a.name)
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['product__price'], Decimal('129.99'))
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['product__slug'], self.product_a.slug)
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['product__id'], self.product_a.id)
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['color__name'], self.color_a.name)
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['color__id'], self.color_a.id)
+        self.assertEqual(response.context['page_obj'].object_list[0]
+                         ['image'], '/media/product_pics/default_item.png')
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['id'], self.product_variant_a.id)
+        self.assertEqual(response.context['page_obj'].object_list[0]['size'], str(
+            self.product_variant_a.size))
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['in_wishlist'], False)
 
     def test_filters_category(self):
         response = self.c.get(f'/store?categories={self.category_a.id}')
@@ -242,39 +253,51 @@ class TestProductListView(TestCase):
     def test_filters_size(self):
         response = self.c.get('/store?sizes=39')
         self.assertEqual(len(response.context['page_obj'].object_list), 1)
-        self.assertEqual(response.context['page_obj'].object_list[0]['size'], '39')
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['size'], '39')
 
         response = self.c.get('/store?sizes=41')
         self.assertEqual(len(response.context['page_obj'].object_list), 1)
-        self.assertEqual(response.context['page_obj'].object_list[0]['size'], '41')
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['size'], '41')
 
         response = self.c.get('/store?sizes=42')
         self.assertEqual(len(response.context['page_obj'].object_list), 1)
-        self.assertEqual(response.context['page_obj'].object_list[0]['size'], '42')
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['size'], '42')
 
         response = self.c.get('/store?sizes=39%2C41%2C42')
         self.assertEqual(len(response.context['page_obj'].object_list), 3)
-        self.assertEqual(response.context['page_obj'].object_list[0]['size'], '39')
-        self.assertEqual(response.context['page_obj'].object_list[1]['size'], '41')
-        self.assertEqual(response.context['page_obj'].object_list[2]['size'], '42')
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['size'], '39')
+        self.assertEqual(
+            response.context['page_obj'].object_list[1]['size'], '41')
+        self.assertEqual(
+            response.context['page_obj'].object_list[2]['size'], '42')
 
     def test_filters_color(self):
         response = self.c.get(f'/store?colors={self.color_b.id}')
         self.assertEqual(len(response.context['page_obj'].object_list), 2)
-        self.assertEqual(response.context['page_obj'].object_list[0]['color__id'], self.color_b.id)
-        self.assertEqual(response.context['page_obj'].object_list[1]['color__id'], self.color_b.id)
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['color__id'], self.color_b.id)
+        self.assertEqual(
+            response.context['page_obj'].object_list[1]['color__id'], self.color_b.id)
         response = self.c.get(f'/store?colors={self.color_a.id}')
         self.assertEqual(len(response.context['page_obj'].object_list), 1)
-        self.assertEqual(response.context['page_obj'].object_list[0]['color__id'], self.color_a.id)
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['color__id'], self.color_a.id)
 
     def test_filters_material(self):
         response = self.c.get(f'/store?materials={self.material_b.id}')
         self.assertEqual(len(response.context['page_obj'].object_list), 1)
-        self.assertEqual(response.context['page_obj'].object_list[0]['product__material__name'], 'canvas')
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['product__material__name'], 'canvas')
         response = self.c.get(f'/store?materials={self.material_a.id}')
         self.assertEqual(len(response.context['page_obj'].object_list), 2)
-        self.assertEqual(response.context['page_obj'].object_list[0]['product__material__name'], 'leather')
-        self.assertEqual(response.context['page_obj'].object_list[1]['product__material__name'], 'leather')
+        self.assertEqual(
+            response.context['page_obj'].object_list[0]['product__material__name'], 'leather')
+        self.assertEqual(
+            response.context['page_obj'].object_list[1]['product__material__name'], 'leather')
 
     def test_filters_pricecap(self):
         response = self.c.get('/store?pricecap=300')
@@ -395,16 +418,20 @@ class TestProductDetailsView(TestCase):
     def test_images(self):
         response = self.c.get('/store/example-one')
         self.assertEqual(len(response.context['images']), 3)
-        self.assertEqual(response.context['images'][0], '/media/product_pics/default_item.png')
-        self.assertEqual(response.context['images'][1], '/media/product_pics/default_item.png')
-        self.assertEqual(response.context['images'][2], '/media/product_pics/default_item.png')
+        self.assertEqual(
+            response.context['images'][0], '/media/product_pics/default_item.png')
+        self.assertEqual(
+            response.context['images'][1], '/media/product_pics/default_item.png')
+        self.assertEqual(
+            response.context['images'][2], '/media/product_pics/default_item.png')
 
     def test_product_variants_data(self):
         response = self.c.get('/store/example-one')
         self.assertEqual(len(response.context['product_variants_data']), 2)
         self.assertIn('39', response.context['product_variants_data'])
         self.assertIn('41', response.context['product_variants_data'])
-        self.assertEqual(len(response.context['product_variants_data']['39']), 2)
+        self.assertEqual(
+            len(response.context['product_variants_data']['39']), 2)
         self.assertEqual(response.context['product_variants_data']['39']
                          [0]['color_id'], self.product_variant_a.color.id)
         self.assertEqual(response.context['product_variants_data']['39']
