@@ -22,8 +22,9 @@
 
 # Testing
 1. while the app is running, run the command `docker exec -it django bash` which will open a console inside the django container
-2. in the console, run `python manage.py test`
-3. use control+D to exit the console
+2. to run tests, run `python manage.py test`
+3. to check coverage, first, run `coverage run manage.py test`, and then `coverage report`
+4. use control+D to exit the console
 
 ## Testing Stripe
 Stripe provides special card numbers for testing. Use:
