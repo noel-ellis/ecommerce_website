@@ -16,21 +16,21 @@ class Wishlist:
     def __ids(self):
         return list(self.__wishlist)
 
-    def _save(self):
+    def __save(self):
         self.__session.modified = True
 
     def add(self, product: ProductVariant):
         product_id = str(product.id)
         if product_id not in self.__wishlist:
             self.__wishlist[product_id] = 'data'
-            self._save()
+            self.__save()
             return
 
     def delete(self, product: ProductVariant):
         product_id = str(product.id)
         if product_id in self.__wishlist:
             del self.__wishlist[product_id]
-            self._save()
+            self.__save()
             return
         return 404
 
