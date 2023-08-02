@@ -22,7 +22,28 @@
 
     
 ## Cart
-  - class structure
+  ### Methods
+  - **add**(*product: ProductVariant, product_qty: int*) returns None
+  - **update_qty**(*product: ProductVariant, product_qty: int*) returns None
+  - **delete**(*product: ProductVariant*) returns None or 404 (int)
+  - **count_total_price**() returns Int
+  - **count_product_qty**(product_variant: ProductVariant) returns Int, total qty of product_variant in a Cart
+  - **clear**() returns None
+  - **\_\_len\_\_**(): returns an Int amount of product variants in cart
+  - **\_\_iter\_\_**(): yields a Dict for every product variant saved in a cart. The dictionary contains detailed info about the product variant:
+    - product_qty 
+    - product_price
+    - product_subtotal
+    - product_name
+    - product_description
+    - product_image
+    - product_slug
+    - product_id
+    - product_variant_id
+    - product_color
+    - product_color_id
+    - product_size
+    - product_availability
 ## Account System
   - schema
   - secure password reset
