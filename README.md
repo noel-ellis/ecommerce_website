@@ -1,5 +1,34 @@
 # Features
+## Store
+  - schemas for db
+## Wishlist Class
+  ### Methods
+  - **add**(*product: ProductVariant*) returns None
+  - **delete**(*product: ProductVariant*) returns None or 404 (int)
+  - **contains**(*product: ProductVariant*) returns Boolean
+  - **\_\_str\_\_**(): returns a List containing ids of every product variant saved in a wishlist
+  - **\_\_len\_\_**(): returns an Int amount of product variants saved in a wishlist
+  - **\_\_iter\_\_**(): yields a Dict for every product variant saved in a wishlist. The dictionary contains detailed info about the product variant:
+    - id: ProductVariant.id
+    - product__id: ProductVariant.Product.id
+    - color__id: ProductVariant.color.id
+    - size: ProductVariant.size
+    - name: Product.ProductVariant.name
+    - slug: Product.ProductVariant.slug
+    - material: Product.ProductVariant.material
+    - color: ProductVariant.color
+    - price: Product.ProductVariant.price
+    - image: ProductVariant.image
 
+    
+## Cart
+  - class structure
+## Account System
+  - schema
+  - secure password reset
+## Order Tracking
+  - schema
+  - connection to stripe
 # Installation
 
 1. install latest version of docker and run it
