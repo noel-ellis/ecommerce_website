@@ -5,6 +5,7 @@
 .git/
 .pytest_cache/
 .vscode/
+.wiki_images/
 
 htmlcov/
 
