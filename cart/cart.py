@@ -5,14 +5,14 @@ from decimal import Decimal
 
 class Cart:
     def __init__(self, request):
-        self.session_cart_name = 'cart'
-        self.session = request.session
+        self.__session_cart_name = 'cart'
+        self.__session = request.session
 
         # Get cart data or create new cart
-        if self.session_cart_name not in self.session:
-            self.cart = self.session[self.session_cart_name] = {}
+        if self.__session_cart_name not in self.__session:
+            self.cart = self.__session[self.__session_cart_name] = {}
             return
-        self.cart = self.session.get(self.session_cart_name)
+        self.cart = self.__session.get(self.__session_cart_name)
 
     def add(self, product_variant: ProductVariant, product_qty: int):
         product_variation_id = str(product_variant.id)
@@ -57,8 +57,11 @@ class Cart:
 
         return total_price
 
+    def product_qty(self, product_variant: ProductVariant):
+        return self.cart[str(product_variant.id)]['product_qty']
+
     def save(self):
-        self.session.modified = True
+        self.__session.modified = True
 
     def __iter__(self):
         product_variant_ids = self.cart.keys()
@@ -90,5 +93,5 @@ class Cart:
         return sum(item['product_qty'] for item in self.cart.values())
 
     def clear(self):
-        del self.session[self.session_cart_name]
+        del self.__session[self.__session_cart_name]
         self.save()

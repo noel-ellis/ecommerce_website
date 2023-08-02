@@ -43,12 +43,13 @@ class ModifyCart(View):
         product_qty = int(request.POST.get('product_qty'))
         if selected_product_variant.available_units < product_qty:
             raise Http404
-        cart.add(product_variant=selected_product_variant, product_qty=product_qty)
+        cart.add(product_variant=selected_product_variant,
+                 product_qty=product_qty)
 
         total_price = cart.count_total_price()
         cart_qty = cart.__len__()
         context = {
-            'qty': cart.cart[str(selected_product_variant.id)]['product_qty'],
+            'qty': cart.product_qty(selected_product_variant),
             'product_variant_id': selected_product_variant.id,
             'totalqty': cart_qty,
             'totalprice': total_price,
@@ -80,7 +81,8 @@ class ModifyCart(View):
         product_qty = int(request.POST.get('product_qty'))
         if selected_product_variant.available_units < product_qty:
             raise Http404
-        cart.update_qty(product_variant=selected_product_variant, product_qty=product_qty)
+        cart.update_qty(product_variant=selected_product_variant,
+                        product_qty=product_qty)
 
         subtotal_price = self.count_subtotal_price(request)
         total_price = cart.count_total_price()
