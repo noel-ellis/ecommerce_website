@@ -27,27 +27,27 @@ class Cart:
                 'product_name': product_name,
                 'product_slug': product_slug,
             }
-            self.save()
+            self.__save()
             return
 
         self.__cart[product_variation_id]['product_qty'] += product_qty
-        self.save()
+        self.__save()
 
     def update_qty(self, product_variant: ProductVariant, product_qty: int):
         product_id = str(product_variant.id)
 
         if product_id in self.__cart:
             self.__cart[product_id]['product_qty'] = product_qty
-            self.save()
+            self.__save()
 
     def delete(self, product_variant: ProductVariant):
         product_id = str(product_variant.id)
 
         if product_id in self.__cart:
             del self.__cart[product_id]
-            self.save()
+            self.__save()
             return
-        self.save()
+        self.__save()
 
     def count_total_price(self):
         total_price = 0
@@ -60,7 +60,7 @@ class Cart:
     def product_qty(self, product_variant: ProductVariant):
         return self.__cart[str(product_variant.id)]['product_qty']
 
-    def save(self):
+    def __save(self):
         self.__session.modified = True
 
     def __iter__(self):
@@ -94,4 +94,4 @@ class Cart:
 
     def clear(self):
         del self.__session[self.__session_cart_name]
-        self.save()
+        self.__save()
