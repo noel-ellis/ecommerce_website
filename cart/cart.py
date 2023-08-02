@@ -10,9 +10,9 @@ class Cart:
 
         # Get cart data or create new cart
         if self.__session_cart_name not in self.__session:
-            self.cart = self.__session[self.__session_cart_name] = {}
+            self.__cart = self.__session[self.__session_cart_name] = {}
             return
-        self.cart = self.__session.get(self.__session_cart_name)
+        self.__cart = self.__session.get(self.__session_cart_name)
 
     def add(self, product_variant: ProductVariant, product_qty: int):
         product_variation_id = str(product_variant.id)
@@ -20,8 +20,8 @@ class Cart:
         product_name = str(product_variant.product.name)
         product_slug = str(product_variant.product.slug)
 
-        if product_variation_id not in self.cart:
-            self.cart[product_variation_id] = {
+        if product_variation_id not in self.__cart:
+            self.__cart[product_variation_id] = {
                 'product_qty': product_qty,
                 'product_price': product_price,
                 'product_name': product_name,
@@ -30,50 +30,50 @@ class Cart:
             self.save()
             return
 
-        self.cart[product_variation_id]['product_qty'] += product_qty
+        self.__cart[product_variation_id]['product_qty'] += product_qty
         self.save()
 
     def update_qty(self, product_variant: ProductVariant, product_qty: int):
         product_id = str(product_variant.id)
 
-        if product_id in self.cart:
-            self.cart[product_id]['product_qty'] = product_qty
+        if product_id in self.__cart:
+            self.__cart[product_id]['product_qty'] = product_qty
             self.save()
 
     def delete(self, product_variant: ProductVariant):
         product_id = str(product_variant.id)
 
-        if product_id in self.cart:
-            del self.cart[product_id]
+        if product_id in self.__cart:
+            del self.__cart[product_id]
             self.save()
             return
         self.save()
 
     def count_total_price(self):
         total_price = 0
-        for item in self.cart.values():
+        for item in self.__cart.values():
             total_price += int(item['product_qty']) * \
                 Decimal(item['product_price'])
 
         return total_price
 
     def product_qty(self, product_variant: ProductVariant):
-        return self.cart[str(product_variant.id)]['product_qty']
+        return self.__cart[str(product_variant.id)]['product_qty']
 
     def save(self):
         self.__session.modified = True
 
     def __iter__(self):
-        product_variant_ids = self.cart.keys()
+        product_variant_ids = self.__cart.keys()
         products = ProductVariant.objects.filter(id__in=product_variant_ids)
-        cart = self.cart.copy()
+        cart = self.__cart.copy()
 
         for product_variant in products:
-            cart['product_qty'] = self.cart[str(
+            cart['product_qty'] = self.__cart[str(
                 product_variant.id)]['product_qty']
             cart['product_price'] = str(product_variant.product.price)
             cart['product_subtotal'] = product_variant.product.price * \
-                self.cart[str(product_variant.id)]['product_qty']
+                self.__cart[str(product_variant.id)]['product_qty']
             cart['product_name'] = product_variant.product.name
             cart['product_description'] = product_variant.product.description
             cart['product_image'] = product_variant.image
@@ -90,7 +90,7 @@ class Cart:
             yield cart
 
     def __len__(self):
-        return sum(item['product_qty'] for item in self.cart.values())
+        return sum(item['product_qty'] for item in self.__cart.values())
 
     def clear(self):
         del self.__session[self.__session_cart_name]
