@@ -3,47 +3,49 @@ from store.models import ProductVariant
 
 class Wishlist:
     def __init__(self, request):
-        self.session_wishlist_name = 'wishlist'
-        self.session = request.session
+        self.__session_wishlist_name = 'wishlist'
+        self.__session = request.session
 
-        if self.session_wishlist_name not in self.session:
-            self.wishlist = request.session[self.session_wishlist_name] = {}
+        if self.__session_wishlist_name not in self.__session:
+            self.__wishlist = request.session[self.__session_wishlist_name] = {
+            }
             return
-        self.wishlist = request.session.get(self.session_wishlist_name)
+        self.__wishlist = request.session.get(self.__session_wishlist_name)
 
     @property
-    def ids(self):
-        return list(self.wishlist)
+    def __ids(self):
+        return list(self.__wishlist)
 
-    def save(self):
-        self.session.modified = True
+    def _save(self):
+        self.__session.modified = True
 
     def add(self, product: ProductVariant):
         product_id = str(product.id)
-        if product_id not in self.wishlist:
-            self.wishlist[product_id] = 'data'
-            self.save()
+        if product_id not in self.__wishlist:
+            self.__wishlist[product_id] = 'data'
+            self._save()
             return
 
     def delete(self, product: ProductVariant):
         product_id = str(product.id)
-        if product_id in self.wishlist:
-            del self.wishlist[product_id]
-            self.save()
+        if product_id in self.__wishlist:
+            del self.__wishlist[product_id]
+            self._save()
             return
         return 404
 
     def contains(self, product_id: str):
-        return product_id in self.ids
+        return product_id in self.__ids
 
     def __len__(self):
-        return len(self.wishlist)
+        return len(self.__wishlist)
 
     def __str__(self):
-        return str(self.ids)
+        return str(self.__ids)
 
     def __iter__(self):
-        products_from_wishlist = ProductVariant.objects.filter(id__in=self.ids)
+        products_from_wishlist = ProductVariant.objects.filter(
+            id__in=self.__ids)
         for product in products_from_wishlist:
             product_from_wishlist = {}
             product_from_wishlist['id'] = product.id
