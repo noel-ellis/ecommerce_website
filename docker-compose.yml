@@ -1,32 +1,32 @@
 services:
-    django:
+    ecomm-django:
         build: .
-        container_name: django
+        container_name: ecomm-django
         command: python manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/usr/src/ecomm
         ports:
             - "8000:8000"
         depends_on:
-            - pg_db
-    pg_db:
+            - ecomm-db
+    ecomm-db:
         image: postgres
-        container_name: pg_db
+        container_name: ecomm-db
         environment:
             - POSTGRES_DB=postgres
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
         volumes:
-            - pgdata:/var/lib/postgresql/data
+            - ecomm-pgdata:/var/lib/postgresql/data
 
     stripe-cli:
         image: stripe/stripe-cli
         container_name: stripe-cli
         environment:
             - STRIPE_API_SECRET_KEY=${STRIPE_API_SECRET_KEY}
-        command: "listen --api-key ${STRIPE_API_SECRET_KEY} --forward-to django:8000/payment/webhook/"
+        command: "listen --api-key ${STRIPE_API_SECRET_KEY} --forward-to ecomm-django:8000/payment/webhook/"
 
 volumes:
-    pgdata:
+    ecomm-pgdata:
         
    

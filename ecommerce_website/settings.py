@@ -70,7 +70,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'pg_db',
+        'HOST': 'ecomm-db',
         'PORT': 5432,
     }
 }
