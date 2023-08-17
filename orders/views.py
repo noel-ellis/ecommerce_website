@@ -1,13 +1,14 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_exempt
 
 
 from cart.cart import Cart
 from .models import Order, OrderedItem
 
 
+@csrf_exempt
 @login_required
 def new_order(request):
     if request.POST:

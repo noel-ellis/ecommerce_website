@@ -37,7 +37,7 @@ payButton.addEventListener('click', function(ev) {
 
     $.ajax({
         type: 'POST',
-        url: 'http://127.0.0.1:8000/orders/new/',
+        url: 'http://0.0.0.0:8000/orders/new/',
         data: {
             csrfmiddlewaretoken: CSRF_TOKEN,
             delivery_info_id: delivery_info_id,
@@ -68,7 +68,7 @@ payButton.addEventListener('click', function(ev) {
                         // execution. Set up a webhook or plugin to listen for the
                         // payment intent. succeeded event that handles any business critical
                         // post-payment actions.
-                        order_placed_url = "http://127.0.0.1:8000/orders/orderplaced/";
+                        order_placed_url = "http://0.0.0.0:8000/orders/orderplaced/";
                         window.location.replace(order_placed_url);
                     }
                 }

@@ -16,6 +16,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
+    "corsheaders",
     "users.apps.UsersConfig",
     "store.apps.StoreConfig",
     "cart.apps.CartConfig",
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -120,3 +122,18 @@ EMAIL_HOST_PASSWORD = env("APP_PASSWORD")
 
 STRIPE_API_SECRET_KEY = env("STRIPE_API_SECRET_KEY")
 STRIPE_ENDPOINT_SECRET = env("STRIPE_ENDPOINT_SECRET")
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://0.0.0.0:8000',
+]
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8000',
+    'http://0.0.0.0:8000',
+]
+CORS_ALLOWED_ORIGINS = [
+    "http://0.0.0.0:8000",
+    "http://localhost:8000",
+]
+CORS_ALLOW_CREDENTIALS = True
