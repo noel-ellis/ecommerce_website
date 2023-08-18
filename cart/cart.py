@@ -14,6 +14,8 @@ class Cart:
             return
         self.__cart = self.__session.get(self.__session_cart_name)
 
+        self.count_total_price()
+
     def add(self, product_variant: ProductVariant, product_qty: int):
         product_variation_id = str(product_variant.id)
         product_price = str(product_variant.product.price)
@@ -52,9 +54,9 @@ class Cart:
     def count_total_price(self):
         total_price = 0
         for item in self.__cart.values():
-            total_price += int(item['product_qty']) * \
-                Decimal(item['product_price'])
+            total_price += int(item['product_qty']) * Decimal(item['product_price'])
 
+        self.total_price = total_price
         return total_price
 
     def product_qty(self, product_variant: ProductVariant):
@@ -72,8 +74,7 @@ class Cart:
             cart['product_qty'] = self.__cart[str(
                 product_variant.id)]['product_qty']
             cart['product_price'] = str(product_variant.product.price)
-            cart['product_subtotal'] = product_variant.product.price * \
-                self.__cart[str(product_variant.id)]['product_qty']
+            cart['product_subtotal'] = product_variant.product.price * self.__cart[str(product_variant.id)]['product_qty']
             cart['product_name'] = product_variant.product.name
             cart['product_description'] = product_variant.product.description
             cart['product_image'] = product_variant.image
