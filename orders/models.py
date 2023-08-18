@@ -6,7 +6,6 @@ from store.models import ProductVariant
 
 
 class OrderedItem(models.Model):
-    # ORDERED ITEM CHANGED; Product -> ProductVariatnt
     product_variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=5, decimal_places=2)

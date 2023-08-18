@@ -1,5 +1,3 @@
-# ordered_items
-
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -27,7 +25,6 @@ def new_order(request):
             cart = Cart(request)
 
             for item in cart:
-                # ORDERED ITEM CHANGED; product_id -> product_variant_id
                 ordered_item = OrderedItem.objects.create(
                     product_variant_id=item['product_variant_id'], quantity=item['product_qty'], price=item['product_price'])
                 ordered_item.save()
