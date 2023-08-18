@@ -2,16 +2,17 @@ from django.db import models
 
 from users.models import UserBase, DeliveryInfo
 
-from store.models import Product
+from store.models import ProductVariant
 
 
 class OrderedItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    # ORDERED ITEM CHANGED; Product -> ProductVariatnt
+    product_variant = models.ForeignKey(ProductVariant, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
 
     def __str__(self):
-        return f'{self.product} {self.quantity}x{self.price}'
+        return f'{self.product_variant} {self.quantity}x{self.price}'
 
 
 class Order(models.Model):

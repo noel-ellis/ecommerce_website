@@ -1,3 +1,5 @@
+# ORDERED ITEM CHANGE; ordered_items
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
@@ -173,17 +175,20 @@ class Settings(LoginRequiredMixin, View):
             total_price = 0
 
             for ordered_item in order.ordered_items.all():
-                product_quiery = Product.objects.get(pk=ordered_item.product_id)
+                
+                product_quiery = Product.objects.get(pk=ordered_item.product_variant.product_id) # ORDERED ITEM CHANGE; TODO: TO BE CHANGED
                 product_name = product_quiery.name
                 product_slug = product_quiery.slug
 
+                # ORDERED ITEM CHANGE; ordered_item_data from settings.html
                 ordered_item_data = {
                     'price': ordered_item.price,
                     'quantity': ordered_item.quantity,
                     'product_name': product_name,
                     'product_slug': product_slug
                 }
-                ordered_items_data[ordered_item.product_id] = ordered_item_data
+                # ORDERED ITEM CHANGE; key is not being used in settings.html
+                ordered_items_data[ordered_item.product_variant_id] = ordered_item_data # ORDERED ITEM CHANGE; TODO: TO BE CHANGED
 
                 ordered_item_total = ordered_item.price*ordered_item.quantity
                 total_price += ordered_item_total
@@ -195,6 +200,7 @@ class Settings(LoginRequiredMixin, View):
                 'address': order.delivery_info.address
             }
 
+            # ORDERED ITEM CHANGE; order in settings.html
             order_data = {
                 'created_at': order.created_at,
                 'updated_at': order.updated_at,
@@ -211,7 +217,7 @@ class Settings(LoginRequiredMixin, View):
             'user_form': user_form,
             'address_form': address_form,
             'address_info': address_info,
-            'order_history': order_history
+            'order_history': order_history # ORDERED ITEM CHANGE; TODO: map the structure
         }
 
         return render(request, "users/settings.html", context)
