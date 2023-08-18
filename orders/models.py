@@ -1,6 +1,6 @@
 from django.db import models
 
-from users.models import UserBase, DeliveryInfo
+from users.models import DeliveryInfo
 
 from store.models import ProductVariant
 
@@ -22,7 +22,6 @@ class Order(models.Model):
         ('ST4', 'status-4'),
     )
 
-    user = models.ForeignKey(UserBase, on_delete=models.CASCADE)
     delivery_info = models.ForeignKey(DeliveryInfo, on_delete=models.CASCADE)
     ordered_items = models.ManyToManyField(OrderedItem)
     status = models.CharField(max_length=3, choices=STATUSES)

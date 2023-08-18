@@ -12,14 +12,13 @@ from .models import Order, OrderedItem
 @login_required
 def new_order(request):
     if request.POST:
-        user_id = request.user.id
         delivery_info_id = request.POST.get('delivery_info_id')
         order_key = request.POST.get('order_key')
         status = 'ST1'
 
         order_quiery = Order.objects.filter(order_key=order_key)
         if not order_quiery.exists():
-            new_order = Order.objects.create(user_id=user_id, delivery_info_id=delivery_info_id,
+            new_order = Order.objects.create(delivery_info_id=delivery_info_id,
                                              paid=False, status=status, order_key=order_key)
             ordered_item_ids = []
             cart = Cart(request)
