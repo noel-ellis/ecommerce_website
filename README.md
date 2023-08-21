@@ -47,10 +47,7 @@ Stripe provides special card numbers for testing. Use:
 * `4000002500003155` to test authentification
 You can use absolutely any CVV and expiration date
 
-# Code Structure
-
-# Future Improvements
-
+# Docs
+Read the [wiki](https://github.com/noel-ellis/ecommerce_website/wiki/Docs)
 # Acknowledgements
-
 Many thanks to my friend Alva for creating a unique desing for the project
