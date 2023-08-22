@@ -246,6 +246,8 @@
         action: 'add'
       },
       success: function (json) {
+        document.getElementById('wishlist-totalqty-badge').textContent = json.wishlist_qty;
+        document.getElementById('wishlist-totalqty-badge-sm').textContent = json.wishlist_qty;
         wishlistButton.removeClass('wishlist-btn-add');
         wishlistButton.addClass('wishlist-btn-delete');
         
@@ -270,6 +272,8 @@
         var updatedProductVariantSpecsJson = JSON.stringify(productVariantSpecs);
         selectedSizeRadioLabel.data('productVariantSpecs', updatedProductVariantSpecsJson);
         selectedSizeRadioLabel.data('productVariantSpecs');
+
+        // edit the counter 
       },
       error: function (xhr, errmsg, err) {}
     });
@@ -295,6 +299,8 @@
         action: 'delete'
       },
       success: function (json) {
+        document.getElementById('wishlist-totalqty-badge').textContent = json.wishlist_qty;
+        document.getElementById('wishlist-totalqty-badge-sm').textContent = json.wishlist_qty;
         wishlistButton.removeClass('wishlist-btn-delete');
         wishlistButton.addClass('wishlist-btn-add');
         
