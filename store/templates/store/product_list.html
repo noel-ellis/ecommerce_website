@@ -293,7 +293,9 @@
         ELEMENT.removeClass('wishlist-btn-add');
         ELEMENT.addClass('wishlist-btn-delete');
         const WL_BADGE = document.getElementById('wishlist-totalqty-badge');
+        const WL_BADGE_SM = document.getElementById('wishlist-totalqty-badge-sm');
         WL_BADGE.textContent = json.wishlist_qty;
+        WL_BADGE_SM.textContent = json.wishlist_qty;
       },
       error: function (xhr, errmsg, err) {}
     });
@@ -322,7 +324,9 @@
         ELEMENT.removeClass('wishlist-btn-delete');
         ELEMENT.addClass('wishlist-btn-add');
         const WL_BADGE = document.getElementById('wishlist-totalqty-badge');
+        const WL_BADGE_SM = document.getElementById('wishlist-totalqty-badge-sm');
         WL_BADGE.textContent = json.wishlist_qty;
+        WL_BADGE_SM.textContent = json.wishlist_qty;
       },
       error: function (xhr, errmsg, err) {}
     });
