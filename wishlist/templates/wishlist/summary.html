@@ -67,6 +67,8 @@
             action: 'delete'
           },
           success: function (json) {
+            document.getElementById('wishlist-totalqty-badge').textContent = json.wishlist_qty;
+            document.getElementById('wishlist-totalqty-badge-sm').textContent = json.wishlist_qty;
             let wishlist_total_qty = document.getElementById("wishlist-total-qty");
             wishlist_total_qty.textContent = "WISHLIST (" + json.wishlist_qty + ")"
             let wishlist_item = '#wishlist-item-' + ITEM_ID;
