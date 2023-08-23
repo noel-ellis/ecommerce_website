@@ -6,8 +6,6 @@ from ecommerce_website.choices import SEXES, SIZES
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.CharField(max_length=255, unique=True)
-    image = models.ImageField(blank=True, default='default_item.png', upload_to='category_pics')
-    description = models.TextField()
 
     def __str__(self):
         return self.name
