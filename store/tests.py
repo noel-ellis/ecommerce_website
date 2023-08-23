@@ -15,8 +15,7 @@ class TestUrls(TestCase):
         )
         self.category = Category.objects.create(
             name='shoes',
-            slug='shoes',
-            description='testdescription'
+            slug='shoes'
         )
         self.product = Product.objects.create(
             name='product_a',
@@ -52,13 +51,11 @@ class TestMainView(TestCase):
         )
         cls.category_a = Category.objects.create(
             name='shoes',
-            slug='shoes',
-            description='testdescription'
+            slug='shoes'
         )
         cls.category_b = Category.objects.create(
             name='boots',
-            slug='boots',
-            description='testdescription'
+            slug='boots'
         )
         cls.product_a = Product.objects.create(
             name='example one',
@@ -146,13 +143,11 @@ class TestProductListView(TestCase):
         )
         cls.category_a = Category.objects.create(
             name='shoes',
-            slug='shoes',
-            description='testdescription'
+            slug='shoes'
         )
         cls.category_b = Category.objects.create(
             name='boots',
-            slug='boots',
-            description='testdescription'
+            slug='boots'
         )
         cls.product_a = Product.objects.create(
             name='example one',
@@ -337,13 +332,11 @@ class TestProductDetailsView(TestCase):
         )
         cls.category_a = Category.objects.create(
             name='shoes',
-            slug='shoes',
-            description='testdescription'
+            slug='shoes'
         )
         cls.category_b = Category.objects.create(
             name='boots',
-            slug='boots',
-            description='testdescription'
+            slug='boots'
         )
         cls.product_a = Product.objects.create(
             name='example one',

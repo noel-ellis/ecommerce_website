@@ -17,13 +17,11 @@ class TestModifyCartView(TestCase):
         )
         cls.category_a = Category.objects.create(
             name='shoes',
-            slug='shoes',
-            description='testdescription'
+            slug='shoes'
         )
         cls.category_b = Category.objects.create(
             name='boots',
-            slug='boots',
-            description='testdescription'
+            slug='boots'
         )
         cls.product_a = Product.objects.create(
             name='example one',
