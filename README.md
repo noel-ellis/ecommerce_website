@@ -1,6 +1,6 @@
 # Features
 ## Store
-![DB diagram](https://github.com/noel-ellis/ecommerce_website/blob/main/wiki_media/conv_shopping_flow_720.mp4)
+https://github.com/noel-ellis/ecommerce_website/blob/main/wiki_media/conv_shopping_flow_720.mp4
 ## Account System
 gifs:
   - activating/deactivating account
