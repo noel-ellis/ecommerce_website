@@ -1,6 +1,10 @@
 # Features
 ## Store
-https://github.com/noel-ellis/ecommerce_website/blob/main/wiki_media/conv_shopping_flow_720.mp4
+
+
+https://github.com/noel-ellis/ecommerce_website/assets/116894365/b41b46a0-59b6-44b2-9459-5662497ff6ff
+
+
 ## Account System
 gifs:
   - activating/deactivating account
