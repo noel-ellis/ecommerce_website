@@ -1,15 +1,10 @@
 # Features
 ## Store
-gifs:
-  - choosing size, color, and adding to wishlist and cart
-  - search with filtering
-
+![DB diagram](https://github.com/noel-ellis/ecommerce_website/blob/main/wiki_media/conv_shopping_flow_720.mp4)
 ## Account System
 gifs:
   - activating/deactivating account
-  - changing settings:
-    - add/edit address
-    - resetting password
+  - reset password
 
 ## Order Tracking
 gifs:
